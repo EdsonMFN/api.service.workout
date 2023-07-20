@@ -86,4 +86,26 @@ public class AcademiaService {
 
         return responseAcademias;
     }
+    public ResponseAcademia buscarAcademia(Long idAcademia){
+        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        enderecoDTO.setId(academia.get().getEndereco().getId());
+        enderecoDTO.setCep(academia.get().getEndereco().getCep());
+        enderecoDTO.setEstado(academia.get().getEndereco().getEstado());
+        enderecoDTO.setCidade(academia.get().getEndereco().getCidade());
+        enderecoDTO.setBairro(academia.get().getEndereco().getBairro());
+        enderecoDTO.setNumero(academia.get().getEndereco().getNumero());
+
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(academia.get().getId());
+        academiaDTO.setAcademiaAfiliada(academia.get().getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.get().getCnpj());
+        academiaDTO.setEndereco(enderecoDTO);
+
+        ResponseAcademia responseAcademia = new ResponseAcademia();
+        responseAcademia.setAcademiaDTO(academiaDTO);
+
+        return responseAcademia;
+    }
 }

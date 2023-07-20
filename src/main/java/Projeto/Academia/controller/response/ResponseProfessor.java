@@ -1,5 +1,6 @@
 package Projeto.Academia.controller.response;
 
+import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.ProfessorDTO;
 import lombok.Getter;
 import lombok.Setter;

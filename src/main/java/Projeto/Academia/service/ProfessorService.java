@@ -1,5 +1,6 @@
 package Projeto.Academia.service;
 
+import Projeto.Academia.controller.response.ResponseAcademia;
 import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
 import Projeto.Academia.repositorys.DTO.ProfessorDTO;
@@ -14,6 +15,8 @@ import Projeto.Academia.controller.response.ResponseProfessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,6 +60,71 @@ public class ProfessorService {
         professorDTO.setNome(professor.getNome());
         professorDTO.setCpf(professor.getCpf());
         professorDTO.setCref(professor.getCref());
+        professorDTO.setAcademiasAfiliada(academiaDTO);
+
+        ResponseProfessor responseProfessor = new ResponseProfessor();
+        responseProfessor.setProfessorDTO(professorDTO);
+
+        return responseProfessor;
+    }
+    public List<ResponseProfessor> listarProfessor(Long idAcademia){
+        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        enderecoDTO.setId(academia.get().getEndereco().getId());
+        enderecoDTO.setCep(academia.get().getEndereco().getCep());
+        enderecoDTO.setEstado(academia.get().getEndereco().getEstado());
+        enderecoDTO.setCidade(academia.get().getEndereco().getCidade());
+        enderecoDTO.setBairro(academia.get().getEndereco().getBairro());
+        enderecoDTO.setNumero(academia.get().getEndereco().getNumero());
+
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(academia.get().getId());
+        academiaDTO.setAcademiaAfiliada(academia.get().getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.get().getCnpj());
+        academiaDTO.setEndereco(enderecoDTO);
+
+        List<Professor> professores = repositoryProfessor.findAllByAcademia(academia.get());
+        List<ResponseProfessor> responseProfessores = new ArrayList<>();
+
+        for (Professor professor : professores){
+
+            ProfessorDTO professorDTO = new ProfessorDTO();
+            professorDTO.setId(professor.getId());
+            professorDTO.setNome(professor.getNome());
+            professorDTO.setCpf(professor.getCpf());
+            professorDTO.setCref(professor.getCref());
+            professorDTO.setAcademiasAfiliada(academiaDTO);
+
+            ResponseProfessor responseProfessor = new ResponseProfessor();
+            responseProfessor.setProfessorDTO(professorDTO);
+
+            responseProfessores.add(responseProfessor);
+        }
+        return responseProfessores;
+    }
+    public ResponseProfessor buscarProfessor(Long idProfessor){
+        Optional<Professor> professor = repositoryProfessor.findById(idProfessor);
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        enderecoDTO.setId(professor.get().getAcademiaAfiliada().getEndereco().getId());
+        enderecoDTO.setCep(professor.get().getAcademiaAfiliada().getEndereco().getCep());
+        enderecoDTO.setEstado(professor.get().getAcademiaAfiliada().getEndereco().getEstado());
+        enderecoDTO.setCidade(professor.get().getAcademiaAfiliada().getEndereco().getCidade());
+        enderecoDTO.setBairro(professor.get().getAcademiaAfiliada().getEndereco().getBairro());
+        enderecoDTO.setNumero(professor.get().getAcademiaAfiliada().getEndereco().getNumero());
+
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(professor.get().getAcademiaAfiliada().getId());
+        academiaDTO.setAcademiaAfiliada(professor.get().getAcademiaAfiliada().getAcademiaAfiliada());
+        academiaDTO.setCnpj(professor.get().getAcademiaAfiliada().getCnpj());
+        academiaDTO.setEndereco(enderecoDTO);
+
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setId(professor.get().getId());
+        professorDTO.setNome(professor.get().getNome());
+        professorDTO.setCpf(professor.get().getCpf());
+        professorDTO.setCref(professor.get().getCref());
         professorDTO.setAcademiasAfiliada(academiaDTO);
 
         ResponseProfessor responseProfessor = new ResponseProfessor();

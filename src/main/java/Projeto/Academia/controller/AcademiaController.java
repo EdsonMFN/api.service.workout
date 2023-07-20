@@ -26,4 +26,9 @@ public class AcademiaController {
         List<ResponseAcademia> responseAcademiaListar = academiaService.listarAcademia();
         return ResponseEntity.ok(responseAcademiaListar);
     }
+    @GetMapping("/{idAcademia}")
+    public ResponseEntity<ResponseAcademia> buscarAcademia(@PathVariable Long idAcademia){
+            ResponseAcademia responseAcademiaBuscar = academiaService.buscarAcademia(idAcademia);
+        return ResponseEntity.ok(responseAcademiaBuscar);
+    }
 }
