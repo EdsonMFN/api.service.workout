@@ -38,7 +38,7 @@ public class Academia {
     private List<Aluno> aluno;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "academiaAfiliada")
-    private List<Professor> professore;
+    private List<Professor> professor;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "academiaAfiliada")
     private List<Personal> personal;

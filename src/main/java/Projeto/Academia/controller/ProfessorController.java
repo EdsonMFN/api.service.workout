@@ -23,14 +23,26 @@ public class ProfessorController {
 
         return ResponseEntity.ok(responseProfessor);
     }
-    @GetMapping("/{idAcademia}")
+    @GetMapping("/academia/{idAcademia}")
     public ResponseEntity<List<ResponseProfessor>> listarProfessor(@PathVariable Long idAcademia){
         List<ResponseProfessor> responseProfessores = professorService.listarProfessor(idAcademia);
         return ResponseEntity.ok(responseProfessores);
     }
     @GetMapping("/{idProfessor}")
     public ResponseEntity<ResponseProfessor> buscarProfessor(@PathVariable Long idProfessor){
-            ResponseProfessor responseProfessores = professorService.buscarProfessor(idProfessor);
-        return ResponseEntity.ok(responseProfessores);
+            ResponseProfessor responseProfessor = professorService.buscarProfessor(idProfessor);
+        return ResponseEntity.ok(responseProfessor);
+    }
+    @PutMapping
+    public ResponseEntity<ResponseProfessor> alterarProfessor(@RequestBody RequestProfessor requestProfessor){
+        ResponseProfessor responseProfessor = professorService.alterarProfessor(requestProfessor);
+        return ResponseEntity.ok(responseProfessor);
+    }
+
+    @DeleteMapping("/{idProfessor}")
+    public ResponseEntity<ResponseProfessor> deletarProfessor(@PathVariable Long idProfessor){
+
+        ResponseProfessor responseProfessor = professorService.deletarProfessor(idProfessor);
+        return ResponseEntity.ok(responseProfessor);
     }
 }

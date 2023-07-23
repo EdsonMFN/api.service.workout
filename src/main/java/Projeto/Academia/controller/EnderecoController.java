@@ -32,5 +32,14 @@ public class EnderecoController {
             ResponseEndereco responseEnderecosBuscar = enderecoService.buscarEndereco(idEndereco);
         return ResponseEntity.ok(responseEnderecosBuscar);
     }
-
+    @PutMapping
+    public ResponseEntity<ResponseEndereco> alterarEndereco(@RequestBody RequestEndereco requestEndereco){
+        ResponseEndereco responseEnderecoAlterar = enderecoService.altararEndereco(requestEndereco);
+        return ResponseEntity.ok(responseEnderecoAlterar);
+    }
+    @DeleteMapping("/{idEndereco}")
+    public ResponseEntity<ResponseEndereco> deletarEndereco(@PathVariable Long idEndereco){
+        ResponseEndereco responseEnderecosDeletar = enderecoService.deletarEndereco(idEndereco);
+        return ResponseEntity.ok(responseEnderecosDeletar);
+    }
 }

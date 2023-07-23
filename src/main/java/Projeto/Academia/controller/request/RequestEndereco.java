@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class RequestEndereco {
 
+    private Long idEndereco;
     private String estado;
     private String cidade;
     private String bairro;

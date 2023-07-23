@@ -81,4 +81,44 @@ public class EnderecoService {
 
         return responseEndereco;
     }
+    public ResponseEndereco altararEndereco(RequestEndereco requestEndereco){
+        Endereco endereco = repositoryEndereco.getReferenceById(requestEndereco.getIdEndereco());
+
+        endereco.setCep(requestEndereco.getCep());
+        endereco.setBairro(requestEndereco.getBairro());
+        endereco.setNumero(requestEndereco.getNumero());
+        endereco.setEstado(requestEndereco.getEstado());
+        endereco.setCidade(requestEndereco.getCidade());
+        repositoryEndereco.save(endereco);
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        enderecoDTO.setId(endereco.getId());
+        enderecoDTO.setCep(endereco.getCep());
+        enderecoDTO.setBairro(endereco.getBairro());
+        enderecoDTO.setCidade(endereco.getCidade());
+        enderecoDTO.setEstado(endereco.getEstado());
+        enderecoDTO.setNumero(endereco.getNumero());
+
+        ResponseEndereco responseEndereco = new ResponseEndereco();
+        responseEndereco.setEnderecoDTO(enderecoDTO);
+
+        return responseEndereco;
+    }
+    public ResponseEndereco deletarEndereco(Long idEndereco){
+        Optional<Endereco> endereco = repositoryEndereco.findById(idEndereco);
+        repositoryEndereco.delete(endereco.get());
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        enderecoDTO.setId(endereco.get().getId());
+        enderecoDTO.setCep(endereco.get().getCep());
+        enderecoDTO.setBairro(endereco.get().getBairro());
+        enderecoDTO.setCidade(endereco.get().getCidade());
+        enderecoDTO.setEstado(endereco.get().getEstado());
+        enderecoDTO.setNumero(endereco.get().getNumero());
+
+        ResponseEndereco responseEndereco = new ResponseEndereco();
+        responseEndereco.setEnderecoDTO(enderecoDTO);
+
+        return responseEndereco;
+    }
 }

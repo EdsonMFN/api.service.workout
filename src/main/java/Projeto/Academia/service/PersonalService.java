@@ -81,6 +81,112 @@ public class PersonalService {
             personalDTO.setAlunos(alunosDTO);
             personalDTO.getAlunos().add(alunoDTO);
         }
+        return responsePersonal;
+    }
+    public List<ResponsePersonal> listarPersonal(Long idAcademia){
+        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
+        List<Personal> personals = repositoryPersonal.findByAcademiaAfiliada(academia.get());
+        List<ResponsePersonal> responsePersonals = new ArrayList<>();
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO();
+        enderecoDTO.setId(academia.get().getEndereco().getId());
+        enderecoDTO.setCep(academia.get().getEndereco().getCep());
+        enderecoDTO.setEstado(academia.get().getEndereco().getEstado());
+        enderecoDTO.setCidade(academia.get().getEndereco().getCidade());
+        enderecoDTO.setBairro(academia.get().getEndereco().getBairro());
+        enderecoDTO.setNumero(academia.get().getEndereco().getNumero());
+
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(academia.get().getId());
+        academiaDTO.setAcademiaAfiliada(academia.get().getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.get().getCnpj());
+        academiaDTO.setEndereco(enderecoDTO);
+
+        for (Personal personal : personals){
+
+            personal.setNome(personal.getNome());
+            personal.setCpf(personal.getCpf());
+            personal.setCref(personal.getCref());
+            personal.setAcademiaAfiliada(personal.getAcademiaAfiliada());
+
+            PersonalDTO personalDTO = new PersonalDTO();
+            personalDTO.setId(personal.getId());
+            personalDTO.setNome(personal.getNome());
+            personalDTO.setCpf(personal.getCpf());
+            personalDTO.setCref(personal.getCref());
+            personalDTO.setIdAcademiasAfiliada(academiaDTO);
+
+            ResponsePersonal responsePersonal = new ResponsePersonal();
+            responsePersonal.setPersonalDTO(personalDTO);
+
+            responsePersonals.add(responsePersonal);
+        }
+        return responsePersonals;
+    }
+    public ResponsePersonal buscarPersonal(Long idPersonal){
+        Optional<Personal> personal = repositoryPersonal.findById(idPersonal);
+        List<Aluno> alunos = repositoryAluno.findAll();
+
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(personal.get().getAcademiaAfiliada().getId());
+        academiaDTO.setAcademiaAfiliada(personal.get().getAcademiaAfiliada().getAcademiaAfiliada());
+        academiaDTO.setCnpj(personal.get().getAcademiaAfiliada().getCnpj());
+
+        List<AlunoDTO> alunosDTO = new ArrayList<>();
+
+        PersonalDTO personalDTO = new PersonalDTO();
+        personalDTO.setId(personal.get().getId());
+        personalDTO.setNome(personal.get().getNome());
+        personalDTO.setCpf(personal.get().getCpf());
+        personalDTO.setCref(personal.get().getCref());
+        personalDTO.setIdAcademiasAfiliada(academiaDTO);
+        personalDTO.setAlunos(alunosDTO);
+
+        for(Aluno aluno : alunos){
+
+            AlunoDTO alunoDTO = new AlunoDTO();
+            alunoDTO.setId(aluno.getId());
+            alunoDTO.setNome(aluno.getNome());
+            alunoDTO.setCpf(aluno.getCpf());
+            alunoDTO.setIdAcademiaAfiliada(academiaDTO);
+
+            personalDTO.setAlunos(alunosDTO);
+            personalDTO.getAlunos().add(alunoDTO);
+        }
+
+
+        ResponsePersonal responsePersonal = new ResponsePersonal();
+        responsePersonal.setPersonalDTO(personalDTO);
+
+        return responsePersonal;
+    }
+    public ResponsePersonal alterarPersonal(RequestPersonal requestPersonal){
+        Personal personal = repositoryPersonal.getReferenceById(requestPersonal.getIdPersonal());
+
+        personal.setNome(requestPersonal.getNome());
+        repositoryPersonal.save(personal);
+
+        PersonalDTO personalDTO = new PersonalDTO();
+        personalDTO.setId(personal.getId());
+        personalDTO.setNome(personal.getNome());
+
+        ResponsePersonal responsePersonal = new ResponsePersonal();
+        responsePersonal.setPersonalDTO(personalDTO);
+
+        return responsePersonal;
+    }
+    public ResponsePersonal deletarPersoanl(Long idPersonal){
+        Optional<Personal> personal = repositoryPersonal.findById(idPersonal);
+        repositoryPersonal.delete(personal.get());
+
+        PersonalDTO personalDTO = new PersonalDTO();
+        personalDTO.setId(personal.get().getId());
+        personalDTO.setNome(personal.get().getNome());
+        personalDTO.setCpf(personal.get().getCpf());
+        personalDTO.setCref(personal.get().getCref());
+
+        ResponsePersonal responsePersonal = new ResponsePersonal();
+        responsePersonal.setPersonalDTO(personalDTO);
 
         return responsePersonal;
     }

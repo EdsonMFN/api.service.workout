@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface RepositoryProfessor extends JpaRepository<Professor,Long> {
 
-    List<Professor> findAllByAcademia(Academia academia);
 
+    List<Professor> findByAcademiaAfiliada(Academia academiaAfiliada);
+
+    List<Professor> findAllByAcademiaAfiliada(Academia academiaAfiliada);
 }

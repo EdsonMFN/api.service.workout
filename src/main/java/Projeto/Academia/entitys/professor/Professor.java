@@ -36,9 +36,9 @@ public class Professor {
     private Academia academiaAfiliada;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "professor")
-    private List<Aluno> alunos;
+    private List<Aluno> aluno;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "professor")
-    private List<FichaDeTreino> fichaDeTreinos;
+    private List<FichaDeTreino> fichaDeTreino;
 
 }
