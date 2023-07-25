@@ -11,8 +11,9 @@ import lombok.Setter;
 @Setter
 public class RequestFichaDeTreino {
 
+    private Long id;
     private Exercicio exercicio;
-    private ProfessorDTO idProfessor;
-    private AlunoDTO cpfAluno;
-    private AcademiaDTO idAcademiaAfiliada;
+    private ProfessorDTO professorDTO;
+    private AlunoDTO alunoDTOluno;
+    private AcademiaDTO academiaDTO;
 }

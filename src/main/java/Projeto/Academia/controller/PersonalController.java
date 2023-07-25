@@ -33,9 +33,9 @@ public class PersonalController {
          ResponsePersonal responsePersonalBuscar = personalService.buscarPersonal(idPersonal);
         return ResponseEntity.ok(responsePersonalBuscar);
     }
-    @PutMapping
-    public ResponseEntity<ResponsePersonal> alterarPersonal(@RequestBody RequestPersonal requestPersonal){
-        ResponsePersonal responsePersonalAlterar = personalService.alterarPersonal(requestPersonal);
+    @PutMapping("/{idAcademia}")
+    public ResponseEntity<ResponsePersonal> alterarPersonal(@PathVariable Long idAcademia,@RequestBody RequestPersonal requestPersonal){
+        ResponsePersonal responsePersonalAlterar = personalService.alterarPersonal(idAcademia,requestPersonal);
         return ResponseEntity.ok(responsePersonalAlterar);
     }
     @DeleteMapping("/{idPersonal}")

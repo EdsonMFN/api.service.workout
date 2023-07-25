@@ -14,6 +14,6 @@ public class RequestPersonal {
     private String nome;
     private String cpf;
     private String cref;
-    private AcademiaDTO idAcademiaAfiliada;
+    private AcademiaDTO academiaDTO;
     private List<AlunoDTO> alunos;
 }

@@ -160,10 +160,12 @@ public class PersonalService {
 
         return responsePersonal;
     }
-    public ResponsePersonal alterarPersonal(RequestPersonal requestPersonal){
+    public ResponsePersonal alterarPersonal(Long idAcademia, RequestPersonal requestPersonal){
         Personal personal = repositoryPersonal.getReferenceById(requestPersonal.getIdPersonal());
+        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
 
         personal.setNome(requestPersonal.getNome());
+        personal.setAcademiaAfiliada(academia.get());
         repositoryPersonal.save(personal);
 
         PersonalDTO personalDTO = new PersonalDTO();

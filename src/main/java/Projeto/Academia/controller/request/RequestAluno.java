@@ -13,7 +13,7 @@ public class RequestAluno {
 
     private String nome;
     private String cpf;
-    private AcademiaDTO idAcademiaAfiliada;
-    private ProfessorDTO idProfessor;
-    private PersonalDTO idPersonal;
+    private AcademiaDTO academiaDTO;
+    private ProfessorDTO professorDTO;
+    private PersonalDTO personalDTO;
 }

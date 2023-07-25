@@ -33,9 +33,9 @@ public class ProfessorController {
             ResponseProfessor responseProfessor = professorService.buscarProfessor(idProfessor);
         return ResponseEntity.ok(responseProfessor);
     }
-    @PutMapping
-    public ResponseEntity<ResponseProfessor> alterarProfessor(@RequestBody RequestProfessor requestProfessor){
-        ResponseProfessor responseProfessor = professorService.alterarProfessor(requestProfessor);
+    @PutMapping("/{idAcademia}")
+    public ResponseEntity<ResponseProfessor> alterarProfessor(@PathVariable Long idAcademia,@RequestBody RequestProfessor requestProfessor){
+        ResponseProfessor responseProfessor = professorService.alterarProfessor(idAcademia,requestProfessor);
         return ResponseEntity.ok(responseProfessor);
     }
 

@@ -31,9 +31,9 @@ public class AcademiaController {
             ResponseAcademia responseAcademiaBuscar = academiaService.buscarAcademia(idAcademia);
         return ResponseEntity.ok(responseAcademiaBuscar);
     }
-    @PutMapping
-    public ResponseEntity<ResponseAcademia> alterarAcademia(@RequestBody RequestAcademia requestAcademia) {
-        ResponseAcademia responseAcademiaAlterar = academiaService.alterarAcademia(requestAcademia);
+    @PutMapping("/{idEndereco}")
+    public ResponseEntity<ResponseAcademia> alterarAcademia(@PathVariable Long idEndereco,@RequestBody RequestAcademia requestAcademia) {
+        ResponseAcademia responseAcademiaAlterar = academiaService.alterarAcademia(idEndereco,requestAcademia);
         return ResponseEntity.ok(responseAcademiaAlterar);
     }
     @DeleteMapping("/{idAcademia}")

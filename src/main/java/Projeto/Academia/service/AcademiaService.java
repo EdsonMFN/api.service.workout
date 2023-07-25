@@ -108,11 +108,13 @@ public class AcademiaService {
 
         return responseAcademia;
     }
-    public ResponseAcademia alterarAcademia(RequestAcademia requestAcademia){
+    public ResponseAcademia alterarAcademia(Long idEndereco,RequestAcademia requestAcademia){
         Academia academia = repositoryAcademia.getReferenceById(requestAcademia.getIdAcademia());
+        Optional<Endereco> endereco = repositoryEndereco.findById(idEndereco);
 
         academia.setAcademiaAfiliada(requestAcademia.getAcademiaAfiliada());
         academia.setCnpj(requestAcademia.getCnpj());
+        academia.setEndereco(endereco.get());
         repositoryAcademia.save(academia);
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();

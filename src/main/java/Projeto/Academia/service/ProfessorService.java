@@ -134,12 +134,14 @@ public class ProfessorService {
 
         return responseProfessor;
     }
-    public ResponseProfessor alterarProfessor(RequestProfessor requestProfessor){
+    public ResponseProfessor alterarProfessor(Long idAcademia, RequestProfessor requestProfessor){
         Professor professor = repositoryProfessor.getReferenceById(requestProfessor.getIdProfessor());
+        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
 
         professor.setNome(requestProfessor.getNome());
         professor.setCpf(requestProfessor.getCpf());
         professor.setCref(requestProfessor.getCref());
+        professor.setAcademiaAfiliada(academia.get());
         repositoryProfessor.save(professor);
 
         ProfessorDTO professorDTO = new ProfessorDTO();
