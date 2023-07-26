@@ -1,22 +1,23 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.repositorys.DTO.AcademiaDTO;
-import Projeto.Academia.repositorys.DTO.EnderecoDTO;
-import Projeto.Academia.repositorys.DTO.ProfessorDTO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import Projeto.Academia.controller.request.RequestProfessor;
+import Projeto.Academia.controller.response.ResponseProfessor;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.professor.Professor;
 import Projeto.Academia.repositorys.RepositoryAcademia;
 import Projeto.Academia.repositorys.RepositoryAluno;
 import Projeto.Academia.repositorys.RepositoryFichaDeTreino;
 import Projeto.Academia.repositorys.RepositoryProfessor;
-import Projeto.Academia.controller.request.RequestProfessor;
-import Projeto.Academia.controller.response.ResponseProfessor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import Projeto.Academia.repositorys.DTO.AcademiaDTO;
+import Projeto.Academia.repositorys.DTO.EnderecoDTO;
+import Projeto.Academia.repositorys.DTO.ProfessorDTO;
 
 @Service
 public class ProfessorService {
@@ -178,6 +179,7 @@ public class ProfessorService {
         professorDTO.setNome(professor.get().getNome());
         professorDTO.setCpf(professor.get().getCpf());
         professorDTO.setCref(professor.get().getCref());
+
         professorDTO.setAcademiasAfiliada(academiaDTO);
 
         ResponseProfessor responseProfessor = new ResponseProfessor();

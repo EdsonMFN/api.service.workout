@@ -42,5 +42,6 @@ public class FichaDeTreinoController {
     public ResponseEntity<ResponseFichaDeTreino> deletarFicha(@PathVariable Long idFicha){
         ResponseFichaDeTreino responseFichaDeTreino = fichaDetreinoService.deletarFicha(idFicha);
         return ResponseEntity.ok(responseFichaDeTreino);
+
     }
 }

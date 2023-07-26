@@ -12,4 +12,5 @@ public interface RepositoryProfessor extends JpaRepository<Professor,Long> {
     List<Professor> findByAcademiaAfiliada(Academia academiaAfiliada);
 
     List<Professor> findAllByAcademiaAfiliada(Academia academiaAfiliada);
+
 }

@@ -43,4 +43,5 @@ public class AlunoController {
         ResponseAluno responseAluno = alunoService.deletarAluno(idAluno);
         return ResponseEntity.ok(responseAluno);
     }
+
 }

@@ -120,5 +120,6 @@ public class EnderecoService {
         responseEndereco.setEnderecoDTO(enderecoDTO);
 
         return responseEndereco;
+
     }
 }

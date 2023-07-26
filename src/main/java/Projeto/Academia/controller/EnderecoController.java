@@ -41,5 +41,6 @@ public class EnderecoController {
     public ResponseEntity<ResponseEndereco> deletarEndereco(@PathVariable Long idEndereco){
         ResponseEndereco responseEnderecosDeletar = enderecoService.deletarEndereco(idEndereco);
         return ResponseEntity.ok(responseEnderecosDeletar);
+
     }
 }

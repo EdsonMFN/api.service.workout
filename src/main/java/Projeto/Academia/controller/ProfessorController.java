@@ -1,13 +1,21 @@
 package Projeto.Academia.controller;
 
-import Projeto.Academia.service.ProfessorService;
-import Projeto.Academia.controller.request.RequestProfessor;
-import Projeto.Academia.controller.response.ResponseProfessor;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import Projeto.Academia.controller.request.RequestProfessor;
+import Projeto.Academia.controller.response.ResponseProfessor;
+import Projeto.Academia.service.ProfessorService;
 
 @RestController
 @RequestMapping("/professor")
@@ -43,6 +51,7 @@ public class ProfessorController {
     public ResponseEntity<ResponseProfessor> deletarProfessor(@PathVariable Long idProfessor){
 
         ResponseProfessor responseProfessor = professorService.deletarProfessor(idProfessor);
+
         return ResponseEntity.ok(responseProfessor);
     }
 }

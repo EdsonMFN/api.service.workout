@@ -1,19 +1,29 @@
 package Projeto.Academia.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import Projeto.Academia.controller.request.RequestFichaDeTreino;
+import Projeto.Academia.controller.response.ResponseFichaDeTreino;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.aluno.Aluno;
 import Projeto.Academia.entitys.fichaDeTreino.FichaDeTreino;
 import Projeto.Academia.entitys.professor.Professor;
-import Projeto.Academia.repositorys.*;
-import Projeto.Academia.controller.request.RequestFichaDeTreino;
-import Projeto.Academia.controller.response.ResponseFichaDeTreino;
-import Projeto.Academia.repositorys.DTO.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import Projeto.Academia.repositorys.RepositoryAcademia;
+import Projeto.Academia.repositorys.RepositoryAluno;
+import Projeto.Academia.repositorys.RepositoryEndereco;
+import Projeto.Academia.repositorys.RepositoryFichaDeTreino;
+import Projeto.Academia.repositorys.RepositoryPersonal;
+import Projeto.Academia.repositorys.RepositoryProfessor;
+import Projeto.Academia.repositorys.DTO.AcademiaDTO;
+import Projeto.Academia.repositorys.DTO.AlunoDTO;
+import Projeto.Academia.repositorys.DTO.EnderecoDTO;
+import Projeto.Academia.repositorys.DTO.FichaDeTreinoDTO;
+import Projeto.Academia.repositorys.DTO.ProfessorDTO;
 
 @Service
 public class FichaDetreinoService {
@@ -219,6 +229,7 @@ public class FichaDetreinoService {
         fichaDeTreinoDTO.setProfessor(professorDTO);
         fichaDeTreinoDTO.setAluno(alunoDTO);
         fichaDeTreinoDTO.setExercicio(fichaDeTreino.get().getExercicio());
+
 
         ResponseFichaDeTreino responseFichaDeTreino = new ResponseFichaDeTreino();
         responseFichaDeTreino.setFichaDeTreinoDTO(fichaDeTreinoDTO);
