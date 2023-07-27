@@ -24,10 +24,10 @@ public class ProfessorController {
     @Autowired
     private ProfessorService professorService;
 
-    @PostMapping("/{idAcademia}")
-    public ResponseEntity<ResponseProfessor> criarProfessor(@PathVariable Long idAcademia, @RequestBody RequestProfessor requestProfessor){
+    @PostMapping
+    public ResponseEntity<ResponseProfessor> criarProfessor(@RequestBody RequestProfessor requestProfessor){
 
-        ResponseProfessor responseProfessor = professorService.criarProfessor(idAcademia, requestProfessor);
+        ResponseProfessor responseProfessor = professorService.criarProfessor(requestProfessor);
 
         return ResponseEntity.ok(responseProfessor);
     }
@@ -41,9 +41,9 @@ public class ProfessorController {
             ResponseProfessor responseProfessor = professorService.buscarProfessor(idProfessor);
         return ResponseEntity.ok(responseProfessor);
     }
-    @PutMapping("/{idAcademia}")
-    public ResponseEntity<ResponseProfessor> alterarProfessor(@PathVariable Long idAcademia,@RequestBody RequestProfessor requestProfessor){
-        ResponseProfessor responseProfessor = professorService.alterarProfessor(idAcademia,requestProfessor);
+    @PutMapping
+    public ResponseEntity<ResponseProfessor> alterarProfessor(@RequestBody RequestProfessor requestProfessor){
+        ResponseProfessor responseProfessor = professorService.alterarProfessor(requestProfessor);
         return ResponseEntity.ok(responseProfessor);
     }
 

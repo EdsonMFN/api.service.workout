@@ -40,43 +40,46 @@ public class FichaDetreinoService {
     @Autowired
     private RepositoryEndereco repositoryEndereco;
 
-    public ResponseFichaDeTreino criarFicha(Long idAcademia, Long idProfessor, String cpfAluno,RequestFichaDeTreino requestFichaDeTreino){
-        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
-        Optional<Professor> professor = repositoryProfessor.findById(idProfessor);
-        Optional<Aluno> aluno = repositoryAluno.findByCpf(cpfAluno);
+    public ResponseFichaDeTreino criarFicha(RequestFichaDeTreino requestFichaDeTreino){
+        Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
+        Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
+        Optional<Aluno> alunoOptional = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno());
+
+        var endereco = academia.getEndereco();
+        var aluno = alunoOptional.get();
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(academia.get().getEndereco().getId());
-        enderecoDTO.setCep(academia.get().getEndereco().getCep());
-        enderecoDTO.setEstado(academia.get().getEndereco().getEstado());
-        enderecoDTO.setCidade(academia.get().getEndereco().getCidade());
-        enderecoDTO.setBairro(academia.get().getEndereco().getBairro());
-        enderecoDTO.setNumero(academia.get().getEndereco().getNumero());
+        enderecoDTO.setId(endereco.getId());
+        enderecoDTO.setCep(endereco.getCep());
+        enderecoDTO.setEstado(endereco.getEstado());
+        enderecoDTO.setCidade(endereco.getCidade());
+        enderecoDTO.setBairro(endereco.getBairro());
+        enderecoDTO.setNumero(endereco.getNumero());
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.get().getId());
-        academiaDTO.setAcademiaAfiliada(academia.get().getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.get().getCnpj());
+        academiaDTO.setId(academia.getId());
+        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.getCnpj());
         academiaDTO.setEndereco(enderecoDTO);
 
         ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(professor.get().getId());
-        professorDTO.setNome(professor.get().getNome());
-        professorDTO.setCpf(professor.get().getCpf());
-        professorDTO.setCref(professor.get().getCref());
+        professorDTO.setId(professor.getId());
+        professorDTO.setNome(professor.getNome());
+        professorDTO.setCpf(professor.getCpf());
+        professorDTO.setCref(professor.getCref());
         professorDTO.setAcademiasAfiliada(academiaDTO);
 
         AlunoDTO alunoDTO = new AlunoDTO();
-        alunoDTO.setId(aluno.get().getId());
-        alunoDTO.setNome(aluno.get().getNome());
-        alunoDTO.setCpf(aluno.get().getCpf());
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setNome(aluno.getNome());
+        alunoDTO.setCpf(aluno.getCpf());
         alunoDTO.setIdAcademiaAfiliada(academiaDTO);
         alunoDTO.setCrefProfessor(professorDTO);
 
         FichaDeTreino fichaDeTreino = new FichaDeTreino();
-        fichaDeTreino.setAcademiaAfiliada(academia.get());
-        fichaDeTreino.setProfessor(professor.get());
-        fichaDeTreino.setAluno(aluno.get());
+        fichaDeTreino.setAcademiaAfiliada(academia);
+        fichaDeTreino.setProfessor(professor);
+        fichaDeTreino.setAluno(aluno);
         fichaDeTreino.setExercicio(requestFichaDeTreino.getExercicio());
         repositoryFichaDeTreino.save(fichaDeTreino);
 
@@ -93,26 +96,30 @@ public class FichaDetreinoService {
         return responseFichaDeTreino;
     }
     public List<ResponseFichaDeTreino> listarFichas(String cpfAluno){
-        Optional<Aluno> aluno = repositoryAluno.findByCpf(cpfAluno);
-        List<FichaDeTreino> fichaDeTreinos = repositoryFichaDeTreino.findByAluno(aluno.get());
+        Optional<Aluno> alunoOptional = repositoryAluno.findByCpf(cpfAluno);
+
+        var aluno = alunoOptional.get();
+        var professor = aluno.getProfessor();
+        var academiaAfiliada = aluno.getAcademiaAfiliada();
+
+        List<FichaDeTreino> fichaDeTreinos = repositoryFichaDeTreino.findByAluno(aluno);
         List<ResponseFichaDeTreino> responseFichaDeTreinos = new ArrayList<>();
-        List<FichaDeTreinoDTO> fichaDeTreinoDTOS = new ArrayList<>();
 
         ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(aluno.get().getProfessor().getId());
-        professorDTO.setNome(aluno.get().getProfessor().getNome());
-        professorDTO.setCpf(aluno.get().getProfessor().getCpf());
-        professorDTO.setCref(aluno.get().getProfessor().getCref());
+        professorDTO.setId(professor.getId());
+        professorDTO.setNome(professor.getNome());
+        professorDTO.setCpf(professor.getCpf());
+        professorDTO.setCref(professor.getCref());
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(aluno.get().getAcademiaAfiliada().getId());
-        academiaDTO.setAcademiaAfiliada(aluno.get().getAcademiaAfiliada().getAcademiaAfiliada());
-        academiaDTO.setCnpj(aluno.get().getAcademiaAfiliada().getCnpj());
+        academiaDTO.setId(academiaAfiliada.getId());
+        academiaDTO.setAcademiaAfiliada(academiaAfiliada.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academiaAfiliada.getCnpj());
 
         AlunoDTO alunoDTO = new AlunoDTO();
-        alunoDTO.setId(aluno.get().getId());
-        alunoDTO.setNome(aluno.get().getNome());
-        alunoDTO.setCpf(aluno.get().getCpf());
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setNome(aluno.getNome());
+        alunoDTO.setCpf(aluno.getCpf());
 
         for (FichaDeTreino fichaDeTreino : fichaDeTreinos){
 
@@ -134,46 +141,11 @@ public class FichaDetreinoService {
         return responseFichaDeTreinos;
     }
     public ResponseFichaDeTreino buscarFicha(Long idFicha){
-        Optional<FichaDeTreino> fichaDeTreino = repositoryFichaDeTreino.findById(idFicha);
+        Optional<FichaDeTreino> fichaDeTreinoOptional = repositoryFichaDeTreino.findById(idFicha);
 
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(fichaDeTreino.get().getProfessor().getId());
-        professorDTO.setNome(fichaDeTreino.get().getProfessor().getNome());
-        professorDTO.setCpf(fichaDeTreino.get().getProfessor().getCpf());
-        professorDTO.setCref(fichaDeTreino.get().getProfessor().getCref());
-
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(fichaDeTreino.get().getAcademiaAfiliada().getId());
-        academiaDTO.setAcademiaAfiliada(fichaDeTreino.get().getAcademiaAfiliada().getAcademiaAfiliada());
-        academiaDTO.setCnpj(fichaDeTreino.get().getAcademiaAfiliada().getCnpj());
-
-        AlunoDTO alunoDTO = new AlunoDTO();
-        alunoDTO.setId(fichaDeTreino.get().getAluno().getId());
-        alunoDTO.setNome(fichaDeTreino.get().getAluno().getNome());
-        alunoDTO.setCpf(fichaDeTreino.get().getAluno().getCpf());
-
-        FichaDeTreinoDTO fichaDeTreinoDTO = new FichaDeTreinoDTO();
-        fichaDeTreinoDTO.setId(fichaDeTreino.get().getId());
-        fichaDeTreinoDTO.setAcademiaAfiliada(academiaDTO);
-        fichaDeTreinoDTO.setProfessor(professorDTO);
-        fichaDeTreinoDTO.setAluno(alunoDTO);
-        fichaDeTreinoDTO.setExercicio(fichaDeTreino.get().getExercicio());
-
-        ResponseFichaDeTreino responseFichaDeTreino = new ResponseFichaDeTreino();
-        responseFichaDeTreino.setFichaDeTreinoDTO(fichaDeTreinoDTO);
-
-        return responseFichaDeTreino;
-    }
-    public ResponseFichaDeTreino alterarFicha (Long idAcademia,String cpfAluno, Long idProfessor, RequestFichaDeTreino requestFichaDeTreino){
-        Optional<Aluno> aluno = repositoryAluno.findByCpf(cpfAluno);
-        Optional<Professor> professor = repositoryProfessor.findById(idProfessor);
-        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
-        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getId());
-        fichaDeTreino.setExercicio(requestFichaDeTreino.getExercicio());
-        fichaDeTreino.setAluno(aluno.get());
-        fichaDeTreino.setProfessor(professor.get());
-        fichaDeTreino.setAcademiaAfiliada(academia.get());
-        repositoryFichaDeTreino.save(fichaDeTreino);
+        var fichaDeTreino = fichaDeTreinoOptional.get();
+        var academiaAfiliada = fichaDeTreino.getAcademiaAfiliada();
+        var aluno = fichaDeTreino.getAluno();
 
         ProfessorDTO professorDTO = new ProfessorDTO();
         professorDTO.setId(fichaDeTreino.getProfessor().getId());
@@ -182,14 +154,56 @@ public class FichaDetreinoService {
         professorDTO.setCref(fichaDeTreino.getProfessor().getCref());
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(fichaDeTreino.getAcademiaAfiliada().getId());
-        academiaDTO.setAcademiaAfiliada(fichaDeTreino.getAcademiaAfiliada().getAcademiaAfiliada());
-        academiaDTO.setCnpj(fichaDeTreino.getAcademiaAfiliada().getCnpj());
+        academiaDTO.setId(academiaAfiliada.getId());
+        academiaDTO.setAcademiaAfiliada(academiaAfiliada.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academiaAfiliada.getCnpj());
 
         AlunoDTO alunoDTO = new AlunoDTO();
-        alunoDTO.setId(fichaDeTreino.getAluno().getId());
-        alunoDTO.setNome(fichaDeTreino.getAluno().getNome());
-        alunoDTO.setCpf(fichaDeTreino.getAluno().getCpf());
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setNome(aluno.getNome());
+        alunoDTO.setCpf(aluno.getCpf());
+
+        FichaDeTreinoDTO fichaDeTreinoDTO = new FichaDeTreinoDTO();
+        fichaDeTreinoDTO.setId(fichaDeTreino.getId());
+        fichaDeTreinoDTO.setAcademiaAfiliada(academiaDTO);
+        fichaDeTreinoDTO.setProfessor(professorDTO);
+        fichaDeTreinoDTO.setAluno(alunoDTO);
+        fichaDeTreinoDTO.setExercicio(fichaDeTreino.getExercicio());
+
+        ResponseFichaDeTreino responseFichaDeTreino = new ResponseFichaDeTreino();
+        responseFichaDeTreino.setFichaDeTreinoDTO(fichaDeTreinoDTO);
+
+        return responseFichaDeTreino;
+    }
+    public ResponseFichaDeTreino alterarFicha (RequestFichaDeTreino requestFichaDeTreino){
+        Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
+        Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
+        Optional<Aluno> alunoOptional = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno());
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getIdFicha());
+
+        var aluno = fichaDeTreino.getAluno();
+
+        fichaDeTreino.setExercicio(requestFichaDeTreino.getExercicio());
+        fichaDeTreino.setAluno(alunoOptional.get());
+        fichaDeTreino.setProfessor(professor);
+        fichaDeTreino.setAcademiaAfiliada(academia);
+        repositoryFichaDeTreino.save(fichaDeTreino);
+
+        ProfessorDTO professorDTO = new ProfessorDTO();
+        professorDTO.setId(professor.getId());
+        professorDTO.setNome(professor.getNome());
+        professorDTO.setCpf(professor.getCpf());
+        professorDTO.setCref(professor.getCref());
+
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(academia.getId());
+        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.getCnpj());
+
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setNome(aluno.getNome());
+        alunoDTO.setCpf(aluno.getCpf());
 
         FichaDeTreinoDTO fichaDeTreinoDTO = new FichaDeTreinoDTO();
         fichaDeTreinoDTO.setId(fichaDeTreino.getId());
@@ -204,31 +218,37 @@ public class FichaDetreinoService {
         return responseFichaDeTreino;
     }
     public ResponseFichaDeTreino deletarFicha(Long idFicha){
-        Optional<FichaDeTreino> fichaDeTreino = repositoryFichaDeTreino.findById(idFicha);
-        repositoryFichaDeTreino.delete(fichaDeTreino.get());
+        Optional<FichaDeTreino> fichaDeTreinoOptional = repositoryFichaDeTreino.findById(idFicha);
+
+        var fichaDeTreino = fichaDeTreinoOptional.get();
+        var academiaAfiliada = fichaDeTreino.getAcademiaAfiliada();
+        var aluno = fichaDeTreino.getAluno();
+        var professor = fichaDeTreino.getProfessor();
+
+        repositoryFichaDeTreino.delete(fichaDeTreino);
 
         ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(fichaDeTreino.get().getProfessor().getId());
-        professorDTO.setNome(fichaDeTreino.get().getProfessor().getNome());
-        professorDTO.setCpf(fichaDeTreino.get().getProfessor().getCpf());
-        professorDTO.setCref(fichaDeTreino.get().getProfessor().getCref());
+        professorDTO.setId(professor.getId());
+        professorDTO.setNome(professor.getNome());
+        professorDTO.setCpf(professor.getCpf());
+        professorDTO.setCref(professor.getCref());
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(fichaDeTreino.get().getAcademiaAfiliada().getId());
-        academiaDTO.setAcademiaAfiliada(fichaDeTreino.get().getAcademiaAfiliada().getAcademiaAfiliada());
-        academiaDTO.setCnpj(fichaDeTreino.get().getAcademiaAfiliada().getCnpj());
+        academiaDTO.setId(academiaAfiliada.getId());
+        academiaDTO.setAcademiaAfiliada(academiaAfiliada.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academiaAfiliada.getCnpj());
 
         AlunoDTO alunoDTO = new AlunoDTO();
-        alunoDTO.setId(fichaDeTreino.get().getAluno().getId());
-        alunoDTO.setNome(fichaDeTreino.get().getAluno().getNome());
-        alunoDTO.setCpf(fichaDeTreino.get().getAluno().getCpf());
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setNome(aluno.getNome());
+        alunoDTO.setCpf(aluno.getCpf());
 
         FichaDeTreinoDTO fichaDeTreinoDTO = new FichaDeTreinoDTO();
-        fichaDeTreinoDTO.setId(fichaDeTreino.get().getId());
+        fichaDeTreinoDTO.setId(fichaDeTreino.getId());
         fichaDeTreinoDTO.setAcademiaAfiliada(academiaDTO);
         fichaDeTreinoDTO.setProfessor(professorDTO);
         fichaDeTreinoDTO.setAluno(alunoDTO);
-        fichaDeTreinoDTO.setExercicio(fichaDeTreino.get().getExercicio());
+        fichaDeTreinoDTO.setExercicio(fichaDeTreino.getExercicio());
 
 
         ResponseFichaDeTreino responseFichaDeTreino = new ResponseFichaDeTreino();

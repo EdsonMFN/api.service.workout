@@ -16,14 +16,14 @@ public class FichaDeTreinoController {
     @Autowired
     private FichaDetreinoService fichaDetreinoService;
 
-    @PostMapping("/{idAcademia}/{idProfessor}/{cpfAluno}")
-    public ResponseEntity<ResponseFichaDeTreino> criarFicha(@PathVariable Long idAcademia, @PathVariable  Long idProfessor, @PathVariable String cpfAluno, @RequestBody RequestFichaDeTreino requestFichaDeTreino){
+    @PostMapping
+    public ResponseEntity<ResponseFichaDeTreino> criarFicha(@RequestBody RequestFichaDeTreino requestFichaDeTreino){
 
-        ResponseFichaDeTreino responseFichaDeTreinoCriar = fichaDetreinoService.criarFicha(idAcademia, idProfessor, cpfAluno, requestFichaDeTreino);
+        ResponseFichaDeTreino responseFichaDeTreinoCriar = fichaDetreinoService.criarFicha(requestFichaDeTreino);
 
         return ResponseEntity.ok(responseFichaDeTreinoCriar);
     }
-    @GetMapping("/cpf/{cpfAluno}")
+    @GetMapping("/aluno/{cpfAluno}")
     public ResponseEntity<List<ResponseFichaDeTreino>> listarFichas(@PathVariable String cpfAluno){
         List<ResponseFichaDeTreino> responseFichaDeTreinos = fichaDetreinoService.listarFichas(cpfAluno);
         return ResponseEntity.ok(responseFichaDeTreinos);
@@ -33,9 +33,9 @@ public class FichaDeTreinoController {
             ResponseFichaDeTreino responseFichaDeTreino = fichaDetreinoService.buscarFicha(idFicha);
         return ResponseEntity.ok(responseFichaDeTreino);
     }
-    @PutMapping("/{idAcademia}/{cpfAluno}/{idProfessor}")
-    public ResponseEntity<ResponseFichaDeTreino> alterarFicha(@PathVariable Long idAcademia,@PathVariable String cpfAluno, @PathVariable Long idProfessor, @RequestBody RequestFichaDeTreino requestFichaDeTreino){
-        ResponseFichaDeTreino responseFichaDeTreino = fichaDetreinoService.alterarFicha(idAcademia,cpfAluno,idProfessor, requestFichaDeTreino);
+    @PutMapping
+    public ResponseEntity<ResponseFichaDeTreino> alterarFicha(@RequestBody RequestFichaDeTreino requestFichaDeTreino){
+        ResponseFichaDeTreino responseFichaDeTreino = fichaDetreinoService.alterarFicha(requestFichaDeTreino);
         return ResponseEntity.ok(responseFichaDeTreino);
     }
     @DeleteMapping("/{idFicha}")

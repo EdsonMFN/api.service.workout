@@ -16,9 +16,9 @@ public class AcademiaController {
     @Autowired
     private AcademiaService academiaService;
 
-    @PostMapping("/endereco/{idEndereco}")
-    public ResponseEntity<ResponseAcademia> criarAcademia(@PathVariable Long idEndereco, @RequestBody RequestAcademia requestAcademia){
-        ResponseAcademia responseAcademiaCriar = academiaService.criarAcademia(idEndereco,requestAcademia);
+    @PostMapping
+    public ResponseEntity<ResponseAcademia> criarAcademia(@RequestBody RequestAcademia requestAcademia){
+        ResponseAcademia responseAcademiaCriar = academiaService.criarAcademia(requestAcademia);
         return ResponseEntity.ok(responseAcademiaCriar);
     }
     @GetMapping
@@ -31,9 +31,9 @@ public class AcademiaController {
             ResponseAcademia responseAcademiaBuscar = academiaService.buscarAcademia(idAcademia);
         return ResponseEntity.ok(responseAcademiaBuscar);
     }
-    @PutMapping("/{idEndereco}")
-    public ResponseEntity<ResponseAcademia> alterarAcademia(@PathVariable Long idEndereco,@RequestBody RequestAcademia requestAcademia) {
-        ResponseAcademia responseAcademiaAlterar = academiaService.alterarAcademia(idEndereco,requestAcademia);
+    @PutMapping
+    public ResponseEntity<ResponseAcademia> alterarAcademia(@RequestBody RequestAcademia requestAcademia) {
+        ResponseAcademia responseAcademiaAlterar = academiaService.alterarAcademia(requestAcademia);
         return ResponseEntity.ok(responseAcademiaAlterar);
     }
     @DeleteMapping("/{idAcademia}")

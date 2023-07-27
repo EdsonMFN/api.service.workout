@@ -16,26 +16,26 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
-    @PostMapping("/{idAcademia}/{idProfessor}")
-    public ResponseEntity<ResponseAluno> criarAluno(@PathVariable Long idAcademia, @PathVariable Long idProfessor,@RequestBody RequestAluno requestAluno){
+    @PostMapping
+    public ResponseEntity<ResponseAluno> criarAluno(@RequestBody RequestAluno requestAluno){
 
-        ResponseAluno responseAlunoCriar = alunoService.criarAluno(idAcademia,idProfessor,requestAluno);
+        ResponseAluno responseAlunoCriar = alunoService.criarAluno(requestAluno);
 
         return ResponseEntity.ok(responseAlunoCriar);
     }
-    @GetMapping("/{idAcademia}")
+    @GetMapping("/academia/{idAcademia}")
     public ResponseEntity<List<ResponseAluno>> listarAlunos(@PathVariable Long idAcademia){
         List<ResponseAluno> responseAlunos = alunoService.listarAlunos(idAcademia);
         return ResponseEntity.ok(responseAlunos);
     }
-    @GetMapping("/aluno/{cpfAluno}")
-    public ResponseEntity<ResponseAluno> listarAlunos(@PathVariable String cpfAluno){
+    @GetMapping("/{cpfAluno}")
+    public ResponseEntity<ResponseAluno> buscarAluno(@PathVariable String cpfAluno){
         ResponseAluno responseAluno = alunoService.buscarAluno(cpfAluno);
         return ResponseEntity.ok(responseAluno);
     }
-    @PutMapping("/{idAcademia}")
-    public ResponseEntity<ResponseAluno> alterarAluno(@PathVariable Long idAcademia,@RequestBody RequestAluno requestAluno){
-        ResponseAluno responseAluno = alunoService.alterarAluno(idAcademia,requestAluno);
+    @PutMapping
+    public ResponseEntity<ResponseAluno> alterarAluno(@RequestBody RequestAluno requestAluno){
+        ResponseAluno responseAluno = alunoService.alterarAluno(requestAluno);
         return ResponseEntity.ok(responseAluno);
     }
     @DeleteMapping("/{idAluno}")

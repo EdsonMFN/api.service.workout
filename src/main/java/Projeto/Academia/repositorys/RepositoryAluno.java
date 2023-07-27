@@ -12,7 +12,6 @@ public interface RepositoryAluno extends JpaRepository<Aluno,Long> {
 
     Optional<Aluno> findByCpf(String cpfAluno);
 
-    List<Aluno> findAllByCpf(String cpfAluno);
 
     List<Aluno> findByAcademiaAfiliada(Academia academiaAfiliada);
 

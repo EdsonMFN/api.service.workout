@@ -1,6 +1,5 @@
 package Projeto.Academia.controller.request;
 
-import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.AlunoDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +13,6 @@ public class RequestPersonal {
     private String nome;
     private String cpf;
     private String cref;
-    private AcademiaDTO academiaDTO;
-    private List<AlunoDTO> alunos;
+    private Long idAcademia;
+    private List<AlunoDTO> cpfAluno;
 }

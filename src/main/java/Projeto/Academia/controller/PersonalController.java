@@ -16,10 +16,10 @@ public class PersonalController {
     @Autowired
     private PersonalService personalService;
 
-    @PostMapping("/{cpfAluno}/{idAcademia}")
-    public ResponseEntity<ResponsePersonal> criarAluno(@PathVariable Long idAcademia, @PathVariable String cpfAluno,@RequestBody RequestPersonal requestPersonal){
+    @PostMapping
+    public ResponseEntity<ResponsePersonal> criarAluno(@RequestBody RequestPersonal requestPersonal){
 
-        ResponsePersonal responsePersonalCriar = personalService.criarPersonal(idAcademia,cpfAluno,requestPersonal);
+        ResponsePersonal responsePersonalCriar = personalService.criarPersonal(requestPersonal);
 
         return ResponseEntity.ok(responsePersonalCriar);
     }
@@ -33,9 +33,9 @@ public class PersonalController {
          ResponsePersonal responsePersonalBuscar = personalService.buscarPersonal(idPersonal);
         return ResponseEntity.ok(responsePersonalBuscar);
     }
-    @PutMapping("/{idAcademia}")
-    public ResponseEntity<ResponsePersonal> alterarPersonal(@PathVariable Long idAcademia,@RequestBody RequestPersonal requestPersonal){
-        ResponsePersonal responsePersonalAlterar = personalService.alterarPersonal(idAcademia,requestPersonal);
+    @PutMapping
+    public ResponseEntity<ResponsePersonal> alterarPersonal(@RequestBody RequestPersonal requestPersonal){
+        ResponsePersonal responsePersonalAlterar = personalService.alterarPersonal(requestPersonal);
         return ResponseEntity.ok(responsePersonalAlterar);
     }
     @DeleteMapping("/{idPersonal}")

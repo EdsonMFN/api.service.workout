@@ -32,30 +32,29 @@ public class PersonalService {
     @Autowired
     private RepositoryEndereco repositoryEndereco;
 
-    public ResponsePersonal criarPersonal(Long idAcademia, String cpfAluno,RequestPersonal requestPersonal){
-        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
-        List<Aluno> alunos = repositoryAluno.findAllByCpf(cpfAluno);
+    public ResponsePersonal criarPersonal(RequestPersonal requestPersonal){
+        Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getIdAcademia());
+        var endereco = academia.getEndereco();
 
         Personal personal = new Personal();
         personal.setNome(requestPersonal.getNome());
         personal.setCpf(requestPersonal.getCpf());
         personal.setCref(requestPersonal.getCref());
-        personal.setAcademiaAfiliada(academia.get());
-        personal.setAluno(alunos);
+        personal.setAcademiaAfiliada(academia);
         repositoryPersonal.save(personal);
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(academia.get().getEndereco().getId());
-        enderecoDTO.setCep(academia.get().getEndereco().getCep());
-        enderecoDTO.setEstado(academia.get().getEndereco().getEstado());
-        enderecoDTO.setCidade(academia.get().getEndereco().getCidade());
-        enderecoDTO.setBairro(academia.get().getEndereco().getBairro());
-        enderecoDTO.setNumero(academia.get().getEndereco().getNumero());
+        enderecoDTO.setId(endereco.getId());
+        enderecoDTO.setCep(endereco.getCep());
+        enderecoDTO.setEstado(endereco.getEstado());
+        enderecoDTO.setCidade(endereco.getCidade());
+        enderecoDTO.setBairro(endereco.getBairro());
+        enderecoDTO.setNumero(endereco.getNumero());
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.get().getId());
-        academiaDTO.setAcademiaAfiliada(academia.get().getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.get().getCnpj());
+        academiaDTO.setId(academia.getId());
+        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.getCnpj());
         academiaDTO.setEndereco(enderecoDTO);
 
         PersonalDTO personalDTO = new PersonalDTO();
@@ -68,38 +67,29 @@ public class PersonalService {
         ResponsePersonal responsePersonal = new ResponsePersonal();
         responsePersonal.setPersonalDTO(personalDTO);
 
-        List<AlunoDTO> alunosDTO = new ArrayList<>();
-
-        for(Aluno aluno : alunos){
-
-            AlunoDTO alunoDTO = new AlunoDTO();
-            alunoDTO.setId(aluno.getId());
-            alunoDTO.setNome(aluno.getNome());
-            alunoDTO.setCpf(aluno.getCpf());
-            alunoDTO.setIdAcademiaAfiliada(academiaDTO);
-
-            personalDTO.setAlunos(alunosDTO);
-            personalDTO.getAlunos().add(alunoDTO);
-        }
         return responsePersonal;
     }
     public List<ResponsePersonal> listarPersonal(Long idAcademia){
-        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
-        List<Personal> personals = repositoryPersonal.findByAcademiaAfiliada(academia.get());
+        Optional<Academia> academiaOptional = repositoryAcademia.findById(idAcademia);
+
+        var academia = academiaOptional.get();
+        var endereco = academia.getEndereco();
+
+        List<Personal> personals = repositoryPersonal.findByAcademiaAfiliada(academia);
         List<ResponsePersonal> responsePersonals = new ArrayList<>();
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(academia.get().getEndereco().getId());
-        enderecoDTO.setCep(academia.get().getEndereco().getCep());
-        enderecoDTO.setEstado(academia.get().getEndereco().getEstado());
-        enderecoDTO.setCidade(academia.get().getEndereco().getCidade());
-        enderecoDTO.setBairro(academia.get().getEndereco().getBairro());
-        enderecoDTO.setNumero(academia.get().getEndereco().getNumero());
+        enderecoDTO.setId(endereco.getId());
+        enderecoDTO.setCep(endereco.getCep());
+        enderecoDTO.setEstado(endereco.getEstado());
+        enderecoDTO.setCidade(endereco.getCidade());
+        enderecoDTO.setBairro(endereco.getBairro());
+        enderecoDTO.setNumero(endereco.getNumero());
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.get().getId());
-        academiaDTO.setAcademiaAfiliada(academia.get().getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.get().getCnpj());
+        academiaDTO.setId(academia.getId());
+        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.getCnpj());
         academiaDTO.setEndereco(enderecoDTO);
 
         for (Personal personal : personals){
@@ -124,23 +114,26 @@ public class PersonalService {
         return responsePersonals;
     }
     public ResponsePersonal buscarPersonal(Long idPersonal){
-        Optional<Personal> personal = repositoryPersonal.findById(idPersonal);
+        Optional<Personal> personalOptional = repositoryPersonal.findById(idPersonal);
         List<Aluno> alunos = repositoryAluno.findAll();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(personal.get().getAcademiaAfiliada().getId());
-        academiaDTO.setAcademiaAfiliada(personal.get().getAcademiaAfiliada().getAcademiaAfiliada());
-        academiaDTO.setCnpj(personal.get().getAcademiaAfiliada().getCnpj());
+        var personal = personalOptional.get();
+        var academia = personal.getAcademiaAfiliada();
 
-        List<AlunoDTO> alunosDTO = new ArrayList<>();
+        AcademiaDTO academiaDTO = new AcademiaDTO();
+        academiaDTO.setId(academia.getId());
+        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
+        academiaDTO.setCnpj(academia.getCnpj());
+
+        List<AlunoDTO> alunoDTOS = new ArrayList<>();
 
         PersonalDTO personalDTO = new PersonalDTO();
-        personalDTO.setId(personal.get().getId());
-        personalDTO.setNome(personal.get().getNome());
-        personalDTO.setCpf(personal.get().getCpf());
-        personalDTO.setCref(personal.get().getCref());
+        personalDTO.setId(personal.getId());
+        personalDTO.setNome(personal.getNome());
+        personalDTO.setCpf(personal.getCpf());
+        personalDTO.setCref(personal.getCref());
         personalDTO.setIdAcademiasAfiliada(academiaDTO);
-        personalDTO.setAlunos(alunosDTO);
+        personalDTO.setAlunos(alunoDTOS);
 
         for(Aluno aluno : alunos){
 
@@ -150,8 +143,11 @@ public class PersonalService {
             alunoDTO.setCpf(aluno.getCpf());
             alunoDTO.setIdAcademiaAfiliada(academiaDTO);
 
-            personalDTO.setAlunos(alunosDTO);
-            personalDTO.getAlunos().add(alunoDTO);
+            if (personal.equals(aluno.getPersonal())){
+                personalDTO.setAlunos(alunoDTOS);
+                personalDTO.getAlunos().add(alunoDTO);
+            }else break;
+
         }
 
 
@@ -160,12 +156,12 @@ public class PersonalService {
 
         return responsePersonal;
     }
-    public ResponsePersonal alterarPersonal(Long idAcademia, RequestPersonal requestPersonal){
+    public ResponsePersonal alterarPersonal(RequestPersonal requestPersonal){
         Personal personal = repositoryPersonal.getReferenceById(requestPersonal.getIdPersonal());
-        Optional<Academia> academia = repositoryAcademia.findById(idAcademia);
+        Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getIdAcademia());
 
         personal.setNome(requestPersonal.getNome());
-        personal.setAcademiaAfiliada(academia.get());
+        personal.setAcademiaAfiliada(academia);
         repositoryPersonal.save(personal);
 
         PersonalDTO personalDTO = new PersonalDTO();
@@ -178,14 +174,17 @@ public class PersonalService {
         return responsePersonal;
     }
     public ResponsePersonal deletarPersoanl(Long idPersonal){
-        Optional<Personal> personal = repositoryPersonal.findById(idPersonal);
-        repositoryPersonal.delete(personal.get());
+        Optional<Personal> personalOptional = repositoryPersonal.findById(idPersonal);
+
+        var personal = personalOptional.get();
+
+        repositoryPersonal.delete(personal);
 
         PersonalDTO personalDTO = new PersonalDTO();
-        personalDTO.setId(personal.get().getId());
-        personalDTO.setNome(personal.get().getNome());
-        personalDTO.setCpf(personal.get().getCpf());
-        personalDTO.setCref(personal.get().getCref());
+        personalDTO.setId(personal.getId());
+        personalDTO.setNome(personal.getNome());
+        personalDTO.setCpf(personal.getCpf());
+        personalDTO.setCref(personal.getCref());
 
         ResponsePersonal responsePersonal = new ResponsePersonal();
         responsePersonal.setPersonalDTO(personalDTO);
