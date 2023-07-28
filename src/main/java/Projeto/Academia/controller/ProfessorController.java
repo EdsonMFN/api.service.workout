@@ -26,9 +26,7 @@ public class ProfessorController {
 
     @PostMapping
     public ResponseEntity<ResponseProfessor> criarProfessor(@RequestBody RequestProfessor requestProfessor){
-
         ResponseProfessor responseProfessor = professorService.criarProfessor(requestProfessor);
-
         return ResponseEntity.ok(responseProfessor);
     }
     @GetMapping("/academia/{idAcademia}")
@@ -49,9 +47,7 @@ public class ProfessorController {
 
     @DeleteMapping("/{idProfessor}")
     public ResponseEntity<ResponseProfessor> deletarProfessor(@PathVariable Long idProfessor){
-
         ResponseProfessor responseProfessor = professorService.deletarProfessor(idProfessor);
-
         return ResponseEntity.ok(responseProfessor);
     }
 }

@@ -9,6 +9,7 @@ import Projeto.Academia.controller.request.RequestAcademia;
 import Projeto.Academia.controller.response.ResponseAcademia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,10 +91,10 @@ public class AcademiaService {
         return responseAcademias;
     }
     public ResponseAcademia buscarAcademia(Long idAcademia){
-        Optional<Academia> academiaOptional = repositoryAcademia.findById(idAcademia);
+        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+                .orElseThrow(() ->new RuntimeException("academia não encontrada."));
 
-        var endereco = academiaOptional.get().getEndereco();
-        var academia = academiaOptional.get();
+        var endereco = academia.getEndereco();
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
         enderecoDTO.setId(endereco.getId());

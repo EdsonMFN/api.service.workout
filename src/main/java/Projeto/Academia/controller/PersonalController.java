@@ -17,7 +17,7 @@ public class PersonalController {
     private PersonalService personalService;
 
     @PostMapping
-    public ResponseEntity<ResponsePersonal> criarAluno(@RequestBody RequestPersonal requestPersonal){
+    public ResponseEntity<ResponsePersonal> criarPersonal(@RequestBody RequestPersonal requestPersonal){
 
         ResponsePersonal responsePersonalCriar = personalService.criarPersonal(requestPersonal);
 
