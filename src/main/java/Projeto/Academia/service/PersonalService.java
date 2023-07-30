@@ -1,5 +1,6 @@
 package Projeto.Academia.service;
 
+import Projeto.Academia.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.AlunoDTO;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
@@ -70,9 +71,9 @@ public class PersonalService {
         return responsePersonal;
     }
     public List<ResponsePersonal> listarPersonal(Long idAcademia){
-        Optional<Academia> academiaOptional = repositoryAcademia.findById(idAcademia);
+        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+                .orElseThrow(() -> new ErrorException("academia não encontrada."));
 
-        var academia = academiaOptional.get();
         var endereco = academia.getEndereco();
 
         List<Personal> personals = repositoryPersonal.findByAcademiaAfiliada(academia);
@@ -114,10 +115,11 @@ public class PersonalService {
         return responsePersonals;
     }
     public ResponsePersonal buscarPersonal(Long idPersonal){
-        Optional<Personal> personalOptional = repositoryPersonal.findById(idPersonal);
+        Personal personal = repositoryPersonal.findById(idPersonal).map(p -> p)
+                .orElseThrow(() -> new ErrorException("personal não encontrado."));
+
         List<Aluno> alunos = repositoryAluno.findAll();
 
-        var personal = personalOptional.get();
         var academia = personal.getAcademiaAfiliada();
 
         AcademiaDTO academiaDTO = new AcademiaDTO();
@@ -174,9 +176,8 @@ public class PersonalService {
         return responsePersonal;
     }
     public ResponsePersonal deletarPersoanl(Long idPersonal){
-        Optional<Personal> personalOptional = repositoryPersonal.findById(idPersonal);
-
-        var personal = personalOptional.get();
+        Personal personal = repositoryPersonal.findById(idPersonal).map(p -> p)
+                .orElseThrow(() -> new ErrorException("personal não encontrado."));
 
         repositoryPersonal.delete(personal);
 

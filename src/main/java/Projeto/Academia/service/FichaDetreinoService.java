@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import Projeto.Academia.exception.ErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +44,11 @@ public class FichaDetreinoService {
     public ResponseFichaDeTreino criarFicha(RequestFichaDeTreino requestFichaDeTreino){
         Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
         Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
-        Optional<Aluno> alunoOptional = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno());
+
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno()).map(a -> a)
+                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
         var endereco = academia.getEndereco();
-        var aluno = alunoOptional.get();
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
         enderecoDTO.setId(endereco.getId());
@@ -96,9 +98,9 @@ public class FichaDetreinoService {
         return responseFichaDeTreino;
     }
     public List<ResponseFichaDeTreino> listarFichas(String cpfAluno){
-        Optional<Aluno> alunoOptional = repositoryAluno.findByCpf(cpfAluno);
+        Aluno aluno = repositoryAluno.findByCpf(cpfAluno).map(a -> a)
+                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
-        var aluno = alunoOptional.get();
         var professor = aluno.getProfessor();
         var academiaAfiliada = aluno.getAcademiaAfiliada();
 
@@ -141,9 +143,9 @@ public class FichaDetreinoService {
         return responseFichaDeTreinos;
     }
     public ResponseFichaDeTreino buscarFicha(Long idFicha){
-        Optional<FichaDeTreino> fichaDeTreinoOptional = repositoryFichaDeTreino.findById(idFicha);
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha).map(f -> f)
+                .orElseThrow(() -> new ErrorException("Ficha não encontrada."));
 
-        var fichaDeTreino = fichaDeTreinoOptional.get();
         var academiaAfiliada = fichaDeTreino.getAcademiaAfiliada();
         var aluno = fichaDeTreino.getAluno();
 
@@ -178,13 +180,14 @@ public class FichaDetreinoService {
     public ResponseFichaDeTreino alterarFicha (RequestFichaDeTreino requestFichaDeTreino){
         Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
         Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
-        Optional<Aluno> alunoOptional = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno());
+
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno()).map(a -> a)
+                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
+
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getIdFicha());
 
-        var aluno = fichaDeTreino.getAluno();
-
         fichaDeTreino.setExercicio(requestFichaDeTreino.getExercicio());
-        fichaDeTreino.setAluno(alunoOptional.get());
+        fichaDeTreino.setAluno(aluno);
         fichaDeTreino.setProfessor(professor);
         fichaDeTreino.setAcademiaAfiliada(academia);
         repositoryFichaDeTreino.save(fichaDeTreino);
@@ -218,9 +221,9 @@ public class FichaDetreinoService {
         return responseFichaDeTreino;
     }
     public ResponseFichaDeTreino deletarFicha(Long idFicha){
-        Optional<FichaDeTreino> fichaDeTreinoOptional = repositoryFichaDeTreino.findById(idFicha);
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha).map(f -> f)
+                .orElseThrow(() -> new ErrorException("Ficha não encontrada."));
 
-        var fichaDeTreino = fichaDeTreinoOptional.get();
         var academiaAfiliada = fichaDeTreino.getAcademiaAfiliada();
         var aluno = fichaDeTreino.getAluno();
         var professor = fichaDeTreino.getProfessor();

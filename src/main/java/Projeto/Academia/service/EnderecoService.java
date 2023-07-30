@@ -1,5 +1,6 @@
 package Projeto.Academia.service;
 
+import Projeto.Academia.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
 import Projeto.Academia.entitys.endereco.Endereco;
 import Projeto.Academia.repositorys.RepositoryAcademia;
@@ -66,9 +67,9 @@ public class EnderecoService {
         return responseEnderecos;
     }
     public ResponseEndereco buscarEndereco(Long idEndereco){
-        Optional<Endereco> enderecoOptional = repositoryEndereco.findById(idEndereco);
+        Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
+                .orElseThrow(() -> new ErrorException("endereço não encontrado."));
 
-        var endereco = enderecoOptional.get();
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
         enderecoDTO.setId(endereco.getId());
@@ -107,9 +108,8 @@ public class EnderecoService {
         return responseEndereco;
     }
     public ResponseEndereco deletarEndereco(Long idEndereco){
-        Optional<Endereco> enderecoOptional = repositoryEndereco.findById(idEndereco);
-
-        var endereco = enderecoOptional.get();
+        Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
+                .orElseThrow(() -> new ErrorException("endereço não encontrado."));
 
         repositoryEndereco.delete(endereco);
 

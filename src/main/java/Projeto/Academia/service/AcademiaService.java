@@ -1,5 +1,6 @@
 package Projeto.Academia.service;
 
+import Projeto.Academia.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
 import Projeto.Academia.entitys.academia.Academia;
@@ -92,7 +93,7 @@ public class AcademiaService {
     }
     public ResponseAcademia buscarAcademia(Long idAcademia){
         Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
-                .orElseThrow(() ->new RuntimeException("academia não encontrada."));
+                .orElseThrow(() -> new ErrorException("academia não encontrada."));
 
         var endereco = academia.getEndereco();
 
@@ -144,8 +145,9 @@ public class AcademiaService {
         return responseAcademia;
     }
     public ResponseAcademia deletarAcademia(Long idAcademia){
-        Optional<Academia> academiaOptional = repositoryAcademia.findById(idAcademia);
-        var academia = academiaOptional.get();
+        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+                .orElseThrow(() -> new ErrorException("academia não encontrada."));
+
         var endereco = academia.getEndereco();
 
         repositoryAcademia.delete(academia);

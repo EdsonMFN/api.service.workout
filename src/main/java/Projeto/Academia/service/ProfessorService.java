@@ -2,8 +2,8 @@ package Projeto.Academia.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import Projeto.Academia.exception.ErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,9 +70,8 @@ public class ProfessorService {
         return responseProfessor;
     }
     public List<ResponseProfessor> listarProfessor(Long idAcademia){
-        Optional<Academia> academiaOptional= repositoryAcademia.findById(idAcademia);
+        Academia academia= repositoryAcademia.findById(idAcademia).orElseThrow(()-> new NullPointerException("Academia não encontrada"));
 
-        var academia = academiaOptional.get();
         var endereco = academia.getEndereco();
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
@@ -112,9 +111,9 @@ public class ProfessorService {
         return responseProfessores;
     }
     public ResponseProfessor buscarProfessor(Long idProfessor){
-        Optional<Professor> professorOptional = repositoryProfessor.findById(idProfessor);
+        Professor professor = repositoryProfessor.findById(idProfessor).map(p->p)
+                .orElseThrow(()-> new ErrorException("professor não encontrado"));
 
-        var professor = professorOptional.get();
         var academiaAfiliada = professor.getAcademiaAfiliada();
         var endereco = professor.getAcademiaAfiliada().getEndereco();
 
@@ -174,10 +173,11 @@ public class ProfessorService {
         return responseProfessor;
     }
     public ResponseProfessor deletarProfessor(Long idProfessor){
-        Optional<Professor> professorOptional = repositoryProfessor.findById(idProfessor);
+        Professor professor = repositoryProfessor.findById(idProfessor).map(p->p)
+                .orElseThrow(()-> new ErrorException("professor não encontrado"));
+
         repositoryProfessor.deleteById(idProfessor);
 
-        var professor = professorOptional.get();
         var academiaAfiliada = professor.getAcademiaAfiliada();
         var endereco = professor.getAcademiaAfiliada().getEndereco();
 

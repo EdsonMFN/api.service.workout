@@ -1,6 +1,7 @@
 package Projeto.Academia.service;
 
 import Projeto.Academia.entitys.personal.Personal;
+import Projeto.Academia.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.*;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.aluno.Aluno;
@@ -78,9 +79,9 @@ public class AlunoService {
 
     }
     public List<ResponseAluno> listarAlunos(Long idAcademia){
-        Optional<Academia> academiaOptional = repositoryAcademia.findById(idAcademia);
+        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+                .orElseThrow(() -> new ErrorException("academia não encontrada."));
 
-        var academia = academiaOptional.get();
         var endereco = academia.getEndereco();
 
         List<Aluno> alunos = repositoryAluno.findByAcademiaAfiliada(academia);
@@ -128,9 +129,9 @@ public class AlunoService {
         return responseAlunos;
     }
     public ResponseAluno buscarAluno(String cpfAluno){
-        Optional<Aluno> alunoOptional = repositoryAluno.findByCpf(cpfAluno);
+        Aluno aluno = repositoryAluno.findByCpf(cpfAluno).map(a -> a)
+                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
-        var aluno = alunoOptional.get();
         var academia = aluno.getAcademiaAfiliada();
         var professor = aluno.getProfessor();
 
@@ -158,12 +159,12 @@ public class AlunoService {
         return responseAluno;
     }
     public ResponseAluno alterarAluno(RequestAluno requestAluno) {
-        Optional<Aluno> alunoOptional = repositoryAluno.getReferenceByCpf(requestAluno.getCpf());
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestAluno.getCpf()).map(a -> a)
+                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
+
         Academia academia = repositoryAcademia.getReferenceById(requestAluno.getIdAcademia());
         Personal personal = repositoryPersonal.getReferenceById(requestAluno.getIdPersonal());
         Professor professor = repositoryProfessor.getReferenceById(requestAluno.getIdPersonal());
-
-        var aluno = alunoOptional.get();
 
         aluno.setNome(requestAluno.getNome());
         aluno.setAcademiaAfiliada(academia);
@@ -202,11 +203,10 @@ public class AlunoService {
         return responseAluno;
     }
     public ResponseAluno deletarAluno(Long idAluno){
-        Optional<Aluno> alunoOptional = repositoryAluno.findById(idAluno);
-        var aluno = alunoOptional.get();
+        Aluno aluno = repositoryAluno.findById(idAluno).map(a -> a)
+                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
         repositoryAluno.delete(aluno);
-
 
         AlunoDTO alunoDTO = new AlunoDTO();
         alunoDTO.setId(aluno.getId());
