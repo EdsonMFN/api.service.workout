@@ -1,18 +1,18 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.service.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
 import Projeto.Academia.entitys.endereco.Endereco;
 import Projeto.Academia.repositorys.RepositoryAcademia;
 import Projeto.Academia.repositorys.RepositoryEndereco;
 import Projeto.Academia.controller.request.RequestEndereco;
 import Projeto.Academia.controller.response.ResponseEndereco;
+import Projeto.Academia.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EnderecoService {
@@ -68,7 +68,7 @@ public class EnderecoService {
     }
     public ResponseEndereco buscarEndereco(Long idEndereco){
         Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
-                .orElseThrow(() -> new ErrorException("endereço não encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("endereço com o ID "+idEndereco+" não encontrado."));
 
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();

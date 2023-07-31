@@ -1,7 +1,7 @@
 package Projeto.Academia.service;
 
 import Projeto.Academia.entitys.personal.Personal;
-import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.service.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.*;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.aluno.Aluno;
@@ -9,12 +9,12 @@ import Projeto.Academia.entitys.professor.Professor;
 import Projeto.Academia.repositorys.*;
 import Projeto.Academia.controller.request.RequestAluno;
 import Projeto.Academia.controller.response.ResponseAluno;
+import Projeto.Academia.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AlunoService {
@@ -80,7 +80,7 @@ public class AlunoService {
     }
     public List<ResponseAluno> listarAlunos(Long idAcademia){
         Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
-                .orElseThrow(() -> new ErrorException("academia não encontrada."));
+                .orElseThrow(() -> new ObjectNotFoundException("academia com o ID:" + idAcademia + " não encontrada."));
 
         var endereco = academia.getEndereco();
 
@@ -130,7 +130,7 @@ public class AlunoService {
     }
     public ResponseAluno buscarAluno(String cpfAluno){
         Aluno aluno = repositoryAluno.findByCpf(cpfAluno).map(a -> a)
-                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + cpfAluno + " não encontrado."));
 
         var academia = aluno.getAcademiaAfiliada();
         var professor = aluno.getProfessor();
@@ -160,7 +160,7 @@ public class AlunoService {
     }
     public ResponseAluno alterarAluno(RequestAluno requestAluno) {
         Aluno aluno = repositoryAluno.getReferenceByCpf(requestAluno.getCpf()).map(a -> a)
-                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestAluno.getCpf() + " não encontrado."));
 
         Academia academia = repositoryAcademia.getReferenceById(requestAluno.getIdAcademia());
         Personal personal = repositoryPersonal.getReferenceById(requestAluno.getIdPersonal());

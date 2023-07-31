@@ -2,9 +2,9 @@ package Projeto.Academia.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.service.exception.ErrorException;
+import Projeto.Academia.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -144,7 +144,7 @@ public class FichaDetreinoService {
     }
     public ResponseFichaDeTreino buscarFicha(Long idFicha){
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha).map(f -> f)
-                .orElseThrow(() -> new ErrorException("Ficha não encontrada."));
+                .orElseThrow(() -> new ObjectNotFoundException("Ficha com o ID"+idFicha+" não encontrada."));
 
         var academiaAfiliada = fichaDeTreino.getAcademiaAfiliada();
         var aluno = fichaDeTreino.getAluno();
@@ -182,7 +182,7 @@ public class FichaDetreinoService {
         Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
 
         Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno()).map(a -> a)
-                .orElseThrow(() -> new ErrorException("aluno não encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestFichaDeTreino.getCpfAluno() + " não encontrado."));
 
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getIdFicha());
 

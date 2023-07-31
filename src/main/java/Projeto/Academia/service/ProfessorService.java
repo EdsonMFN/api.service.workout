@@ -3,7 +3,8 @@ package Projeto.Academia.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.service.exception.ErrorException;
+import Projeto.Academia.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +71,8 @@ public class ProfessorService {
         return responseProfessor;
     }
     public List<ResponseProfessor> listarProfessor(Long idAcademia){
-        Academia academia= repositoryAcademia.findById(idAcademia).orElseThrow(()-> new NullPointerException("Academia não encontrada"));
+        Academia academia= repositoryAcademia.findById(idAcademia)
+                .orElseThrow(()-> new ObjectNotFoundException("academia com o ID: " + idAcademia + " não encontrada."));
 
         var endereco = academia.getEndereco();
 

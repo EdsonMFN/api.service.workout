@@ -1,6 +1,6 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.service.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.AlunoDTO;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
@@ -11,12 +11,12 @@ import Projeto.Academia.entitys.personal.Personal;
 import Projeto.Academia.repositorys.*;
 import Projeto.Academia.controller.request.RequestPersonal;
 import Projeto.Academia.controller.response.ResponsePersonal;
+import Projeto.Academia.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonalService {
@@ -116,7 +116,7 @@ public class PersonalService {
     }
     public ResponsePersonal buscarPersonal(Long idPersonal){
         Personal personal = repositoryPersonal.findById(idPersonal).map(p -> p)
-                .orElseThrow(() -> new ErrorException("personal não encontrado."));
+                .orElseThrow(() -> new ObjectNotFoundException("personal com o ID "+idPersonal+ " não encontrado."));
 
         List<Aluno> alunos = repositoryAluno.findAll();
 

@@ -1,6 +1,6 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.service.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
 import Projeto.Academia.entitys.academia.Academia;
@@ -8,13 +8,12 @@ import Projeto.Academia.entitys.endereco.Endereco;
 import Projeto.Academia.repositorys.*;
 import Projeto.Academia.controller.request.RequestAcademia;
 import Projeto.Academia.controller.response.ResponseAcademia;
+import Projeto.Academia.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.ErrorResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AcademiaService {
@@ -93,7 +92,7 @@ public class AcademiaService {
     }
     public ResponseAcademia buscarAcademia(Long idAcademia){
         Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
-                .orElseThrow(() -> new ErrorException("academia não encontrada."));
+                .orElseThrow(() -> new ObjectNotFoundException("academia com o ID: " + idAcademia + " não encontrada."));
 
         var endereco = academia.getEndereco();
 
