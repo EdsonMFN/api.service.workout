@@ -1,5 +1,6 @@
 package Projeto.Academia.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
@@ -9,8 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ResponseError {
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
+
     private String message;
     private String error;
     private HttpStatus status;
@@ -19,7 +21,7 @@ public class ResponseError {
         timestamp = LocalDateTime.now();
     }
 
-    public ResponseError(HttpStatus status, String message, String error) {
+    public ResponseError(HttpStatus status,  String error,String message) {
         this();
         this.status = status;
         this.error = error;

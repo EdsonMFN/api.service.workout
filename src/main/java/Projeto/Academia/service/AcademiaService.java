@@ -1,5 +1,7 @@
 package Projeto.Academia.service;
 
+import Projeto.Academia.builder.AcademiaDtoBuild;
+import Projeto.Academia.service.exception.DataBindingViolationException;
 import Projeto.Academia.service.exception.ErrorException;
 import Projeto.Academia.repositorys.DTO.AcademiaDTO;
 import Projeto.Academia.repositorys.DTO.EnderecoDTO;
@@ -145,11 +147,14 @@ public class AcademiaService {
     }
     public ResponseAcademia deletarAcademia(Long idAcademia){
         Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
-                .orElseThrow(() -> new ErrorException("academia não encontrada."));
+                .orElseThrow(() -> new DataBindingViolationException("academia" + idAcademia +"não pode ser deletado por conflito com entidades"));
 
         var endereco = academia.getEndereco();
-
-        repositoryAcademia.delete(academia);
+        try {
+            repositoryAcademia.delete(academia);
+        }catch (Exception e){
+            throw new DataBindingViolationException("academia não pode ser deletado por conflito com entidades");
+        }
 
 
         EnderecoDTO enderecoDTO = new EnderecoDTO();
