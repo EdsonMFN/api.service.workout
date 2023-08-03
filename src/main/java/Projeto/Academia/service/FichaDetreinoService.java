@@ -3,8 +3,8 @@ package Projeto.Academia.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import Projeto.Academia.service.exception.ErrorException;
-import Projeto.Academia.service.exception.ObjectNotFoundException;
+import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +20,8 @@ import Projeto.Academia.repositorys.RepositoryEndereco;
 import Projeto.Academia.repositorys.RepositoryFichaDeTreino;
 import Projeto.Academia.repositorys.RepositoryPersonal;
 import Projeto.Academia.repositorys.RepositoryProfessor;
-import Projeto.Academia.repositorys.DTO.AcademiaDTO;
-import Projeto.Academia.repositorys.DTO.AlunoDTO;
-import Projeto.Academia.repositorys.DTO.EnderecoDTO;
-import Projeto.Academia.repositorys.DTO.FichaDeTreinoDTO;
-import Projeto.Academia.repositorys.DTO.ProfessorDTO;
+import Projeto.Academia.controller.DTO.*;
+
 
 @Service
 public class FichaDetreinoService {

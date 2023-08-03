@@ -19,4 +19,6 @@ public class AcademiaDTO {
     private List<ProfessorDTO> professores;
     private List<PersonalDTO> personals;
     private List<FichaDeTreinoDTO> fichaDeTreinos;
+
+
 }

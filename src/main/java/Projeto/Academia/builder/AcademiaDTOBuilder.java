@@ -1,14 +1,10 @@
 package Projeto.Academia.builder;
 
 import Projeto.Academia.controller.DTO.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
-@Getter
-@Setter
-public class AcademiaDtoBuild {
 
+public final class AcademiaDTOBuilder {
     private Long id;
     private String academiaAfiliada;
     private EnderecoDTO endereco;
@@ -18,40 +14,54 @@ public class AcademiaDtoBuild {
     private List<PersonalDTO> personals;
     private List<FichaDeTreinoDTO> fichaDeTreinos;
 
-    public static AcademiaDtoBuild academiaDtoBuild(){
-        return new AcademiaDtoBuild();
+    private AcademiaDTOBuilder() {
     }
 
-    public AcademiaDtoBuild id(Long id) {
+    public static AcademiaDTOBuilder academiaDTOBuilder() {
+        return new AcademiaDTOBuilder();
+    }
+
+    public AcademiaDTOBuilder id(Long id) {
         this.id = id;
         return this;
     }
-    public AcademiaDtoBuild academiaAfiliada(String academiaAfiliada) {
+
+    public AcademiaDTOBuilder academiaAfiliada(String academiaAfiliada) {
         this.academiaAfiliada = academiaAfiliada;
         return this;
     }
-    public AcademiaDtoBuild endereco(EnderecoDTO endereco) {
+
+    public AcademiaDTOBuilder endereco(EnderecoDTO endereco) {
         this.endereco = endereco;
         return this;
     }
-    public AcademiaDtoBuild cnpj(String cnpj) {
+
+    public AcademiaDTOBuilder cnpj(String cnpj) {
         this.cnpj = cnpj;
         return this;
     }
-    public AcademiaDtoBuild alunos(List<AlunoDTO> alunos) {
+
+    public AcademiaDTOBuilder alunos(List<AlunoDTO> alunos) {
         this.alunos = alunos;
         return this;
-    }public AcademiaDtoBuild professores(List<ProfessorDTO> professores) {
+    }
+
+    public AcademiaDTOBuilder professores(List<ProfessorDTO> professores) {
         this.professores = professores;
         return this;
-    }public AcademiaDtoBuild personals(List<PersonalDTO> personals) {
+    }
+
+    public AcademiaDTOBuilder personals(List<PersonalDTO> personals) {
         this.personals = personals;
         return this;
-    }public AcademiaDtoBuild fichaDeTreinos(List<FichaDeTreinoDTO> fichaDeTreinos) {
+    }
+
+    public AcademiaDTOBuilder fichaDeTreinos(List<FichaDeTreinoDTO> fichaDeTreinos) {
         this.fichaDeTreinos = fichaDeTreinos;
         return this;
     }
-    public AcademiaDTO build(){
+
+    public AcademiaDTO build() {
         AcademiaDTO academiaDTO = new AcademiaDTO();
         academiaDTO.setId(id);
         academiaDTO.setAcademiaAfiliada(academiaAfiliada);
@@ -63,5 +73,4 @@ public class AcademiaDtoBuild {
         academiaDTO.setFichaDeTreinos(fichaDeTreinos);
         return academiaDTO;
     }
-
 }

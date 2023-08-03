@@ -1,11 +1,12 @@
 package Projeto.Academia.controller.DTO;
 
-import jakarta.persistence.Column;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class EnderecoDTO {
 
     private Long id;

@@ -13,7 +13,7 @@ public class ResponseError {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
 
-    private String message;
+    private Throwable message;
     private String error;
     private HttpStatus status;
 
@@ -21,7 +21,7 @@ public class ResponseError {
         timestamp = LocalDateTime.now();
     }
 
-    public ResponseError(HttpStatus status,  String error,String message) {
+    public ResponseError(HttpStatus status,  String error,Throwable message) {
         this();
         this.status = status;
         this.error = error;

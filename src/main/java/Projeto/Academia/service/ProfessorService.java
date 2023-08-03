@@ -3,11 +3,13 @@ package Projeto.Academia.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import Projeto.Academia.service.exception.ErrorException;
-import Projeto.Academia.service.exception.ObjectNotFoundException;
+import Projeto.Academia.controller.DTO.AcademiaDTO;
+import Projeto.Academia.controller.DTO.EnderecoDTO;
+import Projeto.Academia.controller.DTO.ProfessorDTO;
+import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import Projeto.Academia.controller.request.RequestProfessor;
 import Projeto.Academia.controller.response.ResponseProfessor;
 import Projeto.Academia.entitys.academia.Academia;
@@ -16,9 +18,6 @@ import Projeto.Academia.repositorys.RepositoryAcademia;
 import Projeto.Academia.repositorys.RepositoryAluno;
 import Projeto.Academia.repositorys.RepositoryFichaDeTreino;
 import Projeto.Academia.repositorys.RepositoryProfessor;
-import Projeto.Academia.repositorys.DTO.AcademiaDTO;
-import Projeto.Academia.repositorys.DTO.EnderecoDTO;
-import Projeto.Academia.repositorys.DTO.ProfessorDTO;
 
 @Service
 public class ProfessorService {

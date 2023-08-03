@@ -1,17 +1,16 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.service.exception.ErrorException;
-import Projeto.Academia.repositorys.DTO.AcademiaDTO;
-import Projeto.Academia.repositorys.DTO.AlunoDTO;
-import Projeto.Academia.repositorys.DTO.EnderecoDTO;
-import Projeto.Academia.repositorys.DTO.PersonalDTO;
+import Projeto.Academia.controller.DTO.EnderecoDTO;
+import Projeto.Academia.controller.DTO.PersonalDTO;
+import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.controller.DTO.*;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.aluno.Aluno;
 import Projeto.Academia.entitys.personal.Personal;
 import Projeto.Academia.repositorys.*;
 import Projeto.Academia.controller.request.RequestPersonal;
 import Projeto.Academia.controller.response.ResponsePersonal;
-import Projeto.Academia.service.exception.ObjectNotFoundException;
+import Projeto.Academia.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

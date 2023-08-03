@@ -1,4 +1,4 @@
-package Projeto.Academia.service.exception;
+package Projeto.Academia.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 

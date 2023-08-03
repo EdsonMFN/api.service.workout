@@ -1,16 +1,15 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.builder.AcademiaDtoBuild;
-import Projeto.Academia.service.exception.DataBindingViolationException;
-import Projeto.Academia.service.exception.ErrorException;
-import Projeto.Academia.repositorys.DTO.AcademiaDTO;
-import Projeto.Academia.repositorys.DTO.EnderecoDTO;
-import Projeto.Academia.entitys.academia.Academia;
-import Projeto.Academia.entitys.endereco.Endereco;
-import Projeto.Academia.repositorys.*;
+import Projeto.Academia.builder.AcademiaDTOBuilder;
+import Projeto.Academia.controller.DTO.AcademiaDTO;
+import Projeto.Academia.controller.DTO.EnderecoDTO;
 import Projeto.Academia.controller.request.RequestAcademia;
 import Projeto.Academia.controller.response.ResponseAcademia;
-import Projeto.Academia.service.exception.ObjectNotFoundException;
+import Projeto.Academia.entitys.academia.Academia;
+import Projeto.Academia.entitys.endereco.Endereco;
+import Projeto.Academia.exception.DataBindingViolationException;
+import Projeto.Academia.exception.ObjectNotFoundException;
+import Projeto.Academia.repositorys.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,51 +40,50 @@ public class AcademiaService {
         academia.setEndereco(endereco);
         repositoryAcademia.save(academia);
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.getId());
-        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
-
-        ResponseAcademia responseAcademia = new ResponseAcademia();
-        responseAcademia.setAcademiaDTO(academiaDTO);
-
-        return responseAcademia;
+        return new ResponseAcademia(AcademiaDTOBuilder.academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build());
     }
     public List<ResponseAcademia> listarAcademia(){
 
         List<Academia> academias = repositoryAcademia.findAll();
         List<ResponseAcademia> responseAcademias = new ArrayList<>();
 
-
         for (Academia academia : academias){
 
             var endereco = academia.getEndereco();
 
-            EnderecoDTO enderecoDTO = new EnderecoDTO();
-            enderecoDTO.setId(endereco.getId());
-            enderecoDTO.setCep(endereco.getCep());
-            enderecoDTO.setEstado(endereco.getEstado());
-            enderecoDTO.setCidade(endereco.getCidade());
-            enderecoDTO.setBairro(endereco.getBairro());
-            enderecoDTO.setNumero(endereco.getNumero());
+            EnderecoDTO enderecoDTO = EnderecoDTO
+                    .builder()
+                    .id(endereco.getId())
+                    .cep(endereco.getCep())
+                    .estado(endereco.getEstado())
+                    .bairro(endereco.getBairro())
+                    .cidade(endereco.getCidade())
+                    .numero(endereco.getNumero())
+                    .build();
 
-            AcademiaDTO academiaDTO = new AcademiaDTO();
-            academiaDTO.setId(academia.getId());
-            academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-            academiaDTO.setCnpj(academia.getCnpj());
-            academiaDTO.setEndereco(enderecoDTO);
 
-            ResponseAcademia responseAcademia = new ResponseAcademia();
-            responseAcademia.setAcademiaDTO(academiaDTO);
+            ResponseAcademia responseAcademia = new ResponseAcademia(AcademiaDTOBuilder
+                    .academiaDTOBuilder()
+                    .id(academia.getId())
+                    .academiaAfiliada(academia.getAcademiaAfiliada())
+                    .cnpj(academia.getCnpj())
+                    .endereco(enderecoDTO)
+                    .build());
 
             responseAcademias.add(responseAcademia);
         }
@@ -98,24 +96,23 @@ public class AcademiaService {
 
         var endereco = academia.getEndereco();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.getId());
-        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
-
-        ResponseAcademia responseAcademia = new ResponseAcademia();
-        responseAcademia.setAcademiaDTO(academiaDTO);
-
-        return responseAcademia;
+        return new ResponseAcademia(AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build());
     }
     public ResponseAcademia alterarAcademia(RequestAcademia requestAcademia){
         Academia academia = repositoryAcademia.getReferenceById(requestAcademia.getIdAcademia());
@@ -126,54 +123,50 @@ public class AcademiaService {
         academia.setEndereco(endereco);
         repositoryAcademia.save(academia);
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.getId());
-        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
-
-        ResponseAcademia responseAcademia = new ResponseAcademia();
-        responseAcademia.setAcademiaDTO(academiaDTO);
-
-        return responseAcademia;
+        return new ResponseAcademia(AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build());
     }
     public ResponseAcademia deletarAcademia(Long idAcademia){
         Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
                 .orElseThrow(() -> new DataBindingViolationException("academia" + idAcademia +"não pode ser deletado por conflito com entidades"));
-
-        var endereco = academia.getEndereco();
         try {
             repositoryAcademia.delete(academia);
         }catch (Exception e){
-            throw new DataBindingViolationException("academia não pode ser deletado por conflito com entidades");
+            throw new DataBindingViolationException("academia não pode ser deletado por  com entidades");
         }
+        var endereco = academia.getEndereco();
 
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
-
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.getId());
-        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
-
-        ResponseAcademia responseAcademia = new ResponseAcademia();
-        responseAcademia.setAcademiaDTO(academiaDTO);
-
-        return responseAcademia;
+        return new ResponseAcademia(AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build());
     }
 }

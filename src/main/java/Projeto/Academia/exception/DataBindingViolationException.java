@@ -1,4 +1,4 @@
-package Projeto.Academia.service.exception;
+package Projeto.Academia.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

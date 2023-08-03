@@ -1,13 +1,13 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.service.exception.ErrorException;
-import Projeto.Academia.repositorys.DTO.EnderecoDTO;
+import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.controller.DTO.EnderecoDTO;
 import Projeto.Academia.entitys.endereco.Endereco;
 import Projeto.Academia.repositorys.RepositoryAcademia;
 import Projeto.Academia.repositorys.RepositoryEndereco;
 import Projeto.Academia.controller.request.RequestEndereco;
 import Projeto.Academia.controller.response.ResponseEndereco;
-import Projeto.Academia.service.exception.ObjectNotFoundException;
+import Projeto.Academia.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
