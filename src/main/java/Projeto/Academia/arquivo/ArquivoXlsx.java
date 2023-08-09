@@ -10,12 +10,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArquivoXlsx {
 
-    public void criarPlanilha(final String nomeArquivo, final List<InscricaoAluno> inscricaoAlunos) {
+    public void criarArquivoXlsx(final String nomeArquivo, final List<InscricaoAluno> inscricaoAlunos) {
 
         try (var workbook = new XSSFWorkbook();
              var outputStream = new FileOutputStream(nomeArquivo)) {
@@ -54,7 +56,7 @@ public class ArquivoXlsx {
         cell.setCellValue(valor);
     }
 
-    public List<InscricaoAluno> lerArquivo(final String nomeArquivo){
+    public List<InscricaoAluno> lerArquivoXlsx(final String nomeArquivo){
             List<InscricaoAluno> inscricaoAlunos = new ArrayList<>();
         try(FileInputStream arquivoDeEntrada = new FileInputStream(nomeArquivo)) {
             XSSFWorkbook pasta = new XSSFWorkbook(arquivoDeEntrada);
@@ -81,7 +83,7 @@ public class ArquivoXlsx {
         return inscricaoAlunos;
     }
 
-    public void atualizarArquivo(final String nomeArquivo){
+    public void atualizarArquivoXlsx(final String nomeArquivo){
 
         try (FileInputStream arquivoDeEntrada = new FileInputStream(nomeArquivo);
              XSSFWorkbook pasta = new XSSFWorkbook(arquivoDeEntrada);
@@ -99,6 +101,13 @@ public class ArquivoXlsx {
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void deletarArquivoXlsx(final String nomeArquivo){
+        try {
+            Files.delete(Path.of(nomeArquivo));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
