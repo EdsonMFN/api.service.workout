@@ -1,6 +1,6 @@
 package Projeto.Academia.controller.request;
 
-import Projeto.Academia.repositorys.DTO.AlunoDTO;
+import Projeto.Academia.controller.DTO.AlunoDTO;
 import lombok.Getter;
 import lombok.Setter;
 

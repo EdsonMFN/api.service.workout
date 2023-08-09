@@ -1,6 +1,6 @@
 package Projeto.Academia.controller.response;
 
-import Projeto.Academia.repositorys.DTO.ProfessorDTO;
+import Projeto.Academia.controller.DTO.ProfessorDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,4 +9,8 @@ import lombok.Setter;
 public class ResponseProfessor {
 
     private ProfessorDTO professorDTO;
+
+    public ResponseProfessor(ProfessorDTO professorDTO) {
+        this.professorDTO = professorDTO;
+    }
 }

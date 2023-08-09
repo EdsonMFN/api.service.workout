@@ -13,4 +13,5 @@ public interface RepositoryProfessor extends JpaRepository<Professor,Long> {
 
     List<Professor> findAllByAcademiaAfiliada(Academia academiaAfiliada);
 
+    Professor findByNome(String nomeProfessor);
 }

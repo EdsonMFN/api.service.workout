@@ -1,6 +1,6 @@
 package Projeto.Academia.controller.response;
 
-import Projeto.Academia.repositorys.DTO.FichaDeTreinoDTO;
+import Projeto.Academia.controller.DTO.FichaDeTreinoDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,4 +9,10 @@ import lombok.Setter;
 public class ResponseFichaDeTreino {
 
     private FichaDeTreinoDTO fichaDeTreinoDTO;
+
+    public ResponseFichaDeTreino(FichaDeTreinoDTO fichaDeTreinoDTO) {
+        this.fichaDeTreinoDTO = fichaDeTreinoDTO;
+    }
+
+
 }

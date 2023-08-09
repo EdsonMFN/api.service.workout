@@ -1,7 +1,6 @@
 package Projeto.Academia.service;
 
 import Projeto.Academia.builder.AcademiaDTOBuilder;
-import Projeto.Academia.controller.DTO.AcademiaDTO;
 import Projeto.Academia.controller.DTO.EnderecoDTO;
 import Projeto.Academia.controller.request.RequestAcademia;
 import Projeto.Academia.controller.response.ResponseAcademia;
@@ -62,8 +61,7 @@ public class AcademiaService {
         List<Academia> academias = repositoryAcademia.findAll();
         List<ResponseAcademia> responseAcademias = new ArrayList<>();
 
-        for (Academia academia : academias){
-
+        academias.parallelStream().forEach(academia -> {
             var endereco = academia.getEndereco();
 
             EnderecoDTO enderecoDTO = EnderecoDTO
@@ -86,7 +84,7 @@ public class AcademiaService {
                     .build());
 
             responseAcademias.add(responseAcademia);
-        }
+        });
 
         return responseAcademias;
     }
@@ -147,7 +145,7 @@ public class AcademiaService {
         try {
             repositoryAcademia.delete(academia);
         }catch (Exception e){
-            throw new DataBindingViolationException("academia não pode ser deletado por  com entidades");
+            throw new DataBindingViolationException("A academia não pode ser deletado por precisar deletar entidades relacionas");
         }
         var endereco = academia.getEndereco();
 

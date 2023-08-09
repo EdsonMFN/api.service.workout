@@ -1,23 +1,26 @@
 package Projeto.Academia.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import Projeto.Academia.builder.AcademiaDTOBuilder;
+import Projeto.Academia.builder.ProfessorDTOBuilder;
 import Projeto.Academia.controller.DTO.AcademiaDTO;
 import Projeto.Academia.controller.DTO.EnderecoDTO;
 import Projeto.Academia.controller.DTO.ProfessorDTO;
-import Projeto.Academia.exception.ErrorException;
-import Projeto.Academia.exception.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import Projeto.Academia.controller.request.RequestProfessor;
 import Projeto.Academia.controller.response.ResponseProfessor;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.professor.Professor;
+import Projeto.Academia.exception.DataBindingViolationException;
+import Projeto.Academia.exception.ErrorException;
+import Projeto.Academia.exception.ObjectNotFoundException;
 import Projeto.Academia.repositorys.RepositoryAcademia;
 import Projeto.Academia.repositorys.RepositoryAluno;
 import Projeto.Academia.repositorys.RepositoryFichaDeTreino;
 import Projeto.Academia.repositorys.RepositoryProfessor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProfessorService {
@@ -43,31 +46,32 @@ public class ProfessorService {
         professor.setAcademiaAfiliada(academia);
         repositoryProfessor.save(professor);
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.getId());
-        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
+        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build();
 
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(professor.getId());
-        professorDTO.setNome(professor.getNome());
-        professorDTO.setCpf(professor.getCpf());
-        professorDTO.setCref(professor.getCref());
-        professorDTO.setAcademiasAfiliada(academiaDTO);
-
-        ResponseProfessor responseProfessor = new ResponseProfessor();
-        responseProfessor.setProfessorDTO(professorDTO);
-
-        return responseProfessor;
+        return new ResponseProfessor(ProfessorDTOBuilder
+                .professorDTOBuilder()
+                .id(professor.getId())
+                .nome(professor.getNome())
+                .cpf(professor.getCpf())
+                .cref(professor.getCref())
+                .academiasAfiliada(academiaDTO)
+                .build());
     }
     public List<ResponseProfessor> listarProfessor(Long idAcademia){
         Academia academia= repositoryAcademia.findById(idAcademia)
@@ -75,80 +79,83 @@ public class ProfessorService {
 
         var endereco = academia.getEndereco();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academia.getId());
-        academiaDTO.setAcademiaAfiliada(academia.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academia.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
+        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build();
 
         List<Professor> professores = repositoryProfessor.findAllByAcademiaAfiliada(academia);
         List<ProfessorDTO> professorDTOS = new ArrayList<>();
         List<ResponseProfessor> responseProfessores = new ArrayList<>();
 
-        for (Professor professor : professores){
-
-            ProfessorDTO professorDTO = new ProfessorDTO();
-            professorDTO.setId(professor.getId());
-            professorDTO.setNome(professor.getNome());
-            professorDTO.setCpf(professor.getCpf());
-            professorDTO.setCref(professor.getCref());
+        professores.parallelStream().forEach(professor -> {
+            ProfessorDTO professorDTO = ProfessorDTOBuilder
+                    .professorDTOBuilder()
+                    .id(professor.getId())
+                    .nome(professor.getNome())
+                    .cpf(professor.getCpf())
+                    .cref(professor.getCref())
+                    .academiasAfiliada(academiaDTO)
+                    .build();
 
             academiaDTO.setProfessores(professorDTOS);
             academiaDTO.getProfessores().add(professorDTO);
 
-            ResponseProfessor responseProfessor = new ResponseProfessor();
-            responseProfessor.setProfessorDTO(professorDTO);
-
+            ResponseProfessor responseProfessor = new ResponseProfessor(professorDTO);
             responseProfessores.add(responseProfessor);
-        }
+        });
         return responseProfessores;
     }
     public ResponseProfessor buscarProfessor(Long idProfessor){
         Professor professor = repositoryProfessor.findById(idProfessor).map(p->p)
                 .orElseThrow(()-> new ErrorException("professor não encontrado"));
 
-        var academiaAfiliada = professor.getAcademiaAfiliada();
+        var academia = professor.getAcademiaAfiliada();
         var endereco = professor.getAcademiaAfiliada().getEndereco();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academiaAfiliada.getId());
-        academiaDTO.setAcademiaAfiliada(academiaAfiliada.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academiaAfiliada.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
+        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build();
 
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(professor.getId());
-        professorDTO.setNome(professor.getNome());
-        professorDTO.setCpf(professor.getCpf());
-        professorDTO.setCref(professor.getCref());
-        professorDTO.setAcademiasAfiliada(academiaDTO);
-
-        ResponseProfessor responseProfessor = new ResponseProfessor();
-        responseProfessor.setProfessorDTO(professorDTO);
-
-        return responseProfessor;
+        return new ResponseProfessor(ProfessorDTOBuilder
+                .professorDTOBuilder()
+                .id(professor.getId())
+                .nome(professor.getNome())
+                .cpf(professor.getCpf())
+                .cref(professor.getCref())
+                .academiasAfiliada(academiaDTO)
+                .build());
     }
     public ResponseProfessor alterarProfessor(RequestProfessor requestProfessor){
         Professor professor = repositoryProfessor.getReferenceById(requestProfessor.getIdProfessor());
         Academia academia = repositoryAcademia.getReferenceById(requestProfessor.getIdAcademia());
-
-        var academiaAfiliada = professor.getAcademiaAfiliada();
 
         professor.setNome(requestProfessor.getNome());
         professor.setCpf(requestProfessor.getCpf());
@@ -156,57 +163,60 @@ public class ProfessorService {
         professor.setAcademiaAfiliada(academia);
         repositoryProfessor.save(professor);
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academiaAfiliada.getId());
-        academiaDTO.setAcademiaAfiliada(academiaAfiliada.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academiaAfiliada.getCnpj());
+        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .build();
 
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(professor.getId());
-        professorDTO.setNome(professor.getNome());
-        professorDTO.setCpf(professor.getCpf());
-        professorDTO.setCref(professor.getCref());
-        professorDTO.setAcademiasAfiliada(academiaDTO);
-
-        ResponseProfessor responseProfessor = new ResponseProfessor();
-        responseProfessor.setProfessorDTO(professorDTO);
-
-        return responseProfessor;
+        return new ResponseProfessor(ProfessorDTOBuilder
+                .professorDTOBuilder()
+                .id(professor.getId())
+                .nome(professor.getNome())
+                .cpf(professor.getCpf())
+                .cref(professor.getCref())
+                .academiasAfiliada(academiaDTO)
+                .build());
     }
     public ResponseProfessor deletarProfessor(Long idProfessor){
         Professor professor = repositoryProfessor.findById(idProfessor).map(p->p)
-                .orElseThrow(()-> new ErrorException("professor não encontrado"));
+                .orElseThrow(()-> new DataBindingViolationException("professor " + idProfessor +"não pode ser deletado por conflito com entidades"));
+        try {
+            repositoryProfessor.deleteById(idProfessor);
+        }catch (Exception e){
+            throw new DataBindingViolationException("O professor não pode ser deletado, por precisar deletar entidades relacionas");
+        }
 
-        repositoryProfessor.deleteById(idProfessor);
 
-        var academiaAfiliada = professor.getAcademiaAfiliada();
+        var academia = professor.getAcademiaAfiliada();
         var endereco = professor.getAcademiaAfiliada().getEndereco();
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setNumero(endereco.getNumero());
+        EnderecoDTO enderecoDTO = EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build();
 
-        AcademiaDTO academiaDTO = new AcademiaDTO();
-        academiaDTO.setId(academiaAfiliada.getId());
-        academiaDTO.setAcademiaAfiliada(academiaAfiliada.getAcademiaAfiliada());
-        academiaDTO.setCnpj(academiaAfiliada.getCnpj());
-        academiaDTO.setEndereco(enderecoDTO);
+        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+                .academiaDTOBuilder()
+                .id(academia.getId())
+                .academiaAfiliada(academia.getAcademiaAfiliada())
+                .cnpj(academia.getCnpj())
+                .endereco(enderecoDTO)
+                .build();
 
-        ProfessorDTO professorDTO = new ProfessorDTO();
-        professorDTO.setId(professor.getId());
-        professorDTO.setNome(professor.getNome());
-        professorDTO.setCpf(professor.getCpf());
-        professorDTO.setCref(professor.getCref());
-
-        professorDTO.setAcademiasAfiliada(academiaDTO);
-
-        ResponseProfessor responseProfessor = new ResponseProfessor();
-        responseProfessor.setProfessorDTO(professorDTO);
-
-        return responseProfessor;
+        return new ResponseProfessor(ProfessorDTOBuilder
+                .professorDTOBuilder()
+                .id(professor.getId())
+                .nome(professor.getNome())
+                .cpf(professor.getCpf())
+                .cref(professor.getCref())
+                .academiasAfiliada(academiaDTO)
+                .build());
     }
 }

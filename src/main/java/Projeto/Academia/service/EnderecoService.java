@@ -1,13 +1,13 @@
 package Projeto.Academia.service;
 
-import Projeto.Academia.exception.ErrorException;
 import Projeto.Academia.controller.DTO.EnderecoDTO;
-import Projeto.Academia.entitys.endereco.Endereco;
-import Projeto.Academia.repositorys.RepositoryAcademia;
-import Projeto.Academia.repositorys.RepositoryEndereco;
 import Projeto.Academia.controller.request.RequestEndereco;
 import Projeto.Academia.controller.response.ResponseEndereco;
+import Projeto.Academia.entitys.endereco.Endereco;
+import Projeto.Academia.exception.DataBindingViolationException;
 import Projeto.Academia.exception.ObjectNotFoundException;
+import Projeto.Academia.repositorys.RepositoryAcademia;
+import Projeto.Academia.repositorys.RepositoryEndereco;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,59 +32,53 @@ public class EnderecoService {
         endereco.setCidade(requestEndereco.getCidade());
         repositoryEndereco.save(endereco);
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setNumero(endereco.getNumero());
-
-        ResponseEndereco responseEndereco = new ResponseEndereco();
-        responseEndereco.setEnderecoDTO(enderecoDTO);
-
-        return responseEndereco;
+        return new ResponseEndereco(EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build());
     }
     public List<ResponseEndereco> listarEndereco(){
 
         List<Endereco> enderecos = repositoryEndereco.findAll();
         List<ResponseEndereco> responseEnderecos = new ArrayList<>();
 
-        for (Endereco endereco : enderecos){
-            EnderecoDTO enderecoDTO = new EnderecoDTO();
-            enderecoDTO.setId(endereco.getId());
-            enderecoDTO.setCep(endereco.getCep());
-            enderecoDTO.setBairro(endereco.getBairro());
-            enderecoDTO.setCidade(endereco.getCidade());
-            enderecoDTO.setEstado(endereco.getEstado());
-            enderecoDTO.setNumero(endereco.getNumero());
-
-            ResponseEndereco responseEndereco = new ResponseEndereco();
-            responseEndereco.setEnderecoDTO(enderecoDTO);
+        enderecos.parallelStream().forEach(endereco -> {
+            ResponseEndereco responseEndereco =
+                    new ResponseEndereco(EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build());
 
             responseEnderecos.add(responseEndereco);
-        }
+        });
+
         return responseEnderecos;
     }
     public ResponseEndereco buscarEndereco(Long idEndereco){
         Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
                 .orElseThrow(() -> new ObjectNotFoundException("endereço com o ID "+idEndereco+" não encontrado."));
 
-
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setNumero(endereco.getNumero());
-
-        ResponseEndereco responseEndereco = new ResponseEndereco();
-        responseEndereco.setEnderecoDTO(enderecoDTO);
-
-        return responseEndereco;
+        return new ResponseEndereco(EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build());
     }
-    public ResponseEndereco altararEndereco(RequestEndereco requestEndereco){
+    public ResponseEndereco altararEndereco(RequestEndereco requestEndereco) {
         Endereco endereco = repositoryEndereco.getReferenceById(requestEndereco.getIdEndereco());
 
         endereco.setCep(requestEndereco.getCep());
@@ -94,37 +88,34 @@ public class EnderecoService {
         endereco.setCidade(requestEndereco.getCidade());
         repositoryEndereco.save(endereco);
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setNumero(endereco.getNumero());
-
-        ResponseEndereco responseEndereco = new ResponseEndereco();
-        responseEndereco.setEnderecoDTO(enderecoDTO);
-
-        return responseEndereco;
+        return new ResponseEndereco(EnderecoDTO
+                .builder()
+                .id(endereco.getId())
+                .cep(endereco.getCep())
+                .estado(endereco.getEstado())
+                .bairro(endereco.getBairro())
+                .cidade(endereco.getCidade())
+                .numero(endereco.getNumero())
+                .build());
     }
     public ResponseEndereco deletarEndereco(Long idEndereco){
         Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
-                .orElseThrow(() -> new ErrorException("endereço não encontrado."));
+                .orElseThrow(() -> new DataBindingViolationException("endereço" + idEndereco +"não pode ser deletado por conflito com entidades"));
+        try {
+            repositoryEndereco.delete(endereco);
+        }catch (Exception e){
+            throw new DataBindingViolationException("O endereco não pode ser deletado por precisar deletar entidades relacionas");
+        }
 
-        repositoryEndereco.delete(endereco);
 
-        EnderecoDTO enderecoDTO = new EnderecoDTO();
-        enderecoDTO.setId(endereco.getId());
-        enderecoDTO.setCep(endereco.getCep());
-        enderecoDTO.setBairro(endereco.getBairro());
-        enderecoDTO.setCidade(endereco.getCidade());
-        enderecoDTO.setEstado(endereco.getEstado());
-        enderecoDTO.setNumero(endereco.getNumero());
-
-        ResponseEndereco responseEndereco = new ResponseEndereco();
-        responseEndereco.setEnderecoDTO(enderecoDTO);
-
-        return responseEndereco;
-
+        return new ResponseEndereco(EnderecoDTO
+                    .builder()
+                    .id(endereco.getId())
+                    .cep(endereco.getCep())
+                    .estado(endereco.getEstado())
+                    .bairro(endereco.getBairro())
+                    .cidade(endereco.getCidade())
+                    .numero(endereco.getNumero())
+                    .build());
     }
 }
