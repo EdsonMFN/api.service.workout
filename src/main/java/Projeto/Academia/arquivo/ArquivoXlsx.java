@@ -1,6 +1,7 @@
 package Projeto.Academia.arquivo;
 
 import Projeto.Academia.entitys.planilha.InscricaoAluno;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -14,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-
+@Slf4j
 public class ArquivoXlsx {
 
     public void criarArquivoXlsx(final String nomeArquivo, final List<InscricaoAluno> inscricaoAlunos) {
@@ -62,8 +63,9 @@ public class ArquivoXlsx {
             XSSFWorkbook pasta = new XSSFWorkbook(arquivoDeEntrada);
             XSSFSheet primeiraFolha = pasta.getSheetAt(0);
             int contadorDeLinha = 0;
-
+            log.info("iniciando leitura");
             for (Row linha: primeiraFolha) {
+                log.info("linha" + linha.getCell(contadorDeLinha));
                 if (++contadorDeLinha == 1) continue;
 
                 InscricaoAluno inscricaoAluno = InscricaoAluno.builder()
@@ -73,8 +75,9 @@ public class ArquivoXlsx {
                         .professor(linha.getCell(3).getStringCellValue())
                         .build();
                 inscricaoAlunos.add(inscricaoAluno);
-            }
 
+            }
+            log.info("Arquivo lido");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

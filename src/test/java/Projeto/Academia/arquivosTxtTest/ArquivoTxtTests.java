@@ -1,4 +1,4 @@
-package Projeto.Academia;
+package Projeto.Academia.arquivosTxtTest;
 
 import Projeto.Academia.arquivo.ArquivoTxt;
 import org.junit.jupiter.api.Test;

@@ -1,18 +1,21 @@
 package Projeto.Academia.service;
 
+import Projeto.Academia.arquivo.ArquivoPdf;
+import Projeto.Academia.arquivo.ArquivoTreinoXlsx;
 import Projeto.Academia.builder.AcademiaDTOBuilder;
 import Projeto.Academia.builder.AlunoDTOBuilder;
 import Projeto.Academia.builder.FichaDeTreinoDTOBuilder;
 import Projeto.Academia.builder.ProfessorDTOBuilder;
-import Projeto.Academia.controller.DTO.AcademiaDTO;
-import Projeto.Academia.controller.DTO.AlunoDTO;
-import Projeto.Academia.controller.DTO.EnderecoDTO;
-import Projeto.Academia.controller.DTO.ProfessorDTO;
+import Projeto.Academia.controller.DTO.*;
+import Projeto.Academia.controller.request.RequestBaixarTreino;
 import Projeto.Academia.controller.request.RequestFichaDeTreino;
+import Projeto.Academia.controller.response.ResponseArquivoFichaTreino;
 import Projeto.Academia.controller.response.ResponseFichaDeTreino;
 import Projeto.Academia.entitys.academia.Academia;
 import Projeto.Academia.entitys.aluno.Aluno;
+import Projeto.Academia.entitys.fichaDeTreino.ArquivoFichaTreino;
 import Projeto.Academia.entitys.fichaDeTreino.FichaDeTreino;
+import Projeto.Academia.entitys.fichaDeTreino.TipoDeArquivo;
 import Projeto.Academia.entitys.professor.Professor;
 import Projeto.Academia.exception.DataBindingViolationException;
 import Projeto.Academia.exception.ErrorException;
@@ -32,13 +35,11 @@ public class FichaDetreinoService {
     @Autowired
     private RepositoryProfessor repositoryProfessor;
     @Autowired
-    private RepositoryPersonal repositoryPersonal;
-    @Autowired
     private RepositoryAluno repositoryAluno;
     @Autowired
     private RepositoryFichaDeTreino repositoryFichaDeTreino;
     @Autowired
-    private RepositoryEndereco repositoryEndereco;
+    private RepositoryBaixarTreino repositoryBaixarTreino;
 
     public ResponseFichaDeTreino criarFicha(RequestFichaDeTreino requestFichaDeTreino){
         Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
@@ -102,8 +103,70 @@ public class FichaDetreinoService {
                 .exercicio(fichaDeTreino.getExercicio())
                 .build());
     }
+    public ResponseArquivoFichaTreino criarAquivoTreino(RequestBaixarTreino requestBaixarTreino){
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestBaixarTreino.getIdFichaDeTreino());
+        var aluno = fichaDeTreino.getAluno();
+        var professor = fichaDeTreino.getProfessor();
+
+        ProfessorDTO professorDTO = ProfessorDTOBuilder
+                .professorDTOBuilder()
+                .id(professor.getId())
+                .nome(professor.getNome())
+                .cpf(professor.getCpf())
+                .cref(professor.getCref())
+                .build();
+
+        AlunoDTO alunoDTO= AlunoDTOBuilder
+                .alunoDTOBuilder()
+                .id(aluno.getId())
+                .cpf(aluno.getCpf())
+                .nome(aluno.getNome())
+                .crefProfessor(professorDTO)
+                .build();
+
+        FichaDeTreinoDTO fichaDeTreinoDTO = FichaDeTreinoDTOBuilder
+                .fichaDeTreinoDTOBuilder()
+                .id(fichaDeTreino.getId())
+                .professor(professorDTO)
+                .aluno(alunoDTO)
+                .exercicio(fichaDeTreino.getExercicio())
+                .build();
+
+        ArquivoFichaTreino arquivoFichaTreino = ArquivoFichaTreino
+                .builder()
+                .fichaDeTreino(fichaDeTreino)
+                .tipoDeArquivo(requestBaixarTreino.getTipoDeArquivo())
+                .build();
+        repositoryBaixarTreino.save(arquivoFichaTreino);
+
+        ArquivoFichaTreinoDTO arquivoFichaTreinoDTO = ArquivoFichaTreinoDTO.builder()
+                .id(arquivoFichaTreino.getId())
+                .fichaDeTreinoDTO(fichaDeTreinoDTO)
+                .tipoDeArquivo(arquivoFichaTreino.getTipoDeArquivo())
+                .base64(base64(arquivoFichaTreino,alunoDTO.getNome(), professorDTO.getNome()))
+                .build();
+
+        return new ResponseArquivoFichaTreino(arquivoFichaTreinoDTO);
+    }
+    private String base64(ArquivoFichaTreino arquivoFichaTreino,String nomeAluno, String nomeProfessor){
+
+        String base64Xlsx = null;
+        String base64Pdf = null;
+        if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.XLSX)) {
+            ArquivoTreinoXlsx arquivoTreinoXlsx = new ArquivoTreinoXlsx();
+            arquivoTreinoXlsx.executarArquivoTreino("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx",nomeAluno,nomeProfessor);
+            base64Xlsx =  arquivoTreinoXlsx.base64Exel("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx");
+        }
+        else if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.PDF)){
+            ArquivoPdf arquivoPdf = new ArquivoPdf();
+            arquivoPdf.tranformarEmPdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
+            base64Pdf = arquivoPdf.base64Pdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
+        }
+
+        return base64Pdf;
+    }
     public List<ResponseFichaDeTreino> listarFichas(String cpfAluno){
-        Aluno aluno = repositoryAluno.findByCpf(cpfAluno).map(a -> a)
+        Aluno aluno =   repositoryAluno.findByCpf(cpfAluno).map(a -> a)
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
         var professor = aluno.getProfessor();

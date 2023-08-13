@@ -56,8 +56,15 @@ public class TratamentoDeErrors extends ResponseEntityExceptionHandler{
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex,WebRequest webRequest){
 
+        logError(ex);
         log.error("Erro na api",ex.getCause());
         return buildErrorResponse(ex.getCause(), HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    private static void logError(Exception ex) {
+        log.error(ex.getClass().getName(), ex);
+        log.error(ex.getClass().getName(), ex.getMessage());
+        log.error(ex.getClass().getName(), ex.getLocalizedMessage());
     }
 
     private ResponseEntity<Object> buildErrorResponse(

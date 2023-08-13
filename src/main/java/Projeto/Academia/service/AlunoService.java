@@ -139,8 +139,6 @@ public class AlunoService {
 
             responseAlunos.add(responseAluno);
         });
-
-
         return responseAlunos;
     }
     public ResponseAluno buscarAluno(String cpfAluno){

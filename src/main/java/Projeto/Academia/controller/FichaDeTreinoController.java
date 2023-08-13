@@ -1,8 +1,10 @@
 package Projeto.Academia.controller;
 
-import Projeto.Academia.service.FichaDetreinoService;
+import Projeto.Academia.controller.request.RequestBaixarTreino;
 import Projeto.Academia.controller.request.RequestFichaDeTreino;
+import Projeto.Academia.controller.response.ResponseArquivoFichaTreino;
 import Projeto.Academia.controller.response.ResponseFichaDeTreino;
+import Projeto.Academia.service.FichaDetreinoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +20,13 @@ public class FichaDeTreinoController {
 
     @PostMapping
     public ResponseEntity<ResponseFichaDeTreino> criarFicha(@RequestBody RequestFichaDeTreino requestFichaDeTreino){
-
         ResponseFichaDeTreino responseFichaDeTreinoCriar = fichaDetreinoService.criarFicha(requestFichaDeTreino);
-
         return ResponseEntity.ok(responseFichaDeTreinoCriar);
+    }
+    @PostMapping("/arquivoFichaTreino")
+    public ResponseEntity<ResponseArquivoFichaTreino> criarArquivoFichaDeTreino(@RequestBody RequestBaixarTreino baixarTreino){
+        ResponseArquivoFichaTreino responseArquivoFichaTreino = fichaDetreinoService.criarAquivoTreino(baixarTreino);
+        return ResponseEntity.ok(responseArquivoFichaTreino);
     }
     @GetMapping("/aluno/{cpfAluno}")
     public ResponseEntity<List<ResponseFichaDeTreino>> listarFichas(@PathVariable String cpfAluno){

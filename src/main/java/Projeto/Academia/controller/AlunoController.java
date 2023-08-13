@@ -18,9 +18,7 @@ public class AlunoController {
 
     @PostMapping
     public ResponseEntity<ResponseAluno> criarAluno(@RequestBody RequestAluno requestAluno){
-
         ResponseAluno responseAlunoCriar = alunoService.criarAluno(requestAluno);
-
         return ResponseEntity.ok(responseAlunoCriar);
     }
     @GetMapping("/academia/{idAcademia}")

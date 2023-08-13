@@ -1,4 +1,4 @@
-package Projeto.Academia;
+package Projeto.Academia.arquivosXlsxTest;
 
 import Projeto.Academia.arquivo.ArquivoXlsx;
 import Projeto.Academia.entitys.planilha.InscricaoAluno;
