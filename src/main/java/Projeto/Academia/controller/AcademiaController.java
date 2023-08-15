@@ -1,8 +1,8 @@
 package Projeto.Academia.controller;
 
-import Projeto.Academia.service.AcademiaService;
 import Projeto.Academia.controller.request.RequestAcademia;
 import Projeto.Academia.controller.response.ResponseAcademia;
+import Projeto.Academia.service.AcademiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
