@@ -25,7 +25,7 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        var token = this.limpesaToken(request);
+        var token = limpezaToken(request);
         if (token != null){
             var login = tokenService.validacaoToken(token);
             UserDetails usuario = repositoryUsuario.findByNomeUsuario(login);
@@ -36,7 +36,7 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 
-    private String limpesaToken(HttpServletRequest request){
+    private String limpezaToken(HttpServletRequest request){
         var authorizationHeader = request.getHeader("Authorization");
         if(authorizationHeader == null) return null;
         return authorizationHeader.replace("Bearer ", "");

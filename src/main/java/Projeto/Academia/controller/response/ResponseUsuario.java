@@ -11,8 +11,13 @@ public class ResponseUsuario {
     private UsuarioDTO usuarioDTO;
     private String token;
 
-    public ResponseUsuario(UsuarioDTO usuarioDTO){
+    public ResponseUsuario(UsuarioDTO usuarioDTO,String token){
+
         this.usuarioDTO = usuarioDTO;
+        this.token = token;
     }
 
+    public ResponseUsuario(UsuarioDTO usuarioDTO) {
+        this.usuarioDTO = usuarioDTO;
+    }
 }
