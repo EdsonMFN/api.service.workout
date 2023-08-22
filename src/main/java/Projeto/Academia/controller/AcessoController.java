@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/acesso")
 public class AcessoController {
@@ -23,6 +25,11 @@ public class AcessoController {
     @PostMapping("/cadastro")
     public ResponseEntity<ResponseUsuario> cadastroLogin (@RequestBody RequestUsuario requestUsuario){
         ResponseUsuario responseUsuario = usuarioService.cadastroLogin(requestUsuario);
+        return ResponseEntity.ok(responseUsuario);
+    }
+    @GetMapping
+    public ResponseEntity<List<ResponseUsuario>> listarUsuarios (){
+        List <ResponseUsuario> responseUsuario = usuarioService.listarUsuarios();
         return ResponseEntity.ok(responseUsuario);
     }
 }

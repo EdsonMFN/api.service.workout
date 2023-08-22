@@ -10,6 +10,7 @@ public class ResponseUsuario {
 
     private UsuarioDTO usuarioDTO;
     private String token;
+    private String tokenRefresh;
 
     public ResponseUsuario(UsuarioDTO usuarioDTO,String token){
 

@@ -28,7 +28,7 @@ public class FichaDeTreinoController {
         ResponseArquivoFichaTreino responseArquivoFichaTreino = fichaDetreinoService.criarAquivoTreino(baixarTreino);
         return ResponseEntity.ok(responseArquivoFichaTreino);
     }
-    @GetMapping("/aluno/{cpfAluno}")
+    @GetMapping("/fichaDeTreino/aluno/{cpfAluno}")
     public ResponseEntity<List<ResponseFichaDeTreino>> listarFichas(@PathVariable String cpfAluno){
         List<ResponseFichaDeTreino> responseFichaDeTreinos = fichaDetreinoService.listarFichas(cpfAluno);
         return ResponseEntity.ok(responseFichaDeTreinos);

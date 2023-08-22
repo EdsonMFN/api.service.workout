@@ -21,7 +21,7 @@ public class AlunoController {
         ResponseAluno responseAlunoCriar = alunoService.criarAluno(requestAluno);
         return ResponseEntity.ok(responseAlunoCriar);
     }
-    @GetMapping("/academia/{idAcademia}")
+    @GetMapping("/aluno/academia/{idAcademia}")
     public ResponseEntity<List<ResponseAluno>> listarAlunos(@PathVariable Long idAcademia){
         List<ResponseAluno> responseAlunos = alunoService.listarAlunos(idAcademia);
         return ResponseEntity.ok(responseAlunos);

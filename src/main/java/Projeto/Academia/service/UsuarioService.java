@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UsuarioService {
     @Autowired
@@ -29,8 +32,9 @@ public class UsuarioService {
 
         var usuarioAcesso = new UsernamePasswordAuthenticationToken(requestUsuario.getNomeUsuario(),requestUsuario.getSenha());
         var acesso = authenticationManager.authenticate(usuarioAcesso);
-        SecurityContextHolder.getContext().setAuthentication(acesso);
         var token = tokenService.gerarToken(usuario);
+        var tokenRefresh = tokenService.gerarRefreshToken(usuario);
+        SecurityContextHolder.getContext().setAuthentication(acesso);
 
         UsuarioDTO usuarioDTO = UsuarioDTO.builder()
                 .idUsuario(usuario.getId())
@@ -42,6 +46,7 @@ public class UsuarioService {
         ResponseUsuario responseUsuario = new ResponseUsuario();
         responseUsuario.setUsuarioDTO(usuarioDTO);
         responseUsuario.setToken(token);
+        responseUsuario.setTokenRefresh(tokenRefresh);
 
         return responseUsuario;
     }
@@ -68,5 +73,23 @@ public class UsuarioService {
                 .role(usuario.getRole())
                 .build());
 
+    }
+    public List<ResponseUsuario> listarUsuarios() {
+        List<Usuario> usuarios = repositoryUsuario.findAll();
+
+        List<ResponseUsuario> responseUsuarios = new ArrayList<>();
+
+        usuarios.parallelStream().forEach(usuario -> {
+
+            ResponseUsuario responseUsuario = new ResponseUsuario(UsuarioDTO.builder()
+                    .nomeUsuario(usuario.getNomeUsuario())
+                    .idUsuario(usuario.getId())
+                    .role(usuario.getRole())
+                    .build());
+
+            responseUsuarios.add(responseUsuario);
+        });
+
+        return responseUsuarios;
     }
 }
