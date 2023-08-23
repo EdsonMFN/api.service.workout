@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>Projeto</groupId>
-	<artifactId>Academia</artifactId>
+	<artifactId>api.workout</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Academia</name>
 	<description>Projeto Academia </description>
@@ -95,8 +95,13 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 			<version>3.0.7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-openfeign-core</artifactId>
+			<version>3.0.7</version>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
