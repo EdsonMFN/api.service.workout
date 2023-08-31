@@ -1,14 +1,12 @@
 package api.workout.service;
 
+import api.workout.client.Usuario;
+import api.workout.repositorys.RepositoryUsuario;
 import api.workout.rest.DTO.UsuarioDTO;
 import api.workout.rest.request.RequestUsuario;
 import api.workout.rest.response.ResponseUsuario;
-import api.workout.client.Usuario;
-import api.workout.repositorys.RepositoryUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,41 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UsuarioService {
+public class UsuarioService{
+
+    @Autowired
+    private FeignClient feignClient;
+
     @Autowired
     private RepositoryUsuario repositoryUsuario;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private AutorizacaoService autorizacaoService;
 
-    public ResponseUsuario acessarLogin(RequestUsuario requestUsuario){
+    public ResponseUsuario cadastrarUsuario(RequestUsuario requestUsuario, String authorization){
 
-        Usuario usuario = autorizacaoService.loadUserByUsername(requestUsuario.getNomeUsuario());
-
-        var usuarioAcesso = new UsernamePasswordAuthenticationToken(requestUsuario.getNomeUsuario(),requestUsuario.getSenha());
-        var acesso = authenticationManager.authenticate(usuarioAcesso);
-        var token = tokenService.gerarToken(usuario);
-        var tokenRefresh = tokenService.gerarRefreshToken(usuario);
-        SecurityContextHolder.getContext().setAuthentication(acesso);
-
-        UsuarioDTO usuarioDTO = UsuarioDTO.builder()
-                .idUsuario(usuario.getId())
-                .nomeUsuario(usuario.getNomeUsuario())
-                .senha(usuario.getSenha())
-                .role(usuario.getRole())
-                .build();
-
-        ResponseUsuario responseUsuario = new ResponseUsuario();
-        responseUsuario.setUsuarioDTO(usuarioDTO);
-        responseUsuario.setToken(token);
-        responseUsuario.setTokenRefresh(tokenRefresh);
-
-        return responseUsuario;
-    }
-    public ResponseUsuario cadastroLogin(RequestUsuario requestUsuario){
         String criptpgrafiaSenha = new BCryptPasswordEncoder().encode(requestUsuario.getSenha().trim());
 
         Usuario usuario = Usuario
@@ -61,7 +34,7 @@ public class UsuarioService {
                 .build();
 
 
-        if (this.repositoryUsuario.findByNomeUsuario(usuario.getNomeUsuario()) != null){
+        if (repositoryUsuario.findByNomeUsuario(usuario.getNomeUsuario()) != null){
             throw new RuntimeException("usuario existente");
         }
         repositoryUsuario.save(usuario);
@@ -92,4 +65,5 @@ public class UsuarioService {
 
         return responseUsuarios;
     }
+
 }

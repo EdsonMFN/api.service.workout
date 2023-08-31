@@ -116,7 +116,7 @@ public class AlunoService {
                 .endereco(enderecoDTO)
                 .build();
 
-        alunos.parallelStream().forEach(aluno -> {
+        alunos.forEach(aluno -> {
             var professor = aluno.getProfessor();
 
             ProfessorDTO professorDTO = ProfessorDTOBuilder

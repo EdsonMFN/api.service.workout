@@ -61,7 +61,7 @@ public class AcademiaService {
         List<Academia> academias = repositoryAcademia.findAll();
         List<ResponseAcademia> responseAcademias = new ArrayList<>();
 
-        academias.parallelStream().forEach(academia -> {
+        academias.forEach(academia -> {
             var endereco = academia.getEndereco();
 
             EnderecoDTO enderecoDTO = EnderecoDTO

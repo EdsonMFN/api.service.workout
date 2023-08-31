@@ -4,6 +4,8 @@ import api.workout.rest.request.RequestAcademia;
 import api.workout.rest.response.ResponseAcademia;
 import api.workout.service.AcademiaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +29,13 @@ public class AcademiaController {
         return ResponseEntity.ok(responseAcademiaListar);
     }
     @GetMapping("/{idAcademia}")
+    @Cacheable(value = "academia")
     public ResponseEntity<ResponseAcademia> buscarAcademia(@PathVariable Long idAcademia){
             ResponseAcademia responseAcademiaBuscar = academiaService.buscarAcademia(idAcademia);
         return ResponseEntity.ok(responseAcademiaBuscar);
     }
     @PutMapping
+    @CachePut(value = "academia")
     public ResponseEntity<ResponseAcademia> alterarAcademia(@RequestBody RequestAcademia requestAcademia) {
         ResponseAcademia responseAcademiaAlterar = academiaService.alterarAcademia(requestAcademia);
         return ResponseEntity.ok(responseAcademiaAlterar);

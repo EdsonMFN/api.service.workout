@@ -102,7 +102,7 @@ public class PersonalService {
                 .endereco(enderecoDTO)
                 .build();
 
-        personals.parallelStream().forEach(personal -> {
+        personals.forEach(personal -> {
             ResponsePersonal responsePersonal =
                     new ResponsePersonal(PersonalDTOBuilder
                     .personalDTOBuilder()

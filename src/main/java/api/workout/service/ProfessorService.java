@@ -101,7 +101,7 @@ public class ProfessorService {
         List<ProfessorDTO> professorDTOS = new ArrayList<>();
         List<ResponseProfessor> responseProfessores = new ArrayList<>();
 
-        professores.parallelStream().forEach(professor -> {
+        professores.forEach(professor -> {
             ProfessorDTO professorDTO = ProfessorDTOBuilder
                     .professorDTOBuilder()
                     .id(professor.getId())

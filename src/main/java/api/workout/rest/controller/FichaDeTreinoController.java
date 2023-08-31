@@ -6,6 +6,8 @@ import api.workout.rest.response.ResponseArquivoFichaTreino;
 import api.workout.rest.response.ResponseFichaDeTreino;
 import api.workout.service.FichaDetreinoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,17 +30,19 @@ public class FichaDeTreinoController {
         ResponseArquivoFichaTreino responseArquivoFichaTreino = fichaDetreinoService.criarAquivoTreino(baixarTreino);
         return ResponseEntity.ok(responseArquivoFichaTreino);
     }
-    @GetMapping("/fichaDeTreino/aluno/{cpfAluno}")
+    @GetMapping("/aluno/{cpfAluno}")
     public ResponseEntity<List<ResponseFichaDeTreino>> listarFichas(@PathVariable String cpfAluno){
         List<ResponseFichaDeTreino> responseFichaDeTreinos = fichaDetreinoService.listarFichas(cpfAluno);
         return ResponseEntity.ok(responseFichaDeTreinos);
     }
     @GetMapping("/{idFicha}")
+    @Cacheable(value = "fichaDeTreino")
     public ResponseEntity<ResponseFichaDeTreino> buscarFichas(@PathVariable Long idFicha){
             ResponseFichaDeTreino responseFichaDeTreino = fichaDetreinoService.buscarFicha(idFicha);
         return ResponseEntity.ok(responseFichaDeTreino);
     }
     @PutMapping
+    @CachePut(value = "fichaDeTreino")
     public ResponseEntity<ResponseFichaDeTreino> alterarFicha(@RequestBody RequestFichaDeTreino requestFichaDeTreino){
         ResponseFichaDeTreino responseFichaDeTreino = fichaDetreinoService.alterarFicha(requestFichaDeTreino);
         return ResponseEntity.ok(responseFichaDeTreino);

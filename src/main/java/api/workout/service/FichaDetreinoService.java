@@ -148,23 +148,7 @@ public class FichaDetreinoService {
 
         return new ResponseArquivoFichaTreino(arquivoFichaTreinoDTO);
     }
-    private String base64(ArquivoFichaTreino arquivoFichaTreino,String nomeAluno, String nomeProfessor){
 
-        String base64Xlsx = null;
-        String base64Pdf = null;
-        if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.XLSX)) {
-            ArquivoTreinoXlsx arquivoTreinoXlsx = new ArquivoTreinoXlsx();
-            arquivoTreinoXlsx.executarArquivoTreino("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx",nomeAluno,nomeProfessor);
-            base64Xlsx =  arquivoTreinoXlsx.base64Exel("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx");
-        }
-        else if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.PDF)){
-            ArquivoPdf arquivoPdf = new ArquivoPdf();
-            arquivoPdf.tranformarEmPdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
-            base64Pdf = arquivoPdf.base64Pdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
-        }
-
-        return base64Pdf;
-    }
     public List<ResponseFichaDeTreino> listarFichas(String cpfAluno){
         Aluno aluno =   repositoryAluno.findByCpf(cpfAluno).map(a -> a)
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
@@ -213,7 +197,7 @@ public class FichaDetreinoService {
                 .crefProfessor(professorDTO)
                 .build();
 
-        fichaDeTreinos.parallelStream().forEach(fichaDeTreino -> {
+        fichaDeTreinos.forEach(fichaDeTreino -> {
             ResponseFichaDeTreino responseFichaDeTreino =
                     new ResponseFichaDeTreino(FichaDeTreinoDTOBuilder
                     .fichaDeTreinoDTOBuilder()
@@ -390,5 +374,22 @@ public class FichaDetreinoService {
                 .aluno(alunoDTO)
                 .exercicio(fichaDeTreino.getExercicio())
                 .build());
+    }
+    private String base64(ArquivoFichaTreino arquivoFichaTreino,String nomeAluno, String nomeProfessor){
+
+        String base64Xlsx = null;
+        String base64Pdf = null;
+        if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.XLSX)) {
+            ArquivoTreinoXlsx arquivoTreinoXlsx = new ArquivoTreinoXlsx();
+            arquivoTreinoXlsx.executarArquivoTreino("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx",nomeAluno,nomeProfessor);
+            base64Xlsx =  arquivoTreinoXlsx.base64Exel("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx");
+        }
+        else if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.PDF)){
+            ArquivoPdf arquivoPdf = new ArquivoPdf();
+            arquivoPdf.tranformarEmPdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
+            base64Pdf = arquivoPdf.base64Pdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
+        }
+
+        return base64Pdf;
     }
 }

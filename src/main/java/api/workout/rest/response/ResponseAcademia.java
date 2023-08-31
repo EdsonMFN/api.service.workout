@@ -10,6 +10,7 @@ public class ResponseAcademia {
 
     private AcademiaDTO academiaDTO;
 
+
     public ResponseAcademia(AcademiaDTO academiaDTO) {
         this.academiaDTO = academiaDTO;
     }

@@ -47,7 +47,7 @@ public class EnderecoService {
         List<Endereco> enderecos = repositoryEndereco.findAll();
         List<ResponseEndereco> responseEnderecos = new ArrayList<>();
 
-        enderecos.parallelStream().forEach(endereco -> {
+        enderecos.forEach(endereco -> {
             ResponseEndereco responseEndereco =
                     new ResponseEndereco(EnderecoDTO
                 .builder()

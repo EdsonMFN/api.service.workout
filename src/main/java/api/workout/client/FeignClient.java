@@ -1,14 +1,14 @@
 package api.workout.client;
 
+import api.workout.rest.response.ResponseUsuario;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.List;
-
-@org.springframework.cloud.openfeign.FeignClient(name = "Auth", url = "http://localhost:8080/auth")
+@org.springframework.cloud.openfeign.FeignClient(name = "Auth", url = "http://localhost:8090/acesso")
 public interface FeignClient {
 
-    @GetMapping(value = "/{id}")
-    List<Usuario> getBearResponse (@PathVariable Long id);
+    @GetMapping("/authUsuario")
+    public ResponseEntity<ResponseUsuario> autenticarUsuario(@RequestHeader("Authorization") String authorization);
 
 }
