@@ -1,4 +1,4 @@
-# api.workout
+# api.service.workout
 
 Aplicação de usuario de um sistema de academia, onde seram gerados:
 - Os endpoints gerais da academia (Academia, Endereço, Aluno, Personal, Professor, Ficha de treino e Usuario);
