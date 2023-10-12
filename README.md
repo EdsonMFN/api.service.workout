@@ -12,6 +12,7 @@ Aplicação de usuario de um sistema de academia, onde seram gerados:
 - Spring Boot;
 - Feing Client para implementar o microserviço de autenticação utilizando o Spring Security;
 - Geração de arquivos Xlsx, Txt e Pdf.
+- JPA/Hibernate
 
 ### Endpoints de usuario/Aluno: 
 Algumas permições são restritas entre Aluno, Professor, Admin e Gestor.
