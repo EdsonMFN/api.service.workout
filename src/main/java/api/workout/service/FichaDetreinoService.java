@@ -6,17 +6,17 @@ import api.workout.builder.AcademiaDTOBuilder;
 import api.workout.builder.AlunoDTOBuilder;
 import api.workout.builder.FichaDeTreinoDTOBuilder;
 import api.workout.builder.ProfessorDTOBuilder;
-import api.workout.entitys.academia.Academia;
-import api.workout.entitys.aluno.Aluno;
-import api.workout.entitys.fichaDeTreino.ArquivoFichaTreino;
-import api.workout.entitys.fichaDeTreino.FichaDeTreino;
-import api.workout.entitys.fichaDeTreino.TipoDeArquivo;
-import api.workout.entitys.professor.Professor;
+import api.workout.domains.entitys.academia.Academia;
+import api.workout.domains.entitys.aluno.Aluno;
+import api.workout.domains.entitys.fichaDeTreino.ArquivoFichaTreino;
+import api.workout.domains.entitys.fichaDeTreino.FichaDeTreino;
+import api.workout.enums.TipoDeArquivo;
+import api.workout.domains.entitys.professor.Professor;
+import api.workout.domains.model.*;
+import api.workout.domains.repositorys.*;
 import api.workout.exception.DataBindingViolationException;
 import api.workout.exception.ErrorException;
 import api.workout.exception.ObjectNotFoundException;
-import api.workout.repositorys.*;
-import api.workout.rest.DTO.*;
 import api.workout.rest.request.RequestBaixarTreino;
 import api.workout.rest.request.RequestFichaDeTreino;
 import api.workout.rest.response.ResponseArquivoFichaTreino;
@@ -381,13 +381,13 @@ public class FichaDetreinoService {
         String base64Pdf = null;
         if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.XLSX)) {
             ArquivoTreinoXlsx arquivoTreinoXlsx = new ArquivoTreinoXlsx();
-            arquivoTreinoXlsx.executarArquivoTreino("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx",nomeAluno,nomeProfessor);
-            base64Xlsx =  arquivoTreinoXlsx.base64Exel("D:\\Edson\\manipulacao_de_arquivos\\excel-java\\FichaDeTreino.xlsx");
+            arquivoTreinoXlsx.executarArquivoTreino("D:\\Edson\\projetos\\workout\\manipulacao_de_arquivos\\excel-java",nomeAluno,nomeProfessor);
+            base64Xlsx =  arquivoTreinoXlsx.base64Exel("D:\\Edson\\projetos\\workout\\manipulacao_de_arquivos\\excel-java");
         }
         else if (arquivoFichaTreino.getTipoDeArquivo().equals(TipoDeArquivo.PDF)){
             ArquivoPdf arquivoPdf = new ArquivoPdf();
-            arquivoPdf.tranformarEmPdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
-            base64Pdf = arquivoPdf.base64Pdf("D:\\Edson\\manipulacao_de_arquivos\\pdf.pdf");
+            arquivoPdf.tranformarEmPdf("D:\\Edson\\projetos\\workout\\manipulacao_de_arquivos\\pdf");
+            base64Pdf = arquivoPdf.base64Pdf("D:\\Edson\\projetos\\workout\\manipulacao_de_arquivos\\pdf");
         }
 
         return base64Pdf;

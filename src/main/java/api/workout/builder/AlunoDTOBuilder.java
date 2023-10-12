@@ -1,7 +1,8 @@
 package api.workout.builder;
 
 
-import api.workout.rest.DTO.*;
+import api.workout.domains.model.*;
+
 
 import java.util.List;
 

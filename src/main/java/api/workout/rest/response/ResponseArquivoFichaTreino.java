@@ -1,6 +1,6 @@
 package api.workout.rest.response;
 
-import api.workout.rest.DTO.ArquivoFichaTreinoDTO;
+import api.workout.domains.model.ArquivoFichaTreinoDTO;
 import lombok.Getter;
 import lombok.Setter;
 

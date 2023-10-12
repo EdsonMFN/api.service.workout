@@ -1,8 +1,8 @@
 package api.workout.builder;
 
-import api.workout.rest.DTO.AcademiaDTO;
-import api.workout.rest.DTO.AlunoDTO;
-import api.workout.rest.DTO.PersonalDTO;
+import api.workout.domains.model.AcademiaDTO;
+import api.workout.domains.model.AlunoDTO;
+import api.workout.domains.model.PersonalDTO;
 
 import java.util.List;
 

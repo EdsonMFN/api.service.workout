@@ -1,6 +1,6 @@
 package api.workout.rest.request;
 
-import api.workout.client.UserRole;
+import api.workout.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 

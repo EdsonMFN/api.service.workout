@@ -1,5 +1,6 @@
 package api.workout.client;
 
+import api.workout.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 

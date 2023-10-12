@@ -1,10 +1,10 @@
 package api.workout.builder;
 
-import api.workout.entitys.fichaDeTreino.Exercicio;
-import api.workout.rest.DTO.AcademiaDTO;
-import api.workout.rest.DTO.AlunoDTO;
-import api.workout.rest.DTO.FichaDeTreinoDTO;
-import api.workout.rest.DTO.ProfessorDTO;
+import api.workout.domains.entitys.fichaDeTreino.Exercicio;
+import api.workout.domains.model.AcademiaDTO;
+import api.workout.domains.model.AlunoDTO;
+import api.workout.domains.model.FichaDeTreinoDTO;
+import api.workout.domains.model.ProfessorDTO;
 
 
 public final class FichaDeTreinoDTOBuilder {

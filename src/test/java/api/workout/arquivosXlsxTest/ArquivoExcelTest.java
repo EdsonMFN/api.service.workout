@@ -1,7 +1,7 @@
 package api.workout.arquivosXlsxTest;
 
 import api.workout.arquivo.ArquivoXlsx;
-import api.workout.entitys.planilha.InscricaoAluno;
+import api.workout.domains.entitys.planilha.InscricaoAluno;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

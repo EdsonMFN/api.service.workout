@@ -1,6 +1,6 @@
 package api.workout.arquivo;
 
-import api.workout.entitys.planilha.InscricaoAluno;
+import api.workout.domains.entitys.planilha.InscricaoAluno;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -21,8 +21,11 @@ public class ArquivoXlsx {
     public void criarArquivoXlsx(final String nomeArquivo, final List<InscricaoAluno> inscricaoAlunos) {
 
         try (var workbook = new XSSFWorkbook();
+             //abre o arquivo
              var outputStream = new FileOutputStream(nomeArquivo)) {
+            //cria o arquivo
             var planilha = workbook.createSheet("Lista de inscrições");
+            //inicia um contador de linhas
             int numeroDeLinha= 0;
 
             adicionarCabecalho(planilha,numeroDeLinha++);
@@ -49,10 +52,6 @@ public class ArquivoXlsx {
         adicionarCelula(linha,3,"Professor");
     }
     private void adicionarCelula(Row linha, int coluna, String valor){
-        Cell cell = linha.createCell(coluna);
-        cell.setCellValue(valor);
-    }
-    private void adicionarCelula(Row linha, int coluna, int valor){
         Cell cell = linha.createCell(coluna);
         cell.setCellValue(valor);
     }

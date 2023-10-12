@@ -9,8 +9,5 @@ public class DataBindingViolationException extends DataIntegrityViolationExcepti
     public DataBindingViolationException(String msg) {
         super(msg);
     }
-    public DataBindingViolationException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
 
 }

@@ -53,6 +53,7 @@ public class TratamentoDeErrors extends ResponseEntityExceptionHandler{
 
         return buildErrorResponse(ex.getCause(),HttpStatus.CONFLICT, ex.getMessage());
     }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericException(Exception ex,WebRequest webRequest){
 

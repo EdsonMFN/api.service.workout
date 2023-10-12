@@ -1,6 +1,6 @@
 package api.workout.rest.request;
 
-import api.workout.entitys.fichaDeTreino.TipoDeArquivo;
+import api.workout.enums.TipoDeArquivo;
 import lombok.Getter;
 import lombok.Setter;
 

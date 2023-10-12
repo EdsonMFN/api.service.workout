@@ -1,12 +1,13 @@
 package api.workout.service;
 
+
+import api.workout.client.FeignClient;
 import api.workout.client.Usuario;
-import api.workout.repositorys.RepositoryUsuario;
-import api.workout.rest.DTO.UsuarioDTO;
+import api.workout.domains.model.UsuarioDTO;
+import api.workout.domains.repositorys.RepositoryUsuario;
 import api.workout.rest.request.RequestUsuario;
 import api.workout.rest.response.ResponseUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class UsuarioService{
         }
         repositoryUsuario.save(usuario);
 
-        return new ResponseUsuario (UsuarioDTO.builder()
+        return new ResponseUsuario(UsuarioDTO.builder()
                 .idUsuario(usuario.getId())
                 .nomeUsuario(usuario.getNomeUsuario())
                 .senha(criptpgrafiaSenha)

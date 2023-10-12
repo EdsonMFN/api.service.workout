@@ -1,6 +1,6 @@
 package api.workout.rest.response;
 
-import api.workout.rest.DTO.ProfessorDTO;
+import api.workout.domains.model.ProfessorDTO;
 import lombok.Getter;
 import lombok.Setter;
 

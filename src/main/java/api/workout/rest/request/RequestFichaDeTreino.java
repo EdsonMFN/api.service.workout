@@ -1,6 +1,6 @@
 package api.workout.rest.request;
 
-import api.workout.entitys.fichaDeTreino.Exercicio;
+import api.workout.domains.entitys.fichaDeTreino.Exercicio;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,6 @@
 package api.workout.rest.response;
 
-import api.workout.rest.DTO.EnderecoDTO;
+import api.workout.domains.model.EnderecoDTO;
 import lombok.Getter;
 import lombok.Setter;
 
