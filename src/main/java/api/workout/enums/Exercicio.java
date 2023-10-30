@@ -1,4 +1,4 @@
-package api.workout.domains.entitys.fichaDeTreino;
+package api.workout.enums;
 
 public enum Exercicio {
 

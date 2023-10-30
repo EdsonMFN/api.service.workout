@@ -1,4 +1,4 @@
-package api.workout.exception;
+package api.workout.exception.handles;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

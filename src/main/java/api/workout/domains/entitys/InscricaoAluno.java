@@ -1,4 +1,4 @@
-package api.workout.domains.entitys.planilha;
+package api.workout.domains.entitys;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

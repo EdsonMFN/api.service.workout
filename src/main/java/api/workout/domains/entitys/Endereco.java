@@ -1,4 +1,4 @@
-package api.workout.domains.entitys.endereco;
+package api.workout.domains.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;

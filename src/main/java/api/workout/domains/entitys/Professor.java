@@ -1,8 +1,5 @@
-package api.workout.domains.entitys.professor;
+package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.fichaDeTreino.FichaDeTreino;
 import jakarta.persistence.*;
 import lombok.*;
 

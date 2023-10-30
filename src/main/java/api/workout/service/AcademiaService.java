@@ -1,12 +1,12 @@
 package api.workout.service;
 
 import api.workout.builder.AcademiaDTOBuilder;
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.endereco.Endereco;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Endereco;
 import api.workout.domains.model.EnderecoDTO;
 import api.workout.domains.repositorys.*;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.request.RequestAcademia;
 import api.workout.rest.response.ResponseAcademia;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package api.workout.academiaTest;
 
-import api.workout.domains.entitys.endereco.Endereco;
+import api.workout.domains.entitys.Endereco;
 import api.workout.service.AcademiaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,23 +1,22 @@
-package api.workout.domains.entitys.personal;
+package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "Persoanl")
-@Table(name = "personal")
+@Entity(name = "Aluno")
+@Table(name = "aluno")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Personal {
+public class Aluno {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_personal")
+    @Column(name = "id_aluno",insertable=false, updatable=false)
     @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
     private Long id;
 
@@ -27,13 +26,18 @@ public class Personal {
     @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "cref")
-    private String cref;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_academia_afiliada",nullable = false)
     private Academia academiaAfiliada;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personal")
-    private List<Aluno> aluno;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cref_professor",nullable = false)
+    private Professor professor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cref_personal")
+    private Personal personal;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "aluno")
+    private List<FichaDeTreino> fichaDeTreino;
 }

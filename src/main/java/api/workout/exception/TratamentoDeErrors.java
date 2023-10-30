@@ -1,5 +1,7 @@
 package api.workout.exception;
 
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.response.ResponseError;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +23,12 @@ public class TratamentoDeErrors extends ResponseEntityExceptionHandler{
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest webRequest){
-        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST, "Argumento invalido", ex.getCause());
+        ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST, "Falha na validação do objeto", ex.getCause());
          return handleExceptionInternal(ex,responseError,headers,status,webRequest);
     }
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest webRequest ){
-        log.error("Resquest invalido",ex.getCause());
+        protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest webRequest ){
+        log.error("Request fazia ou formato invalido",ex.getCause());
 
         Object message = null;
 
@@ -35,7 +37,7 @@ public class TratamentoDeErrors extends ResponseEntityExceptionHandler{
             message = exception.getValue();
         }
 
-        return buildErrorResponse(ex.getCause(),HttpStatus.BAD_REQUEST,"Resquest invalido");
+        return buildErrorResponse(ex.getCause(),HttpStatus.BAD_REQUEST,"Requisição invalida");
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)

@@ -32,5 +32,4 @@ public class AcessoController {
         List <ResponseUsuario> responseUsuario = usuarioService.listarUsuarios();
         return ResponseEntity.ok(responseUsuario);
     }
-
 }

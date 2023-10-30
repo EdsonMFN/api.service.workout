@@ -1,6 +1,6 @@
 package api.workout.arquivo;
 
-import api.workout.domains.entitys.planilha.InscricaoAluno;
+import api.workout.domains.entitys.InscricaoAluno;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
