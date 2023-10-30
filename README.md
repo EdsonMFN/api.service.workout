@@ -11,8 +11,10 @@ Aplicação de usuario de um sistema de academia, onde seram gerados:
 - JAVA 17;
 - Spring Boot;
 - Feing Client para implementar o microserviço de autenticação utilizando o Spring Security;
-- Geração de arquivos Xlsx, Txt e Pdf.
-- JPA/Hibernate
+- Geração de arquivos Xlsx, Txt e Pdf;
+- Performance Caching;
+- MySql;
+- JPA/Hibernate.
 
 ### Endpoints de usuario/Aluno: 
 Algumas permições são restritas entre Aluno, Professor, Admin e Gestor.
