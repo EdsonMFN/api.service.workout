@@ -1,6 +1,6 @@
 package api.workout.rest.controller;
 
-import api.workout.client.FeignClient;
+import api.workout.client.UserClient;
 import api.workout.rest.request.RequestUsuario;
 import api.workout.rest.response.ResponseUsuario;
 import api.workout.service.UsuarioService;
@@ -18,17 +18,17 @@ public class AcessoController {
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
-    private FeignClient feignClient;
+    private UserClient userClient;
 
     @PostMapping("/cadastro")
     public ResponseEntity<ResponseUsuario> cadastroLogin (@RequestBody RequestUsuario requestUsuario,@RequestHeader("Authorization") String authorization){
-        feignClient.autenticarUsuario(authorization);
+        userClient.autenticarUsuario(authorization);
         ResponseUsuario responseUsuario = usuarioService.cadastrarUsuario(requestUsuario,authorization);
         return ResponseEntity.ok(responseUsuario);
     }
     @GetMapping
     public ResponseEntity<List<ResponseUsuario>> listarUsuarios(@RequestHeader("Authorization") String authorization){
-        feignClient.autenticarUsuario(authorization);
+        userClient.autenticarUsuario(authorization);
         List <ResponseUsuario> responseUsuario = usuarioService.listarUsuarios();
         return ResponseEntity.ok(responseUsuario);
     }

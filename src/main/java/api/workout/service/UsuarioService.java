@@ -1,8 +1,8 @@
 package api.workout.service;
 
 
-import api.workout.client.FeignClient;
-import api.workout.client.Usuario;
+import api.workout.client.UserClient;
+import api.workout.domains.entitys.Usuario;
 import api.workout.domains.model.UsuarioDTO;
 import api.workout.domains.repositorys.RepositoryUsuario;
 import api.workout.rest.request.RequestUsuario;
@@ -18,7 +18,7 @@ import java.util.List;
 public class UsuarioService{
 
     @Autowired
-    private FeignClient feignClient;
+    private UserClient userClient;
 
     @Autowired
     private RepositoryUsuario repositoryUsuario;

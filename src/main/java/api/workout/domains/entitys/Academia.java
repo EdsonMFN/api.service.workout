@@ -1,11 +1,6 @@
-package api.workout.domains.entitys.academia;
+package api.workout.domains.entitys;
 
 
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.endereco.Endereco;
-import api.workout.domains.entitys.fichaDeTreino.FichaDeTreino;
-import api.workout.domains.entitys.personal.Personal;
-import api.workout.domains.entitys.professor.Professor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +17,6 @@ public class Academia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_academia_afiliada")
-    @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
     private Long id;
 
     @Column(name = "nome_academia_afiliada")

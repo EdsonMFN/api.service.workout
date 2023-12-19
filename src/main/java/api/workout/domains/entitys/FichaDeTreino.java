@@ -1,8 +1,6 @@
-package api.workout.domains.entitys.fichaDeTreino;
+package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.professor.Professor;
+import api.workout.enums.Exercicio;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +16,6 @@ public class FichaDeTreino {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ficha_de_treino")
-    @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
     private Long id;
 
     @Column(name = "ficha_de_exercicio")

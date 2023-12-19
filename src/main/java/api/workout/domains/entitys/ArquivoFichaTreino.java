@@ -1,4 +1,4 @@
-package api.workout.domains.entitys.fichaDeTreino;
+package api.workout.domains.entitys;
 
 import api.workout.enums.TipoDeArquivo;
 import jakarta.persistence.*;
@@ -18,7 +18,6 @@ public class ArquivoFichaTreino {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_Baixar_Treino")
-    @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
     private Long id;
 
     @ManyToOne

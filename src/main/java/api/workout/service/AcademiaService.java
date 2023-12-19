@@ -1,12 +1,12 @@
 package api.workout.service;
 
 import api.workout.builder.AcademiaDTOBuilder;
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.endereco.Endereco;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Endereco;
 import api.workout.domains.model.EnderecoDTO;
 import api.workout.domains.repositorys.*;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.request.RequestAcademia;
 import api.workout.rest.response.ResponseAcademia;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class AcademiaService {
         return responseAcademias;
     }
     public ResponseAcademia buscarAcademia(Long idAcademia){
-        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+        Academia academia = repositoryAcademia.findById(idAcademia)
                 .orElseThrow(() -> new ObjectNotFoundException("academia com o ID: " + idAcademia + " não encontrada."));
 
         var endereco = academia.getEndereco();
@@ -140,7 +140,7 @@ public class AcademiaService {
                 .build());
     }
     public ResponseAcademia deletarAcademia(Long idAcademia){
-        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+        Academia academia = repositoryAcademia.findById(idAcademia)
                 .orElseThrow(() -> new DataBindingViolationException("academia" + idAcademia +"não pode ser deletado por conflito com entidades"));
         try {
             repositoryAcademia.delete(academia);

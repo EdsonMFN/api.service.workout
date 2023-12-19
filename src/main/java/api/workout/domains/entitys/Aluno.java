@@ -1,9 +1,5 @@
-package api.workout.domains.entitys.aluno;
+package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.fichaDeTreino.FichaDeTreino;
-import api.workout.domains.entitys.personal.Personal;
-import api.workout.domains.entitys.professor.Professor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +17,6 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_aluno",insertable=false, updatable=false)
-    @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
     private Long id;
 
     @Column(name = "nome")

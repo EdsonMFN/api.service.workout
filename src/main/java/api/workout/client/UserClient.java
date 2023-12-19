@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @org.springframework.cloud.openfeign.FeignClient(name = "Auth", url = "http://localhost:8090/acesso")
-public interface FeignClient {
+public interface UserClient {
 
     @GetMapping("/authUsuario")
-    public ResponseEntity<ResponseUsuario> autenticarUsuario(@RequestHeader("Authorization") String authorization);
+    ResponseEntity<ResponseUsuario> autenticarUsuario(@RequestHeader("Authorization") String authorization);
 
 }

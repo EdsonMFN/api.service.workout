@@ -1,4 +1,4 @@
-package api.workout.client;
+package api.workout.domains.entitys;
 
 import api.workout.enums.UserRole;
 import jakarta.persistence.*;

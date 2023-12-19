@@ -3,17 +3,17 @@ package api.workout.service;
 import api.workout.builder.AcademiaDTOBuilder;
 import api.workout.builder.AlunoDTOBuilder;
 import api.workout.builder.PersonalDTOBuilder;
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.personal.Personal;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Aluno;
+import api.workout.domains.entitys.Personal;
 import api.workout.domains.model.AcademiaDTO;
 import api.workout.domains.model.AlunoDTO;
 import api.workout.domains.model.EnderecoDTO;
 import api.workout.domains.model.PersonalDTO;
 import api.workout.domains.repositorys.*;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ErrorException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ErrorException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.request.RequestPersonal;
 import api.workout.rest.response.ResponsePersonal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class PersonalService {
                 .build());
     }
     public List<ResponsePersonal> listarPersonal(Long idAcademia){
-        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+        Academia academia = repositoryAcademia.findById(idAcademia)
                 .orElseThrow(() -> new ErrorException("academia não encontrada."));
 
         var endereco = academia.getEndereco();
@@ -118,7 +118,7 @@ public class PersonalService {
         return responsePersonals;
     }
     public ResponsePersonal buscarPersonal(Long idPersonal){
-        Personal personal = repositoryPersonal.findById(idPersonal).map(p -> p)
+        Personal personal = repositoryPersonal.findById(idPersonal)
                 .orElseThrow(() -> new ObjectNotFoundException("personal com o ID "+idPersonal+ " não encontrado."));
 
         List<Aluno> alunos = repositoryAluno.findAll();
@@ -175,7 +175,7 @@ public class PersonalService {
                 .build());
     }
     public ResponsePersonal deletarPersoanl(Long idPersonal){
-        Personal personal = repositoryPersonal.findById(idPersonal).map(p -> p)
+        Personal personal = repositoryPersonal.findById(idPersonal)
                 .orElseThrow(() -> new DataBindingViolationException("personal" + idPersonal +"não pode ser deletado por conflito com entidades"));
         try {
             repositoryPersonal.delete(personal);

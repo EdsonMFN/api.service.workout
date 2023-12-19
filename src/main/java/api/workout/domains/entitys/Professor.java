@@ -1,24 +1,24 @@
-package api.workout.domains.entitys.personal;
+package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Aluno;
+import api.workout.domains.entitys.FichaDeTreino;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-@Entity(name = "Persoanl")
-@Table(name = "personal")
+@Entity(name = "Professor")
+@Table(name = "professor")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Personal {
+public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_personal")
-    @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
+    @Column(name = "id_professor")
     private Long id;
 
     @Column(name = "nome")
@@ -34,6 +34,10 @@ public class Personal {
     @JoinColumn(name = "id_academia_afiliada",nullable = false)
     private Academia academiaAfiliada;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personal")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "professor")
     private List<Aluno> aluno;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "professor")
+    private List<FichaDeTreino> fichaDeTreino;
+
 }

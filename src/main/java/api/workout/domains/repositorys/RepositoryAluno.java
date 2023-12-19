@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Aluno;
 
 public interface RepositoryAluno extends JpaRepository<Aluno,Long> {
 

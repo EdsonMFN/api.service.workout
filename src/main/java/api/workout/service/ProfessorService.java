@@ -7,11 +7,11 @@ import api.workout.domains.model.EnderecoDTO;
 import api.workout.domains.model.ProfessorDTO;
 import api.workout.rest.request.RequestProfessor;
 import api.workout.rest.response.ResponseProfessor;
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.professor.Professor;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ErrorException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Professor;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ErrorException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.domains.repositorys.RepositoryAcademia;
 import api.workout.domains.repositorys.RepositoryAluno;
 import api.workout.domains.repositorys.RepositoryFichaDeTreino;
@@ -120,7 +120,7 @@ public class ProfessorService {
         return responseProfessores;
     }
     public ResponseProfessor buscarProfessor(Long idProfessor){
-        Professor professor = repositoryProfessor.findById(idProfessor).map(p->p)
+        Professor professor = repositoryProfessor.findById(idProfessor)
                 .orElseThrow(()-> new ErrorException("professor não encontrado"));
 
         var academia = professor.getAcademiaAfiliada();
@@ -180,7 +180,7 @@ public class ProfessorService {
                 .build());
     }
     public ResponseProfessor deletarProfessor(Long idProfessor){
-        Professor professor = repositoryProfessor.findById(idProfessor).map(p->p)
+        Professor professor = repositoryProfessor.findById(idProfessor)
                 .orElseThrow(()-> new DataBindingViolationException("professor " + idProfessor +"não pode ser deletado por conflito com entidades"));
         try {
             repositoryProfessor.deleteById(idProfessor);

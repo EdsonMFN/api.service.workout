@@ -1,7 +1,7 @@
 package api.workout.domains.repositorys;
 
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.professor.Professor;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Professor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

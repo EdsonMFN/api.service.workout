@@ -6,17 +6,17 @@ import api.workout.builder.AcademiaDTOBuilder;
 import api.workout.builder.AlunoDTOBuilder;
 import api.workout.builder.FichaDeTreinoDTOBuilder;
 import api.workout.builder.ProfessorDTOBuilder;
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.fichaDeTreino.ArquivoFichaTreino;
-import api.workout.domains.entitys.fichaDeTreino.FichaDeTreino;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Aluno;
+import api.workout.domains.entitys.ArquivoFichaTreino;
+import api.workout.domains.entitys.FichaDeTreino;
 import api.workout.enums.TipoDeArquivo;
-import api.workout.domains.entitys.professor.Professor;
+import api.workout.domains.entitys.Professor;
 import api.workout.domains.model.*;
 import api.workout.domains.repositorys.*;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ErrorException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ErrorException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.request.RequestBaixarTreino;
 import api.workout.rest.request.RequestFichaDeTreino;
 import api.workout.rest.response.ResponseArquivoFichaTreino;
@@ -45,7 +45,7 @@ public class FichaDetreinoService {
         Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
         Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
 
-        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno()).map(a -> a)
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno())
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
         var endereco = academia.getEndereco();
@@ -150,7 +150,7 @@ public class FichaDetreinoService {
     }
 
     public List<ResponseFichaDeTreino> listarFichas(String cpfAluno){
-        Aluno aluno =   repositoryAluno.findByCpf(cpfAluno).map(a -> a)
+        Aluno aluno = repositoryAluno.findByCpf(cpfAluno)
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
         var professor = aluno.getProfessor();
@@ -213,7 +213,7 @@ public class FichaDetreinoService {
         return responseFichaDeTreinos;
     }
     public ResponseFichaDeTreino buscarFicha(Long idFicha){
-        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha).map(f -> f)
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha)
                 .orElseThrow(() -> new ObjectNotFoundException("Ficha com o ID"+idFicha+" não encontrada."));
 
         var academia = fichaDeTreino.getAcademiaAfiliada();
@@ -271,7 +271,7 @@ public class FichaDetreinoService {
         Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
         Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
 
-        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno()).map(a -> a)
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno())
                 .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestFichaDeTreino.getCpfAluno() + " não encontrado."));
 
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getIdFicha());
@@ -330,7 +330,7 @@ public class FichaDetreinoService {
                 .build());
     }
     public ResponseFichaDeTreino deletarFicha(Long idFicha){
-        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha).map(f -> f)
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha)
                 .orElseThrow(() -> new DataBindingViolationException("Ficha de ID"+idFicha+" não pode ser deletada."));
         try {
             repositoryFichaDeTreino.delete(fichaDeTreino);

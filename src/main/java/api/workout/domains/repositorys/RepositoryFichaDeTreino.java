@@ -1,7 +1,7 @@
 package api.workout.domains.repositorys;
 
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.fichaDeTreino.FichaDeTreino;
+import api.workout.domains.entitys.Aluno;
+import api.workout.domains.entitys.FichaDeTreino;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

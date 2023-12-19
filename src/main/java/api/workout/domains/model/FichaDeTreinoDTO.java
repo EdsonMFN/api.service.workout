@@ -1,6 +1,6 @@
 package api.workout.domains.model;
 
-import api.workout.domains.entitys.fichaDeTreino.Exercicio;
+import api.workout.enums.Exercicio;
 import lombok.Getter;
 import lombok.Setter;
 

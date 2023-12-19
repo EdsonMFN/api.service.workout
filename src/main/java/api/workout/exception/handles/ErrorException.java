@@ -1,4 +1,4 @@
-package api.workout.exception;
+package api.workout.exception.handles;
 
 import jakarta.persistence.EntityNotFoundException;
 

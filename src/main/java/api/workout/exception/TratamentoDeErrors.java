@@ -1,5 +1,7 @@
 package api.workout.exception;
 
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.response.ResponseError;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;

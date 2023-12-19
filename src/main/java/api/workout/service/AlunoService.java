@@ -4,17 +4,17 @@ import api.workout.builder.AcademiaDTOBuilder;
 import api.workout.builder.AlunoDTOBuilder;
 import api.workout.builder.PersonalDTOBuilder;
 import api.workout.builder.ProfessorDTOBuilder;
-import api.workout.domains.entitys.academia.Academia;
-import api.workout.domains.entitys.aluno.Aluno;
-import api.workout.domains.entitys.personal.Personal;
-import api.workout.domains.entitys.professor.Professor;
+import api.workout.domains.entitys.Academia;
+import api.workout.domains.entitys.Aluno;
+import api.workout.domains.entitys.Personal;
+import api.workout.domains.entitys.Professor;
 import api.workout.domains.model.AcademiaDTO;
 import api.workout.domains.model.EnderecoDTO;
 import api.workout.domains.model.PersonalDTO;
 import api.workout.domains.model.ProfessorDTO;
 import api.workout.domains.repositorys.*;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.rest.request.RequestAluno;
 import api.workout.rest.response.ResponseAluno;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class AlunoService {
 
     }
     public List<ResponseAluno> listarAlunos(Long idAcademia){
-        Academia academia = repositoryAcademia.findById(idAcademia).map(a -> a)
+        Academia academia = repositoryAcademia.findById(idAcademia)
                 .orElseThrow(() -> new ObjectNotFoundException("academia com o ID:" + idAcademia + " não encontrada."));
 
         var endereco = academia.getEndereco();
@@ -142,7 +142,7 @@ public class AlunoService {
         return responseAlunos;
     }
     public ResponseAluno buscarAluno(String cpfAluno){
-        Aluno aluno = repositoryAluno.findByCpf(cpfAluno).map(a -> a)
+        Aluno aluno = repositoryAluno.findByCpf(cpfAluno)
                 .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + cpfAluno + " não encontrado."));
 
         var academia = aluno.getAcademiaAfiliada();
@@ -186,7 +186,7 @@ public class AlunoService {
                 .build());
     }
     public ResponseAluno alterarAluno(RequestAluno requestAluno) {
-        Aluno aluno = repositoryAluno.getReferenceByCpf(requestAluno.getCpf()).map(a -> a)
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestAluno.getCpf())
                 .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestAluno.getCpf() + " não encontrado."));
 
         Academia academia = repositoryAcademia.getReferenceById(requestAluno.getIdAcademia());
@@ -234,7 +234,7 @@ public class AlunoService {
                 .build());
     }
     public ResponseAluno deletarAluno(Long idAluno){
-        Aluno aluno = repositoryAluno.findById(idAluno).map(a -> a)
+        Aluno aluno = repositoryAluno.findById(idAluno)
                 .orElseThrow(() -> new DataBindingViolationException("aluno de ID "+idAluno+"não pode ser deletado."));
         try {
             repositoryAluno.delete(aluno);

@@ -1,6 +1,6 @@
 package api.workout.builder;
 
-import api.workout.domains.entitys.fichaDeTreino.Exercicio;
+import api.workout.enums.Exercicio;
 import api.workout.domains.model.AcademiaDTO;
 import api.workout.domains.model.AlunoDTO;
 import api.workout.domains.model.FichaDeTreinoDTO;

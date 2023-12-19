@@ -64,6 +64,7 @@ public class ArquivoTreinoXlsx {
             byte[] base64Encoded = Base64.getEncoder().encode(excelBytes);
 
             return new String(base64Encoded);
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

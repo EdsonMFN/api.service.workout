@@ -3,9 +3,9 @@ package api.workout.service;
 import api.workout.domains.model.EnderecoDTO;
 import api.workout.rest.request.RequestEndereco;
 import api.workout.rest.response.ResponseEndereco;
-import api.workout.domains.entitys.endereco.Endereco;
-import api.workout.exception.DataBindingViolationException;
-import api.workout.exception.ObjectNotFoundException;
+import api.workout.domains.entitys.Endereco;
+import api.workout.exception.handles.DataBindingViolationException;
+import api.workout.exception.handles.ObjectNotFoundException;
 import api.workout.domains.repositorys.RepositoryAcademia;
 import api.workout.domains.repositorys.RepositoryEndereco;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +65,7 @@ public class EnderecoService {
         return responseEnderecos;
     }
     public ResponseEndereco buscarEndereco(Long idEndereco){
-        Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
+        Endereco endereco = repositoryEndereco.findById(idEndereco)
                 .orElseThrow(() -> new ObjectNotFoundException("endereço com o ID "+idEndereco+" não encontrado."));
 
         return new ResponseEndereco(EnderecoDTO
@@ -99,7 +99,7 @@ public class EnderecoService {
                 .build());
     }
     public ResponseEndereco deletarEndereco(Long idEndereco){
-        Endereco endereco = repositoryEndereco.findById(idEndereco).map(e -> e)
+        Endereco endereco = repositoryEndereco.findById(idEndereco)
                 .orElseThrow(() -> new DataBindingViolationException("endereço" + idEndereco +"não pode ser deletado por conflito com entidades"));
         try {
             repositoryEndereco.delete(endereco);

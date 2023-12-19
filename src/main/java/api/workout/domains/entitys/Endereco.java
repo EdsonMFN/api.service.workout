@@ -1,4 +1,4 @@
-package api.workout.domains.entitys.endereco;
+package api.workout.domains.entitys;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,6 @@ public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_endereco")
-    @PrimaryKeyJoinColumns(value = {@PrimaryKeyJoinColumn})
     private Long id;
 
     @Column(name = "estado")
