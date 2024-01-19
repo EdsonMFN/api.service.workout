@@ -42,7 +42,6 @@ public class Aluno {
     private List<FichaDeTreino> fichaDeTreino;
 
     public Aluno(RequestAluno requestAluno) {
-        this.id = requestAluno.getIdAcademia();
         this.nome = requestAluno.getNome();
         this.cpf = requestAluno.getCpf();
         this.academiaAfiliada = new Academia();

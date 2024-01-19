@@ -1,5 +1,8 @@
 package api.workout.rest.request;
 
+import api.workout.domains.model.AcademiaDTO;
+import api.workout.domains.model.AlunoDTO;
+import api.workout.domains.model.ProfessorDTO;
 import api.workout.enums.Exercicio;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +13,7 @@ public class RequestFichaDeTreino {
 
     private Long id;
     private Exercicio exercicio;
-    private Long idProfessor;
-    private String cpfAluno;
-    private Long idAcademia;
+    private ProfessorDTO professor;
+    private AlunoDTO aluno;
+    private AcademiaDTO academia;
 }

@@ -33,7 +33,7 @@ public class ProfessorService {
     private RepositoryFichaDeTreino repositoryFichaDeTreino;
 
     public ResponseProfessor criarProfessor(RequestProfessor requestProfessor){
-        Academia academia = repositoryAcademia.getReferenceById(requestProfessor.getIdAcademia());
+        Academia academia = repositoryAcademia.getReferenceById(requestProfessor.getAcademia().getId());
 
         var endereco = academia.getEndereco();
 
@@ -129,7 +129,7 @@ public class ProfessorService {
     }
     public ResponseProfessor alterarProfessor(RequestProfessor requestProfessor){
         Professor professor = repositoryProfessor.getReferenceById(requestProfessor.getId());
-        Academia academia = repositoryAcademia.getReferenceById(requestProfessor.getIdAcademia());
+        Academia academia = repositoryAcademia.getReferenceById(requestProfessor.getAcademia().getId());
 
         professor.setNome(requestProfessor.getNome());
         professor.setCpf(requestProfessor.getCpf());

@@ -38,10 +38,10 @@ public class FichaDetreinoService {
     private RepositoryBaixarTreino repositoryBaixarTreino;
 
     public ResponseFichaDeTreino criarFicha(RequestFichaDeTreino requestFichaDeTreino){
-        Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
-        Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
+        Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getAcademia().getId());
+        Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getProfessor().getId());
 
-        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno())
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getAluno().getCpf())
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 //        var endereco = academia.getEndereco();
 //
@@ -91,7 +91,7 @@ public class FichaDetreinoService {
         return new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
     }
     public ResponseArquivoFichaTreino criarAquivoTreino(RequestBaixarTreino requestBaixarTreino){
-        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestBaixarTreino.getIdFichaDeTreino());
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestBaixarTreino.getFichaDeTreino().getId());
         var aluno = fichaDeTreino.getAluno();
         var professor = fichaDeTreino.getProfessor();
 
@@ -239,11 +239,11 @@ public class FichaDetreinoService {
         return new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
     }
     public ResponseFichaDeTreino alterarFicha (RequestFichaDeTreino requestFichaDeTreino){
-        Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
-        Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getIdProfessor());
+        Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getAcademia().getId());
+        Professor professor = repositoryProfessor.getReferenceById(requestFichaDeTreino.getProfessor().getId());
 
-        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno())
-                .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestFichaDeTreino.getCpfAluno() + " não encontrado."));
+        Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getAluno().getCpf())
+                .orElseThrow(() -> new ObjectNotFoundException("Aluno com o CPF " + requestFichaDeTreino.getAluno().getCpf() + " não encontrado."));
 
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getId());
 //        var endereco = academia.getEndereco();

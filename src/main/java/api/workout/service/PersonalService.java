@@ -34,7 +34,7 @@ public class PersonalService {
     private RepositoryEndereco repositoryEndereco;
 
     public ResponsePersonal criarPersonal(RequestPersonal requestPersonal){
-        Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getIdAcademia());
+        Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getAcademia().getId());
 //        var endereco = academia.getEndereco();
 
         Personal personal = new Personal(requestPersonal);
@@ -135,7 +135,7 @@ public class PersonalService {
     }
     public ResponsePersonal alterarPersonal(RequestPersonal requestPersonal){
         Personal personal = repositoryPersonal.getReferenceById(requestPersonal.getId());
-        Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getIdAcademia());
+        Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getAcademia().getId());
 
         personal.setNome(requestPersonal.getNome());
         personal.setAcademiaAfiliada(academia);

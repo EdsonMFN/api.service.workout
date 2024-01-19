@@ -33,8 +33,8 @@ public class AlunoService {
     private RepositoryEndereco repositoryEndereco;
 
     public ResponseAluno criarAluno(RequestAluno requestAluno){
-        Academia academia = repositoryAcademia.getReferenceById(requestAluno.getIdAcademia());
-        Professor professor = repositoryProfessor.getReferenceById(requestAluno.getIdProfessor());
+        Academia academia = repositoryAcademia.getReferenceById(requestAluno.getAcademia().getId());
+        Professor professor = repositoryProfessor.getReferenceById(requestAluno.getProfessor().getId());
 
 //        var endereco = academia.getEndereco();
 
@@ -160,9 +160,9 @@ public class AlunoService {
         Aluno aluno = repositoryAluno.getReferenceByCpf(requestAluno.getCpf())
                 .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestAluno.getCpf() + " não encontrado."));
 
-        Academia academia = repositoryAcademia.getReferenceById(requestAluno.getIdAcademia());
-        Personal personal = repositoryPersonal.getReferenceById(requestAluno.getIdPersonal());
-        Professor professor = repositoryProfessor.getReferenceById(requestAluno.getIdPersonal());
+        Academia academia = repositoryAcademia.getReferenceById(requestAluno.getAcademia().getId());
+        Personal personal = repositoryPersonal.getReferenceById(requestAluno.getPersonal().getId());
+        Professor professor = repositoryProfessor.getReferenceById(requestAluno.getProfessor().getId());
 
         aluno.setNome(requestAluno.getNome());
         aluno.setAcademiaAfiliada(academia);

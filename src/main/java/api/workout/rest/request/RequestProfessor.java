@@ -1,5 +1,6 @@
 package api.workout.rest.request;
 
+import api.workout.domains.model.AcademiaDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,6 @@ public class RequestProfessor {
     private String nome;
     private String cpf;
     private String cref;
-    private Long idAcademia;
+    private AcademiaDTO academia;
 
 }
