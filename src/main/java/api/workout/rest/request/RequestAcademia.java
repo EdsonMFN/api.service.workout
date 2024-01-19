@@ -1,14 +1,13 @@
 package api.workout.rest.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import api.workout.domains.model.EnderecoDTO;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class RequestAcademia {
 
-    private Long idAcademia;
+    private Long id;
     private String academiaAfiliada;
     private String cnpj;
-    private Long idEndereco;
+    private EnderecoDTO endereco;
 }

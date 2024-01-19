@@ -1,16 +1,16 @@
 package api.workout.domains.entitys;
 
+import api.workout.domains.model.FichaDeTreinoDTO;
 import api.workout.enums.Exercicio;
+import api.workout.rest.request.RequestFichaDeTreino;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "FichaDeTreino")
+@Entity
 @Table(name = "fichaDeTreino")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class FichaDeTreino {
 
     @Id
@@ -33,4 +33,12 @@ public class FichaDeTreino {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_academia_afiliada")
     private Academia academiaAfiliada;
+
+    public FichaDeTreino(RequestFichaDeTreino requestFichaDeTreino) {
+        this.id = requestFichaDeTreino.getId();
+        this.exercicio = requestFichaDeTreino.getExercicio();
+        this.professor = new Professor();
+        this.aluno = new Aluno();
+        this.academiaAfiliada = new Academia();
+    }
 }

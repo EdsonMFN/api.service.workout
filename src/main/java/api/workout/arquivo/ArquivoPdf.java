@@ -21,8 +21,6 @@ public class ArquivoPdf {
             String text = textStripper.getText(document);
 
             document.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -38,8 +36,6 @@ public class ArquivoPdf {
             byte[] base64Encoded = Base64.getEncoder().encode(pdfBytes);
 
             return new String(base64Encoded);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

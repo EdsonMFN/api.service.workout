@@ -1,20 +1,19 @@
 package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.Academia;
-import api.workout.domains.entitys.Aluno;
-import api.workout.domains.entitys.FichaDeTreino;
+import api.workout.rest.request.RequestProfessor;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "Professor")
+@Entity
 @Table(name = "professor")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +39,13 @@ public class Professor {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "professor")
     private List<FichaDeTreino> fichaDeTreino;
 
+    public Professor(RequestProfessor requestProfessor) {
+        this.id = requestProfessor.getId();
+        this.nome = requestProfessor.getNome();
+        this.cpf = requestProfessor.getCpf();
+        this.cref = requestProfessor.getCref();
+        this.academiaAfiliada = new Academia();
+        this.aluno = new ArrayList<>();
+        this.fichaDeTreino = new ArrayList<>();
+    }
 }

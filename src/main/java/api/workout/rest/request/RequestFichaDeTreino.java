@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class RequestFichaDeTreino {
 
-    private Long idFicha;
+    private Long id;
     private Exercicio exercicio;
     private Long idProfessor;
     private String cpfAluno;

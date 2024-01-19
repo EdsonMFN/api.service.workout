@@ -1,19 +1,19 @@
 package api.workout.domains.entitys;
 
-import api.workout.domains.entitys.Academia;
-import api.workout.domains.entitys.Aluno;
+import api.workout.rest.request.RequestPersonal;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "Persoanl")
+@Entity
 @Table(name = "personal")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Personal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +35,13 @@ public class Personal {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "personal")
     private List<Aluno> aluno;
+
+    public Personal(RequestPersonal requestPersonal) {
+        this.id = requestPersonal.getId();
+        this.nome = requestPersonal.getNome();
+        this.cpf = requestPersonal.getCpf();
+        this.cref = requestPersonal.getCref();
+        this.academiaAfiliada = new Academia();
+        this.aluno = new ArrayList<>();
+    }
 }

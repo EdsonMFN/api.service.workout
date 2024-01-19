@@ -1,11 +1,11 @@
 package api.workout.domains.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import api.workout.domains.entitys.Endereco;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class EnderecoDTO {
 
@@ -15,4 +15,19 @@ public class EnderecoDTO {
     private String bairro;
     private String numero;
     private String cep;
+
+    public EnderecoDTO(Endereco endereco) {
+        builder(endereco);
+    }
+
+    public EnderecoDTO builder(Endereco endereco) {
+       return EnderecoDTO.builder()
+                .id(endereco.getId())
+                .estado(endereco.getEstado())
+                .cidade(endereco.getCidade())
+                .bairro(endereco.getBairro())
+                .numero(endereco.getNumero())
+                .cep(endereco.getCep())
+                .build();
+    }
 }

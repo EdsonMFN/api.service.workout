@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class RequestPersonal {
 
-    private Long idPersonal;
+    private Long id;
     private String nome;
     private String cpf;
     private String cref;

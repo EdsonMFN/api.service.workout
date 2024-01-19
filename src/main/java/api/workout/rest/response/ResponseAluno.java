@@ -1,11 +1,9 @@
 package api.workout.rest.response;
 
 import api.workout.domains.model.AlunoDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ResponseAluno {
 
     private AlunoDTO alunoDTO;
@@ -13,4 +11,5 @@ public class ResponseAluno {
     public ResponseAluno(AlunoDTO alunoDTO) {
         this.alunoDTO=alunoDTO;
     }
+
 }

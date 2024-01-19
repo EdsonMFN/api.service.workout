@@ -1,14 +1,10 @@
 package api.workout.service;
 
-import api.workout.builder.AcademiaDTOBuilder;
-import api.workout.builder.AlunoDTOBuilder;
-import api.workout.builder.PersonalDTOBuilder;
 import api.workout.domains.entitys.Academia;
 import api.workout.domains.entitys.Aluno;
 import api.workout.domains.entitys.Personal;
 import api.workout.domains.model.AcademiaDTO;
 import api.workout.domains.model.AlunoDTO;
-import api.workout.domains.model.EnderecoDTO;
 import api.workout.domains.model.PersonalDTO;
 import api.workout.domains.repositorys.*;
 import api.workout.exception.handles.DataBindingViolationException;
@@ -39,79 +35,62 @@ public class PersonalService {
 
     public ResponsePersonal criarPersonal(RequestPersonal requestPersonal){
         Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getIdAcademia());
-        var endereco = academia.getEndereco();
+//        var endereco = academia.getEndereco();
 
-        Personal personal = new Personal();
-        personal.setNome(requestPersonal.getNome());
-        personal.setCpf(requestPersonal.getCpf());
-        personal.setCref(requestPersonal.getCref());
+        Personal personal = new Personal(requestPersonal);
         personal.setAcademiaAfiliada(academia);
         repositoryPersonal.save(personal);
 
-        EnderecoDTO enderecoDTO = EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build();
+//        EnderecoDTO enderecoDTO = EnderecoDTO
+//                .builder()
+//                .id(endereco.getId())
+//                .cep(endereco.getCep())
+//                .estado(endereco.getEstado())
+//                .bairro(endereco.getBairro())
+//                .cidade(endereco.getCidade())
+//                .numero(endereco.getNumero())
+//                .build();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .endereco(enderecoDTO)
+//                .build();
 
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .endereco(enderecoDTO)
-                .build();
-
-        return new ResponsePersonal(PersonalDTOBuilder
-                .personalDTOBuilder()
-                .id(personal.getId())
-                .nome(personal.getNome())
-                .cpf(personal.getCpf())
-                .cref(personal.getCref())
-                .idAcademiasAfiliada(academiaDTO)
-                .build());
+        return new ResponsePersonal(new PersonalDTO(personal));
     }
     public List<ResponsePersonal> listarPersonal(Long idAcademia){
         Academia academia = repositoryAcademia.findById(idAcademia)
                 .orElseThrow(() -> new ErrorException("academia não encontrada."));
 
-        var endereco = academia.getEndereco();
+//        var endereco = academia.getEndereco();
 
         List<Personal> personals = repositoryPersonal.findByAcademiaAfiliada(academia);
         List<ResponsePersonal> responsePersonals = new ArrayList<>();
 
-        EnderecoDTO enderecoDTO = EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build();
-
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .endereco(enderecoDTO)
-                .build();
+//        EnderecoDTO enderecoDTO = EnderecoDTO
+//                .builder()
+//                .id(endereco.getId())
+//                .cep(endereco.getCep())
+//                .estado(endereco.getEstado())
+//                .bairro(endereco.getBairro())
+//                .cidade(endereco.getCidade())
+//                .numero(endereco.getNumero())
+//                .build();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .endereco(enderecoDTO)
+//                .build();
 
         personals.forEach(personal -> {
             ResponsePersonal responsePersonal =
-                    new ResponsePersonal(PersonalDTOBuilder
-                    .personalDTOBuilder()
-                    .id(personal.getId())
-                    .nome(personal.getNome())
-                    .cpf(personal.getCpf())
-                    .cref(personal.getCref())
-                    .idAcademiasAfiliada(academiaDTO)
-                    .build());
+                    new ResponsePersonal(new PersonalDTO(personal));
 
             responsePersonals.add(responsePersonal);
         });
@@ -127,15 +106,9 @@ public class PersonalService {
 
         List<AlunoDTO> alunoDTOS = new ArrayList<>();
 
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .build();
+        AcademiaDTO academiaDTO = new AcademiaDTO(academia);
 
-        PersonalDTO personalDTO = PersonalDTOBuilder
-                .personalDTOBuilder()
+        PersonalDTO personalDTO = PersonalDTO.builder()
                 .id(personal.getId())
                 .nome(personal.getNome())
                 .cpf(personal.getCpf())
@@ -145,34 +118,30 @@ public class PersonalService {
                 .build();
 
         alunos.parallelStream().forEach(aluno -> {
-            AlunoDTO alunoDTO = AlunoDTOBuilder
-                    .alunoDTOBuilder()
+            AlunoDTO alunoDTO = AlunoDTO.builder()
                     .id(aluno.getId())
                     .cpf(aluno.getCpf())
                     .nome(aluno.getNome())
-                    .idAcademiaAfiliada(academiaDTO)
-                    .crefPersonal(personalDTO)
+                    .academiaAfiliada(academiaDTO)
+                    .personal(personalDTO)
                     .build();
+
             if (personal.equals(aluno.getPersonal())){
                 personalDTO.setAlunos(alunoDTOS);
                 personalDTO.getAlunos().add(alunoDTO);
             }
         });
-        return new ResponsePersonal(personalDTO);
+        return new ResponsePersonal(new PersonalDTO(personal));
     }
     public ResponsePersonal alterarPersonal(RequestPersonal requestPersonal){
-        Personal personal = repositoryPersonal.getReferenceById(requestPersonal.getIdPersonal());
+        Personal personal = repositoryPersonal.getReferenceById(requestPersonal.getId());
         Academia academia = repositoryAcademia.getReferenceById(requestPersonal.getIdAcademia());
 
         personal.setNome(requestPersonal.getNome());
         personal.setAcademiaAfiliada(academia);
         repositoryPersonal.save(personal);
 
-        return new ResponsePersonal(PersonalDTOBuilder
-                .personalDTOBuilder()
-                .id(personal.getId())
-                .nome(personal.getNome())
-                .build());
+        return new ResponsePersonal(new PersonalDTO(personal));
     }
     public ResponsePersonal deletarPersoanl(Long idPersonal){
         Personal personal = repositoryPersonal.findById(idPersonal)
@@ -182,12 +151,6 @@ public class PersonalService {
         }catch (Exception e){
             throw new DataBindingViolationException("O personal não pode ser deletado, por precisar deletar entidades relacionas");
         }
-        return new ResponsePersonal(PersonalDTOBuilder
-                .personalDTOBuilder()
-                .id(personal.getId())
-                .nome(personal.getNome())
-                .cpf(personal.getCpf())
-                .cref(personal.getCref())
-                .build());
+        return new ResponsePersonal(new PersonalDTO(personal));
     }
 }

@@ -24,23 +24,10 @@ public class EnderecoService {
 
     public ResponseEndereco criarEndereco(RequestEndereco requestEndereco){
 
-        Endereco endereco = new Endereco();
-        endereco.setCep(requestEndereco.getCep());
-        endereco.setBairro(requestEndereco.getBairro());
-        endereco.setNumero(requestEndereco.getNumero());
-        endereco.setEstado(requestEndereco.getEstado());
-        endereco.setCidade(requestEndereco.getCidade());
+        Endereco endereco = new Endereco(requestEndereco);
         repositoryEndereco.save(endereco);
 
-        return new ResponseEndereco(EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build());
+        return new ResponseEndereco(new EnderecoDTO(endereco));
     }
     public List<ResponseEndereco> listarEndereco(){
 
@@ -49,15 +36,7 @@ public class EnderecoService {
 
         enderecos.forEach(endereco -> {
             ResponseEndereco responseEndereco =
-                    new ResponseEndereco(EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build());
+                    new ResponseEndereco(new EnderecoDTO(endereco));
 
             responseEnderecos.add(responseEndereco);
         });
@@ -68,18 +47,10 @@ public class EnderecoService {
         Endereco endereco = repositoryEndereco.findById(idEndereco)
                 .orElseThrow(() -> new ObjectNotFoundException("endereço com o ID "+idEndereco+" não encontrado."));
 
-        return new ResponseEndereco(EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build());
+        return new ResponseEndereco(new EnderecoDTO(endereco));
     }
     public ResponseEndereco altararEndereco(RequestEndereco requestEndereco) {
-        Endereco endereco = repositoryEndereco.getReferenceById(requestEndereco.getIdEndereco());
+        Endereco endereco = repositoryEndereco.getReferenceById(requestEndereco.getId());
 
         endereco.setCep(requestEndereco.getCep());
         endereco.setBairro(requestEndereco.getBairro());
@@ -88,15 +59,7 @@ public class EnderecoService {
         endereco.setCidade(requestEndereco.getCidade());
         repositoryEndereco.save(endereco);
 
-        return new ResponseEndereco(EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build());
+        return new ResponseEndereco(new EnderecoDTO(endereco));
     }
     public ResponseEndereco deletarEndereco(Long idEndereco){
         Endereco endereco = repositoryEndereco.findById(idEndereco)
@@ -106,16 +69,6 @@ public class EnderecoService {
         }catch (Exception e){
             throw new DataBindingViolationException("O endereco não pode ser deletado por precisar deletar entidades relacionas");
         }
-
-
-        return new ResponseEndereco(EnderecoDTO
-                    .builder()
-                    .id(endereco.getId())
-                    .cep(endereco.getCep())
-                    .estado(endereco.getEstado())
-                    .bairro(endereco.getBairro())
-                    .cidade(endereco.getCidade())
-                    .numero(endereco.getNumero())
-                    .build());
+        return new ResponseEndereco(new EnderecoDTO(endereco));
     }
 }

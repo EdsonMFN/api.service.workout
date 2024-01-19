@@ -1,8 +1,12 @@
 package api.workout.domains.entitys;
 
 import api.workout.enums.UserRole;
+import api.workout.rest.request.RequestUsuario;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
@@ -11,7 +15,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +31,11 @@ public class Usuario {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    public Usuario(RequestUsuario requestUsuario) {
+        this.id = requestUsuario.getId();
+        this.nomeUsuario = requestUsuario.getNomeUsuario();
+        this.senha = requestUsuario.getSenha();
+        this.role = requestUsuario.getRole();
+    }
 }

@@ -1,17 +1,18 @@
 package api.workout.domains.entitys;
 
+import api.workout.rest.request.RequestAluno;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "Aluno")
+@Entity
 @Table(name = "aluno")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode
 public class Aluno {
 
     @Id
@@ -39,4 +40,14 @@ public class Aluno {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aluno")
     private List<FichaDeTreino> fichaDeTreino;
+
+    public Aluno(RequestAluno requestAluno) {
+        this.id = requestAluno.getIdAcademia();
+        this.nome = requestAluno.getNome();
+        this.cpf = requestAluno.getCpf();
+        this.academiaAfiliada = new Academia();
+        this.professor = new Professor();
+        this.personal = new Personal();
+        this.fichaDeTreino = new ArrayList<>();
+    }
 }

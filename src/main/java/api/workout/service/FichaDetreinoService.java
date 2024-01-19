@@ -2,10 +2,6 @@ package api.workout.service;
 
 import api.workout.arquivo.ArquivoPdf;
 import api.workout.arquivo.ArquivoTreinoXlsx;
-import api.workout.builder.AcademiaDTOBuilder;
-import api.workout.builder.AlunoDTOBuilder;
-import api.workout.builder.FichaDeTreinoDTOBuilder;
-import api.workout.builder.ProfessorDTOBuilder;
 import api.workout.domains.entitys.Academia;
 import api.workout.domains.entitys.Aluno;
 import api.workout.domains.entitys.ArquivoFichaTreino;
@@ -47,85 +43,74 @@ public class FichaDetreinoService {
 
         Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno())
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
+//        var endereco = academia.getEndereco();
+//
+//        EnderecoDTO enderecoDTO = EnderecoDTO
+//                .builder()
+//                .id(endereco.getId())
+//                .cep(endereco.getCep())
+//                .estado(endereco.getEstado())
+//                .bairro(endereco.getBairro())
+//                .cidade(endereco.getCidade())
+//                .numero(endereco.getNumero())
+//                .build();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .endereco(enderecoDTO)
+//                .build();
+//
+//        ProfessorDTO professorDTO = ProfessorDTOBuilder
+//                .professorDTOBuilder()
+//                .id(professor.getId())
+//                .nome(professor.getNome())
+//                .cpf(professor.getCpf())
+//                .cref(professor.getCref())
+//                .academiasAfiliada(academiaDTO)
+//                .build();
+//
+//
+//        AlunoDTO alunoDTO= AlunoDTOBuilder
+//                .alunoDTOBuilder()
+//                .id(aluno.getId())
+//                .cpf(aluno.getCpf())
+//                .nome(aluno.getNome())
+//                .idAcademiaAfiliada(academiaDTO)
+//                .crefProfessor(professorDTO)
+//                .build();
 
-        var endereco = academia.getEndereco();
-
-        EnderecoDTO enderecoDTO = EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build();
-
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .endereco(enderecoDTO)
-                .build();
-
-        ProfessorDTO professorDTO = ProfessorDTOBuilder
-                .professorDTOBuilder()
-                .id(professor.getId())
-                .nome(professor.getNome())
-                .cpf(professor.getCpf())
-                .cref(professor.getCref())
-                .academiasAfiliada(academiaDTO)
-                .build();
-
-
-        AlunoDTO alunoDTO= AlunoDTOBuilder
-                .alunoDTOBuilder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .idAcademiaAfiliada(academiaDTO)
-                .crefProfessor(professorDTO)
-                .build();
-
-        FichaDeTreino fichaDeTreino = new FichaDeTreino();
+        FichaDeTreino fichaDeTreino = new FichaDeTreino(requestFichaDeTreino);
         fichaDeTreino.setAcademiaAfiliada(academia);
         fichaDeTreino.setProfessor(professor);
         fichaDeTreino.setAluno(aluno);
-        fichaDeTreino.setExercicio(requestFichaDeTreino.getExercicio());
         repositoryFichaDeTreino.save(fichaDeTreino);
 
-        return new ResponseFichaDeTreino(FichaDeTreinoDTOBuilder
-                .fichaDeTreinoDTOBuilder()
-                .id(fichaDeTreino.getId())
-                .academiaAfiliada(academiaDTO)
-                .professor(professorDTO)
-                .aluno(alunoDTO)
-                .exercicio(fichaDeTreino.getExercicio())
-                .build());
+        return new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
     }
     public ResponseArquivoFichaTreino criarAquivoTreino(RequestBaixarTreino requestBaixarTreino){
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestBaixarTreino.getIdFichaDeTreino());
         var aluno = fichaDeTreino.getAluno();
         var professor = fichaDeTreino.getProfessor();
 
-        ProfessorDTO professorDTO = ProfessorDTOBuilder
-                .professorDTOBuilder()
+        ProfessorDTO professorDTO = ProfessorDTO.builder()
                 .id(professor.getId())
                 .nome(professor.getNome())
                 .cpf(professor.getCpf())
                 .cref(professor.getCref())
                 .build();
 
-        AlunoDTO alunoDTO= AlunoDTOBuilder
-                .alunoDTOBuilder()
+
+        AlunoDTO alunoDTO= AlunoDTO.builder()
                 .id(aluno.getId())
                 .cpf(aluno.getCpf())
                 .nome(aluno.getNome())
-                .crefProfessor(professorDTO)
+                .professor(professorDTO)
                 .build();
 
-        FichaDeTreinoDTO fichaDeTreinoDTO = FichaDeTreinoDTOBuilder
-                .fichaDeTreinoDTOBuilder()
+        FichaDeTreinoDTO fichaDeTreinoDTO = FichaDeTreinoDTO.builder()
                 .id(fichaDeTreino.getId())
                 .professor(professorDTO)
                 .aluno(alunoDTO)
@@ -153,60 +138,53 @@ public class FichaDetreinoService {
         Aluno aluno = repositoryAluno.findByCpf(cpfAluno)
                 .orElseThrow(() -> new ErrorException("aluno não encontrado."));
 
-        var professor = aluno.getProfessor();
-        var academia = aluno.getAcademiaAfiliada();
-        var endereco = aluno.getAcademiaAfiliada().getEndereco();
+//        var professor = aluno.getProfessor();
+//        var academia = aluno.getAcademiaAfiliada();
+//        var endereco = aluno.getAcademiaAfiliada().getEndereco();
 
         List<FichaDeTreino> fichaDeTreinos = repositoryFichaDeTreino.findByAluno(aluno);
         List<ResponseFichaDeTreino> responseFichaDeTreinos = new ArrayList<>();
-
-        EnderecoDTO enderecoDTO = EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build();
-
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .endereco(enderecoDTO)
-                .build();
-
-        ProfessorDTO professorDTO = ProfessorDTOBuilder
-                .professorDTOBuilder()
-                .id(professor.getId())
-                .nome(professor.getNome())
-                .cpf(professor.getCpf())
-                .cref(professor.getCref())
-                .academiasAfiliada(academiaDTO)
-                .build();
-
-
-        AlunoDTO alunoDTO= AlunoDTOBuilder
-                .alunoDTOBuilder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .idAcademiaAfiliada(academiaDTO)
-                .crefProfessor(professorDTO)
-                .build();
+//
+//        EnderecoDTO enderecoDTO = EnderecoDTO
+//                .builder()
+//                .id(endereco.getId())
+//                .cep(endereco.getCep())
+//                .estado(endereco.getEstado())
+//                .bairro(endereco.getBairro())
+//                .cidade(endereco.getCidade())
+//                .numero(endereco.getNumero())
+//                .build();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .endereco(enderecoDTO)
+//                .build();
+//
+//        ProfessorDTO professorDTO = ProfessorDTOBuilder
+//                .professorDTOBuilder()
+//                .id(professor.getId())
+//                .nome(professor.getNome())
+//                .cpf(professor.getCpf())
+//                .cref(professor.getCref())
+//                .academiasAfiliada(academiaDTO)
+//                .build();
+//
+//
+//        AlunoDTO alunoDTO= AlunoDTOBuilder
+//                .alunoDTOBuilder()
+//                .id(aluno.getId())
+//                .cpf(aluno.getCpf())
+//                .nome(aluno.getNome())
+//                .idAcademiaAfiliada(academiaDTO)
+//                .crefProfessor(professorDTO)
+//                .build();
 
         fichaDeTreinos.forEach(fichaDeTreino -> {
             ResponseFichaDeTreino responseFichaDeTreino =
-                    new ResponseFichaDeTreino(FichaDeTreinoDTOBuilder
-                    .fichaDeTreinoDTOBuilder()
-                    .id(fichaDeTreino.getId())
-                    .academiaAfiliada(academiaDTO)
-                    .professor(professorDTO)
-                    .aluno(alunoDTO)
-                    .exercicio(fichaDeTreino.getExercicio())
-                    .build());
+                    new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
 
             responseFichaDeTreinos.add(responseFichaDeTreino);
         });
@@ -215,57 +193,50 @@ public class FichaDetreinoService {
     public ResponseFichaDeTreino buscarFicha(Long idFicha){
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha)
                 .orElseThrow(() -> new ObjectNotFoundException("Ficha com o ID"+idFicha+" não encontrada."));
+//
+//        var academia = fichaDeTreino.getAcademiaAfiliada();
+//        var aluno = fichaDeTreino.getAluno();
+//        var endereco = academia.getEndereco();
+//        var professor = aluno.getProfessor();
+//
+//        EnderecoDTO enderecoDTO = EnderecoDTO
+//                .builder()
+//                .id(endereco.getId())
+//                .cep(endereco.getCep())
+//                .estado(endereco.getEstado())
+//                .bairro(endereco.getBairro())
+//                .cidade(endereco.getCidade())
+//                .numero(endereco.getNumero())
+//                .build();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .endereco(enderecoDTO)
+//                .build();
+//
+//        ProfessorDTO professorDTO = ProfessorDTOBuilder
+//                .professorDTOBuilder()
+//                .id(professor.getId())
+//                .nome(professor.getNome())
+//                .cpf(professor.getCpf())
+//                .cref(professor.getCref())
+//                .academiasAfiliada(academiaDTO)
+//                .build();
+//
+//
+//        AlunoDTO alunoDTO= AlunoDTOBuilder
+//                .alunoDTOBuilder()
+//                .id(aluno.getId())
+//                .cpf(aluno.getCpf())
+//                .nome(aluno.getNome())
+//                .idAcademiaAfiliada(academiaDTO)
+//                .crefProfessor(professorDTO)
+//                .build();
 
-        var academia = fichaDeTreino.getAcademiaAfiliada();
-        var aluno = fichaDeTreino.getAluno();
-        var endereco = academia.getEndereco();
-        var professor = aluno.getProfessor();
-
-        EnderecoDTO enderecoDTO = EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build();
-
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .endereco(enderecoDTO)
-                .build();
-
-        ProfessorDTO professorDTO = ProfessorDTOBuilder
-                .professorDTOBuilder()
-                .id(professor.getId())
-                .nome(professor.getNome())
-                .cpf(professor.getCpf())
-                .cref(professor.getCref())
-                .academiasAfiliada(academiaDTO)
-                .build();
-
-
-        AlunoDTO alunoDTO= AlunoDTOBuilder
-                .alunoDTOBuilder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .idAcademiaAfiliada(academiaDTO)
-                .crefProfessor(professorDTO)
-                .build();
-
-        return new ResponseFichaDeTreino(FichaDeTreinoDTOBuilder
-                .fichaDeTreinoDTOBuilder()
-                .id(fichaDeTreino.getId())
-                .academiaAfiliada(academiaDTO)
-                .professor(professorDTO)
-                .aluno(alunoDTO)
-                .exercicio(fichaDeTreino.getExercicio())
-                .build());
+        return new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
     }
     public ResponseFichaDeTreino alterarFicha (RequestFichaDeTreino requestFichaDeTreino){
         Academia academia = repositoryAcademia.getReferenceById(requestFichaDeTreino.getIdAcademia());
@@ -274,8 +245,8 @@ public class FichaDetreinoService {
         Aluno aluno = repositoryAluno.getReferenceByCpf(requestFichaDeTreino.getCpfAluno())
                 .orElseThrow(() -> new ObjectNotFoundException("aluno com o CPF " + requestFichaDeTreino.getCpfAluno() + " não encontrado."));
 
-        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getIdFicha());
-        var endereco = academia.getEndereco();
+        FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.getReferenceById(requestFichaDeTreino.getId());
+//        var endereco = academia.getEndereco();
 
         fichaDeTreino.setExercicio(requestFichaDeTreino.getExercicio());
         fichaDeTreino.setAluno(aluno);
@@ -283,51 +254,44 @@ public class FichaDetreinoService {
         fichaDeTreino.setAcademiaAfiliada(academia);
         repositoryFichaDeTreino.save(fichaDeTreino);
 
-        EnderecoDTO enderecoDTO = EnderecoDTO
-                .builder()
-                .id(endereco.getId())
-                .cep(endereco.getCep())
-                .estado(endereco.getEstado())
-                .bairro(endereco.getBairro())
-                .cidade(endereco.getCidade())
-                .numero(endereco.getNumero())
-                .build();
+//        EnderecoDTO enderecoDTO = EnderecoDTO
+//                .builder()
+//                .id(endereco.getId())
+//                .cep(endereco.getCep())
+//                .estado(endereco.getEstado())
+//                .bairro(endereco.getBairro())
+//                .cidade(endereco.getCidade())
+//                .numero(endereco.getNumero())
+//                .build();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .endereco(enderecoDTO)
+//                .build();
+//
+//        ProfessorDTO professorDTO = ProfessorDTOBuilder
+//                .professorDTOBuilder()
+//                .id(professor.getId())
+//                .nome(professor.getNome())
+//                .cpf(professor.getCpf())
+//                .cref(professor.getCref())
+//                .academiasAfiliada(academiaDTO)
+//                .build();
+//
+//
+//        AlunoDTO alunoDTO= AlunoDTOBuilder
+//                .alunoDTOBuilder()
+//                .id(aluno.getId())
+//                .cpf(aluno.getCpf())
+//                .nome(aluno.getNome())
+//                .idAcademiaAfiliada(academiaDTO)
+//                .crefProfessor(professorDTO)
+//                .build();
 
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .endereco(enderecoDTO)
-                .build();
-
-        ProfessorDTO professorDTO = ProfessorDTOBuilder
-                .professorDTOBuilder()
-                .id(professor.getId())
-                .nome(professor.getNome())
-                .cpf(professor.getCpf())
-                .cref(professor.getCref())
-                .academiasAfiliada(academiaDTO)
-                .build();
-
-
-        AlunoDTO alunoDTO= AlunoDTOBuilder
-                .alunoDTOBuilder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .idAcademiaAfiliada(academiaDTO)
-                .crefProfessor(professorDTO)
-                .build();
-
-        return new ResponseFichaDeTreino(FichaDeTreinoDTOBuilder
-                .fichaDeTreinoDTOBuilder()
-                .id(fichaDeTreino.getId())
-                .academiaAfiliada(academiaDTO)
-                .professor(professorDTO)
-                .aluno(alunoDTO)
-                .exercicio(fichaDeTreino.getExercicio())
-                .build());
+        return new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
     }
     public ResponseFichaDeTreino deletarFicha(Long idFicha){
         FichaDeTreino fichaDeTreino = repositoryFichaDeTreino.findById(idFicha)
@@ -337,43 +301,36 @@ public class FichaDetreinoService {
         }catch (Exception e){
             throw new DataBindingViolationException("A ficha de treino não pode ser deletada, por precisar deletar entidades relacionas");
         }
-        var academia = fichaDeTreino.getAcademiaAfiliada();
-        var aluno = fichaDeTreino.getAluno();
-        var professor = fichaDeTreino.getProfessor();
+//        var academia = fichaDeTreino.getAcademiaAfiliada();
+//        var aluno = fichaDeTreino.getAluno();
+//        var professor = fichaDeTreino.getProfessor();
+//
+//        AcademiaDTO academiaDTO = AcademiaDTOBuilder
+//                .academiaDTOBuilder()
+//                .id(academia.getId())
+//                .academiaAfiliada(academia.getAcademiaAfiliada())
+//                .cnpj(academia.getCnpj())
+//                .build();
+//
+//        ProfessorDTO professorDTO = ProfessorDTOBuilder
+//                .professorDTOBuilder()
+//                .id(professor.getId())
+//                .nome(professor.getNome())
+//                .cpf(professor.getCpf())
+//                .cref(professor.getCref())
+//                .academiasAfiliada(academiaDTO)
+//                .build();
+//
+//        AlunoDTO alunoDTO= AlunoDTOBuilder
+//                .alunoDTOBuilder()
+//                .id(aluno.getId())
+//                .cpf(aluno.getCpf())
+//                .nome(aluno.getNome())
+//                .idAcademiaAfiliada(academiaDTO)
+//                .crefProfessor(professorDTO)
+//                .build();
 
-        AcademiaDTO academiaDTO = AcademiaDTOBuilder
-                .academiaDTOBuilder()
-                .id(academia.getId())
-                .academiaAfiliada(academia.getAcademiaAfiliada())
-                .cnpj(academia.getCnpj())
-                .build();
-
-        ProfessorDTO professorDTO = ProfessorDTOBuilder
-                .professorDTOBuilder()
-                .id(professor.getId())
-                .nome(professor.getNome())
-                .cpf(professor.getCpf())
-                .cref(professor.getCref())
-                .academiasAfiliada(academiaDTO)
-                .build();
-
-        AlunoDTO alunoDTO= AlunoDTOBuilder
-                .alunoDTOBuilder()
-                .id(aluno.getId())
-                .cpf(aluno.getCpf())
-                .nome(aluno.getNome())
-                .idAcademiaAfiliada(academiaDTO)
-                .crefProfessor(professorDTO)
-                .build();
-
-        return new ResponseFichaDeTreino(FichaDeTreinoDTOBuilder
-                .fichaDeTreinoDTOBuilder()
-                .id(fichaDeTreino.getId())
-                .academiaAfiliada(academiaDTO)
-                .professor(professorDTO)
-                .aluno(alunoDTO)
-                .exercicio(fichaDeTreino.getExercicio())
-                .build());
+        return new ResponseFichaDeTreino(new FichaDeTreinoDTO(fichaDeTreino));
     }
     private String base64(ArquivoFichaTreino arquivoFichaTreino,String nomeAluno, String nomeProfessor){
 

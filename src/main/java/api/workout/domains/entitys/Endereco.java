@@ -1,16 +1,17 @@
 package api.workout.domains.entitys;
 
+import api.workout.rest.request.RequestEndereco;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
-@Entity(name = "Endereco")
+@Entity
 @Table(name = "endereco")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Endereco {
 
     @Id
@@ -32,4 +33,13 @@ public class Endereco {
 
     @Column(name = "cep")
     private String cep;
+
+    public Endereco(RequestEndereco requestEndereco) {
+        this.id = requestEndereco.getId();
+        this.estado = requestEndereco.getEstado();
+        this.cidade = requestEndereco.getCidade();
+        this.bairro = requestEndereco.getBairro();
+        this.numero = requestEndereco.getNumero();
+        this.cep = requestEndereco.getCep();
+    }
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class RequestProfessor {
 
-    private Long idProfessor;
+    private Long id;
     private String nome;
     private String cpf;
     private String cref;

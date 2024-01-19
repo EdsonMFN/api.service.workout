@@ -1,12 +1,11 @@
 package api.workout.domains.model;
 
 import api.workout.enums.TipoDeArquivo;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ArquivoFichaTreinoDTO {
 
@@ -14,5 +13,7 @@ public class ArquivoFichaTreinoDTO {
     private FichaDeTreinoDTO fichaDeTreinoDTO;
     private TipoDeArquivo tipoDeArquivo;
     private String base64;
+
+
 
 }

@@ -27,25 +27,14 @@ public class UsuarioService{
 
         String criptpgrafiaSenha = new BCryptPasswordEncoder().encode(requestUsuario.getSenha().trim());
 
-        Usuario usuario = Usuario
-                .builder()
-                .nomeUsuario(requestUsuario.getNomeUsuario())
-                .senha(criptpgrafiaSenha)
-                .role(requestUsuario.getRole())
-                .build();
-
+        Usuario usuario =new Usuario(requestUsuario);
 
         if (repositoryUsuario.findByNomeUsuario(usuario.getNomeUsuario()) != null){
             throw new RuntimeException("usuario existente");
         }
         repositoryUsuario.save(usuario);
 
-        return new ResponseUsuario(UsuarioDTO.builder()
-                .idUsuario(usuario.getId())
-                .nomeUsuario(usuario.getNomeUsuario())
-                .senha(criptpgrafiaSenha)
-                .role(usuario.getRole())
-                .build());
+        return new ResponseUsuario(new UsuarioDTO(usuario));
 
     }
     public List<ResponseUsuario> listarUsuarios() {
@@ -55,11 +44,7 @@ public class UsuarioService{
 
         usuarios.parallelStream().forEach(usuario -> {
 
-            ResponseUsuario responseUsuario = new ResponseUsuario(UsuarioDTO.builder()
-                    .nomeUsuario(usuario.getNomeUsuario())
-                    .idUsuario(usuario.getId())
-                    .role(usuario.getRole())
-                    .build());
+            ResponseUsuario responseUsuario = new ResponseUsuario(new UsuarioDTO(usuario));
 
             responseUsuarios.add(responseUsuario);
         });
